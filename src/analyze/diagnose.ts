@@ -9,7 +9,6 @@
  */
 import type { CausalGraph, DataId } from "../types.js";
 import { cosine, type Embedder } from "../embed/model.js";
-import { embedNodes } from "../embed/weight.js";
 
 export interface Diagnosis {
   isolated: { id: string; label: string; kind: string }[];
@@ -32,6 +31,8 @@ export interface DiagnoseOptions {
   jumpThreshold?: number;
   /** 指定すると、埋め込みで一次選別した候補を Gemma 4 が最終判定 (因果分析を Gemma で)。 */
   gemma?: GemmaJudge;
+  /** 埋め込み対象ノードの上限 (既定 4000)。超過分は打切り、summary.truncated に件数。 */
+  maxEmbed?: number;
 }
 
 export async function diagnose(
@@ -41,14 +42,17 @@ export async function diagnose(
 ): Promise<Diagnosis> {
   const node = (id: string) => g.nodes.get(id as DataId);
   const lbl = (id: string) => node(id)?.meta.label ?? node(id)?.meta.text ?? id;
-  const analyzable = [...g.nodes.values()].filter((n) => n.meta.text || n.meta.kind === "entity");
   const causeEdges = g.edges.filter((e) => e.kind === "causes");
+  // 自然言語のみ (数式 "=...", 数値・記号のみ, 長すぎは除外) → 埋め込み対象を絞りスケールさせる。
+  const isNL = (t?: string) =>
+    !!t && !t.startsWith("=") && t.length <= 200 && !/^[\s\d.,%¥$+\-*/(),，．]+$/.test(t);
 
-  // 1) isolated: causes に一度も現れないノード
-  const touched = new Set<string>();
-  for (const e of causeEdges) { touched.add(e.from); touched.add(e.to); }
-  const isolated = analyzable
-    .filter((n) => !touched.has(n.id))
+  // 1) isolated: causes / derives-from のどちらにも現れない「内容」ノード。
+  //    (数式 DAG で繋がるセルは独立扱いしない → xlsx で大量誤検出を防ぐ)
+  const conn = new Set<string>();
+  for (const e of g.edges) if (e.kind === "causes" || e.kind === "derives-from") { conn.add(e.from); conn.add(e.to); }
+  const isolated = [...g.nodes.values()]
+    .filter((n) => (isNL(n.meta.text) || n.meta.kind === "entity") && !conn.has(n.id))
     .map((n) => ({ id: n.id, label: lbl(n.id), kind: n.meta.kind }));
 
   // 2) notHolding: refuted か confidence < 0.5
@@ -61,36 +65,46 @@ export async function diagnose(
 
   let notationVariants: Diagnosis["notationVariants"] = [];
   let conceptJumps: Diagnosis["conceptJumps"] = [];
+  let truncated = 0;
 
   if (embedder) {
-    const vecs = await embedNodes(g, embedder);
     const norm = (s: string) => s.replace(/\s+/g, "").toLowerCase();
     const vt = opts.variantThreshold ?? 0.9;
     const jt = opts.jumpThreshold ?? 0.3;
+    const CAP = opts.maxEmbed ?? 4000; // 埋め込み対象の上限 (超過は要 ANN, ここでは打切り報告)
 
-    // 3) notationVariants: 「用語」粒度のみ対象 (entity か短ラベル) → 文の過剰グルーピングを防ぐ。
-    //    高類似だが正規化ラベルが異なる = 同概念の表記揺れ。
-    const ids = analyzable
-      .filter((n) => n.meta.kind === "entity" || (n.meta.text ?? n.meta.label ?? "").length <= 16)
-      .map((n) => n.id)
-      .filter((id) => vecs.has(id));
+    // 埋め込みが必要なノード: NL 用語 (表記揺れ用) + causes 端点 (概念のとび用)。数式/数値は除外。
+    const need = new Map<string, string>();
+    const termIds: DataId[] = [];
+    for (const n of g.nodes.values()) {
+      const short = (n.meta.text ?? n.meta.label ?? "").length <= 16;
+      if (n.meta.kind === "entity" || (isNL(n.meta.text) && short)) { termIds.push(n.id); need.set(n.id, lbl(n.id)); }
+    }
+    for (const e of causeEdges) { need.set(e.from, lbl(e.from)); need.set(e.to, lbl(e.to)); }
+
+    const all = [...need.entries()];
+    truncated = Math.max(0, all.length - CAP);
+    const use = all.slice(0, CAP);
+    const arr = await embedder.embed(use.map(([, t]) => t));
+    const vmap = new Map<string, Float32Array>();
+    use.forEach(([id], i) => vmap.set(id, arr[i]!));
+
+    // 3) notationVariants: 上限内 NL 用語の全ペア (数式/数値を除いたので現実的サイズ)。
+    const ids = termIds.filter((id) => vmap.has(id));
     const used = new Set<string>();
     for (let i = 0; i < ids.length; i++) {
       if (used.has(ids[i]!)) continue;
       const group = [ids[i]!];
       for (let j = i + 1; j < ids.length; j++) {
         if (used.has(ids[j]!)) continue;
-        const sim = cosine(vecs.get(ids[i]!)!, vecs.get(ids[j]!)!);
-        if (sim >= vt && norm(lbl(ids[i]!)) !== norm(lbl(ids[j]!))) {
-          group.push(ids[j]!);
-          used.add(ids[j]!);
+        if (cosine(vmap.get(ids[i]!)!, vmap.get(ids[j]!)!) >= vt && norm(lbl(ids[i]!)) !== norm(lbl(ids[j]!))) {
+          group.push(ids[j]!); used.add(ids[j]!);
         }
       }
       if (group.length > 1) {
         used.add(ids[i]!);
         let members = group;
         let concept = lbl(ids[i]!);
-        // Gemma で「本当に同概念か」を確定 (代表と各メンバーを照合)。
         if (opts.gemma) {
           const confirmed = [group[0]!];
           for (const m of group.slice(1)) {
@@ -103,15 +117,15 @@ export async function diagnose(
       }
     }
 
-    // 4) conceptJumps: 埋め込みで低類似 causes を一次選別 → Gemma が論理飛躍を確定。
+    // 4) conceptJumps: causes 端点の低類似を一次選別 → (任意) Gemma が論理飛躍を確定。
     for (const e of causeEdges) {
-      const a = vecs.get(e.from), b = vecs.get(e.to);
+      const a = vmap.get(e.from), b = vmap.get(e.to);
       if (!a || !b) continue;
       const sim = cosine(a, b);
       if (sim >= jt) continue;
       if (opts.gemma) {
         const r = await opts.gemma.judgeJump(lbl(e.from), lbl(e.to));
-        if (!r.jump) continue; // Gemma が飛躍でないと判断 → 除外
+        if (!r.jump) continue;
         conceptJumps.push({ edge: e.id, from: lbl(e.from), to: lbl(e.to), similarity: +sim.toFixed(3), ...(r.missing ? { missing: r.missing } : {}), ...(r.reason ? { reason: r.reason } : {}) });
       } else {
         conceptJumps.push({ edge: e.id, from: lbl(e.from), to: lbl(e.to), similarity: +sim.toFixed(3) });
@@ -126,6 +140,7 @@ export async function diagnose(
       notHolding: notHolding.length,
       notationVariants: notationVariants.length,
       conceptJumps: conceptJumps.length,
+      truncated,
     },
   };
 }

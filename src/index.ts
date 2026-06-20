@@ -20,6 +20,7 @@ export { openPackage } from "./ooxml/opc.js";
 export { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloadToGraph, type EmbeddedPayload } from "./ooxml/embed.js";
 export { locate, deepLink, type Locator } from "./locate.js";
 export { diagnose, type Diagnosis } from "./analyze/diagnose.js";
+export { consult, type ConsultResult } from "./analyze/consult.js";
 export { renderDiagnosisSvg, overlayCausal } from "./visual/svg.js";
 export {
   renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg,

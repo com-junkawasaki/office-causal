@@ -145,6 +145,16 @@ export class WebGpuGemmaAdjudicator {
     return parse(await this.complete(buildPrompt(aText, bText)));
   }
 
+  /** コンサル的 so-what: 因果連鎖から示唆と打ち手を生成 (因果分析を Gemma で)。 */
+  async soWhat(chainText: string): Promise<{ soWhat: string; action?: string }> {
+    const text =
+      `次の因果連鎖から、コンサルタントとして「so-what(だから何が言えるか/示唆)」と「打ち手」を1つずつ。\n` +
+      `因果連鎖: ${chainText}\n` +
+      `出力は JSON のみ: {"soWhat":"示唆を一文","action":"具体的な打ち手を一文"}`;
+    const o = parseJson(await this.complete(text));
+    return { soWhat: String(o.soWhat ?? ""), ...(o.action ? { action: String(o.action) } : {}) };
+  }
+
   /** 2 用語が同一概念の表記揺れか (因果分析の意味判断を Gemma で)。 */
   async judgeSameConcept(a: string, b: string): Promise<{ same: boolean; canonical?: string }> {
     const text =
