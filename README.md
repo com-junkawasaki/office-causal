@@ -426,6 +426,12 @@ office-causal diagnose report.ocz.pptx --svg out.svg --render --drawingml ../dra
 > 連携は opt-in（Python の drawingml-svg を子プロセス実行）。`--drawingml <src>` か環境変数 `OCZ_DRAWINGML_SVG` で
 > src パスを指定。drawingml-svg の `svgraph`(SVG 内部依存グラフ) とは別レイヤ（こちらは業務因果）。
 
+**レンダラは差し替え可能** (`type SlideRenderer = (xml) => string | Promise<string>`)。現状の既定は
+`pythonDrawingmlRenderer`（Python 子プロセス, Node 専用）。**drawingml-svg の TS 移行が完了したら**、その
+TS `dml2svg` を `renderSlideCausalSvg(xml, graph, diag, tsRenderer)` に注入するだけで Python 不要・in-process・
+**ブラウザ(WebGPU デモ)でも背景描画**が可能になる（契約: 出力 SVG の viewBox は px = EMU/9525）。
+※ drawingml-svg 側は現在 TS 移行中（まず SVGraph(SVG→IR) が TS 化、`dml2svg` 描画は移行待ち）。
+
 ## 8. 主要な設計判断（ADR）
 
 - [ADR-0001](docs/adr/0001-causal-graph-ir.md) — 単一 CausalGraph IR / 決定論層と LLM 層の分離 / コンテンツアドレス data-id / evidence 必須の causal エッジ

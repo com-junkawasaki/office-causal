@@ -21,7 +21,10 @@ export { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloa
 export { locate, deepLink, type Locator } from "./locate.js";
 export { diagnose, type Diagnosis } from "./analyze/diagnose.js";
 export { renderDiagnosisSvg, overlayCausal } from "./visual/svg.js";
-export { renderDrawingmlSvg, isDrawingmlAvailable } from "./visual/drawingml.js";
+export {
+  renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg,
+  type SlideRenderer,
+} from "./visual/drawingml.js";
 export * as causal from "./causal/analyze.js";
 export * as embed from "./embed/weight.js";
 export { getEmbedder, HashEmbedder, TransformersEmbedder } from "./embed/model.js";

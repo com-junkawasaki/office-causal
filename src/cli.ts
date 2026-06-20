@@ -10,7 +10,7 @@ import { writeFile, readFile } from "node:fs/promises";
 import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
   openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
-  WebGpuGemmaAdjudicator, renderDrawingmlSvg, overlayCausal,
+  WebGpuGemmaAdjudicator, pythonDrawingmlRenderer, renderSlideCausalSvg,
 } from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
 
@@ -107,7 +107,9 @@ async function main() {
         const pkg = openPackage(bytes);
         const dmlOpts = (() => { const p = flag(rest, "drawingml"); return p ? { srcPath: p } : {}; })();
         const slides = [...pkg.parts.keys()].filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n)).sort();
-        const svgs = slides.map((s) => overlayCausal(renderDrawingmlSvg(pkg.parts.get(s)!.xml, dmlOpts), g, diag));
+        const renderer = pythonDrawingmlRenderer(dmlOpts); // TS 版 drawingml-svg が出たらここを差し替え
+        const svgs: string[] = [];
+        for (const s of slides) svgs.push(await renderSlideCausalSvg(pkg.parts.get(s)!.xml, g, diag, renderer));
         const doc = svgs.length <= 1 ? (svgs[0] ?? "") : `<!doctype html><meta charset="utf-8">\n${svgs.map((s, i) => `<h3>slide${i + 1}</h3>\n${s}`).join("\n")}`;
         await writeFile(svg, doc);
         console.error(`render(drawingml-svg + causal overlay) → ${svg} (${svgs.length} slide)`);
