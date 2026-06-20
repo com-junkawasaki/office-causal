@@ -1,8 +1,21 @@
 # office-casual
 
 [![CI](https://github.com/com-junkawasaki/office-casual/actions/workflows/ci.yml/badge.svg)](https://github.com/com-junkawasaki/office-casual/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/office-casual.svg)](https://www.npmjs.com/package/office-casual)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-%40com--junkawasaki%2Foffice--casual-2188ff?logo=github)](https://github.com/com-junkawasaki/office-casual/pkgs/npm/office-casual)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+## インストール（GitHub Packages）
+
+```bash
+# プロジェクトの .npmrc にスコープのレジストリと認証を設定
+echo "@com-junkawasaki:registry=https://npm.pkg.github.com" >> .npmrc
+echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc   # read:packages 権限の PAT
+
+npm install @com-junkawasaki/office-casual
+```
+```ts
+import { analyze, embedFile, readDataPart, WebGpuGemmaAdjudicator } from "@com-junkawasaki/office-casual";
+```
 
 > **MS Office (OOXML) の全 XML を TypeScript で「因果グラフ (causal graph)」として扱えるようにする**ライブラリ + LangGraph.js アプリ。
 >

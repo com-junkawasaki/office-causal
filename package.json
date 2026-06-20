@@ -1,5 +1,5 @@
 {
-  "name": "office-casual",
+  "name": "@com-junkawasaki/office-casual",
   "version": "0.1.0",
   "description": "Parse MS Office (OOXML: pptx/xlsx/docx) into a single typed causal graph, with deterministic data-id + meta and a LangGraph.js causal-analysis agent.",
   "type": "module",
@@ -14,7 +14,7 @@
   "repository": { "type": "git", "url": "git+https://github.com/com-junkawasaki/office-casual.git" },
   "homepage": "https://github.com/com-junkawasaki/office-casual#readme",
   "bugs": { "url": "https://github.com/com-junkawasaki/office-casual/issues" },
-  "publishConfig": { "access": "public" },
+  "publishConfig": { "access": "public", "registry": "https://npm.pkg.github.com" },
   "engines": { "node": ">=18" },
   "scripts": {
     "build": "tsc -p tsconfig.json",
