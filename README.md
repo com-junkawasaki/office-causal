@@ -1,5 +1,9 @@
 # office-casual
 
+[![CI](https://github.com/com-junkawasaki/office-casual/actions/workflows/ci.yml/badge.svg)](https://github.com/com-junkawasaki/office-casual/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/office-casual.svg)](https://www.npmjs.com/package/office-casual)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 > **MS Office (OOXML) の全 XML を TypeScript で「因果グラフ (causal graph)」として扱えるようにする**ライブラリ + LangGraph.js アプリ。
 >
 > `pptx` / `xlsx` / `docx` の各 XML 要素に **安定した `data-id`** と **`meta`** を付与し、構造グラフ → 参照・依存グラフ → **因果 (causal) グラフ** へと段階的に持ち上げ、LLM エージェント (LangGraph.js) で因果仮説の抽出・検証・分析を行う。

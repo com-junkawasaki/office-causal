@@ -5,12 +5,20 @@
   "type": "module",
   "license": "MIT",
   "bin": {
-    "office-casual": "dist/cli.js"
+    "office-casual": "dist/src/cli.js"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "keywords": ["ooxml", "pptx", "xlsx", "docx", "office", "causal-graph", "langgraph", "transformers.js", "webgpu", "data-id"],
+  "repository": { "type": "git", "url": "git+https://github.com/com-junkawasaki/office-casual.git" },
+  "homepage": "https://github.com/com-junkawasaki/office-casual#readme",
+  "bugs": { "url": "https://github.com/com-junkawasaki/office-casual/issues" },
+  "publishConfig": { "access": "public" },
+  "engines": { "node": ">=18" },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "tsc -p tsconfig.json",
     "build:web": "tsc -p tsconfig.web.json",
     "serve:web": "python3 -m http.server 8000",
     "check": "tsc -p tsconfig.json --noEmit",
