@@ -5,3 +5,4 @@ web/*.js
 *.ocz.*
 .env
 .cache/
+.npmrc
