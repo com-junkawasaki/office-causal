@@ -18,15 +18,17 @@ import { makeDataId } from "../id/hash.js";
 import { emptyGraph, upsertNode, addEdge } from "../graph/model.js";
 import { bookmarkName } from "../locate.js";
 
-export const OCZ_NS = "urn:com-junkawasaki:office-casual:1";
-const PART = "ocz/casual.json";
-const PART_JSONL = "ocz/casual.jsonl";
+export const OCZ_NS = "urn:com-junkawasaki:office-causal:1";
+const PART = "ocz/causal.json";
+const PART_JSONL = "ocz/causal.jsonl";
+// 旧名 (office-casual 時代) の同梱パートも読めるよう後方互換。
+const LEGACY = ["ocz/casual.jsonl", "ocz/casual.json"] as const;
 
 export type EmbedFormat = "json" | "jsonl";
 
 export interface EmbeddedPayload {
   version: 1;
-  generator: "office-casual";
+  generator: "office-causal";
   nodes: { id: string; kind: string; part: string; path: string; label?: string; text?: string; value?: string | number; tags?: string[] }[];
   edges: { id: string; kind: string; from: string; to: string; weight?: number; causal?: unknown }[];
 }
@@ -34,7 +36,7 @@ export interface EmbeddedPayload {
 function payloadOf(graph: CausalGraph): EmbeddedPayload {
   return {
     version: 1,
-    generator: "office-casual",
+    generator: "office-causal",
     nodes: [...graph.nodes.values()].map((n) => ({
       id: n.id,
       kind: n.meta.kind,
@@ -72,12 +74,12 @@ function fromJsonl(text: string): EmbeddedPayload {
   const nodes = new Map<string, EmbeddedPayload["nodes"][number]>();
   const edges = new Map<string, EmbeddedPayload["edges"][number]>();
   let version: 1 = 1;
-  let generator: "office-casual" = "office-casual";
+  let generator: "office-causal" = "office-causal";
   for (const line of text.split("\n")) {
     if (!line.trim()) continue;
     const o = JSON.parse(line);
     switch (o.t) {
-      case "meta": version = o.version ?? 1; generator = o.generator ?? "office-casual"; break;
+      case "meta": version = o.version ?? 1; generator = o.generator ?? "office-causal"; break;
       case "node": { const { t, ...rest } = o; nodes.set(rest.id, rest); break; }
       case "node-del": nodes.delete(o.id); break;
       case "edge": { const { t, ...rest } = o; edges.set(rest.id, rest); break; }
@@ -109,7 +111,7 @@ export function payloadToGraph(p: EmbeddedPayload): CausalGraph {
   return g;
 }
 
-const REL_TYPE = "https://com-junkawasaki.org/office-casual/relationship";
+const REL_TYPE = "https://com-junkawasaki.org/office-causal/relationship";
 const REL_ID = "rIdOfficeCasual";
 
 /** ルート _rels/.rels に同梱パートへのリレーションを追記 (OPC 準拠 → Office 互換性向上)。 */
@@ -154,7 +156,7 @@ export function embedDataPart(
  */
 export function embedDataPartDiff(bytes: Uint8Array, graph: CausalGraph): Uint8Array {
   const entries = unzipSync(bytes);
-  const existing = entries[PART_JSONL];
+  const existing = entries[PART_JSONL] ?? entries["ocz/casual.jsonl"]; // 旧名も追記対象に
   if (!existing) return embedDataPart(bytes, graph, { format: "jsonl" });
   const existingText = strFromU8(existing);
 
@@ -183,11 +185,16 @@ export function embedDataPartDiff(bytes: Uint8Array, graph: CausalGraph): Uint8A
   return zipSync(entries);
 }
 
-/** 埋め込んだ data-id/meta グラフを読み出す (json/jsonl どちらでも)。 */
+/** 埋め込んだ data-id/meta グラフを読み出す (json/jsonl・旧名 casual も)。 */
 export function readDataPart(bytes: Uint8Array): EmbeddedPayload | null {
   const entries = unzipSync(bytes);
   if (entries[PART_JSONL]) return fromJsonl(strFromU8(entries[PART_JSONL]));
   if (entries[PART]) return JSON.parse(strFromU8(entries[PART])) as EmbeddedPayload;
+  for (const legacy of LEGACY) {
+    if (entries[legacy]) return legacy.endsWith(".jsonl")
+      ? fromJsonl(strFromU8(entries[legacy]))
+      : (JSON.parse(strFromU8(entries[legacy])) as EmbeddedPayload);
+  }
   return null;
 }
 

@@ -1,7 +1,7 @@
 /**
  * 役割① 埋め込みモデル比較。
  *
- * office-casual の embed→causal ハンドオフ＝「真の因果隣接ペアを高 affinity で
+ * office-causal の embed→causal ハンドオフ＝「真の因果隣接ペアを高 affinity で
  * surface できるか」を、候補選別の検索問題として評価する:
  *   - ROC-AUC / AP (28 ペア中 8 正例)
  *   - precision@8 / recall@8

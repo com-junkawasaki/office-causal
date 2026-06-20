@@ -1,7 +1,7 @@
 /**
- * office-casual WebGPU デモ (OOXML ドロップ + 因果グラフ可視化)。
+ * office-causal WebGPU デモ (OOXML ドロップ + 因果グラフ可視化)。
  *
- * ブラウザ (Chrome/Edge, WebGPU) だけで office-casual の実コードを再利用:
+ * ブラウザ (Chrome/Edge, WebGPU) だけで office-causal の実コードを再利用:
  *   .xlsx/.pptx/.docx or テキスト
  *     → openPackage + buildStructuralGraph (構造/参照/依存)
  *     → TransformersEmbedder(webgpu) で weight・tag・候補選別        [役割①]

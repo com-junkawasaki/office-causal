@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-06-20
-- Context: `com-junkawasaki/office-casual`
+- Context: `com-junkawasaki/office-causal`
 
 ## 背景
 

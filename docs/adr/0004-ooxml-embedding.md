@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-06-20
-- Context: `com-junkawasaki/office-casual`（ADR-0001 D4 を具体化）
+- Context: `com-junkawasaki/office-causal`（ADR-0001 D4 を具体化）
 
 ## 背景
 

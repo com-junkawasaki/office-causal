@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * office-casual CLI。
- *   office-casual analyze <file...> [--depth structural|semantic|causal] [--out f.json] [--format json|dot|graphml|cypher]
- *   office-casual graph  <f.casual.json> [--format dot]
- *   office-casual embed  <file.pptx|xlsx|docx> [--mode part|attrs|both] [--format jsonl|json] [--diff] [--out f]
- *   office-casual locate <file.ocz.*> <data-id>      data-id → Office 上の位置/deep-link
+ * office-causal CLI。
+ *   office-causal analyze <file...> [--depth structural|semantic|causal] [--out f.json] [--format json|dot|graphml|cypher]
+ *   office-causal graph  <f.causal.json> [--format dot]
+ *   office-causal embed  <file.pptx|xlsx|docx> [--mode part|attrs|both] [--format jsonl|json] [--diff] [--out f]
+ *   office-causal locate <file.ocz.*> <data-id>      data-id → Office 上の位置/deep-link
  */
 import { writeFile, readFile } from "node:fs/promises";
 import {
@@ -51,7 +51,7 @@ async function main() {
 
   if (cmd === "embed") {
     const file = rest.find((a, i) => !a.startsWith("--") && !rest[i - 1]?.startsWith("--"));
-    if (!file) { console.error("usage: office-casual embed <file> [--mode part|attrs|both] [--out f]"); process.exit(1); }
+    if (!file) { console.error("usage: office-causal embed <file> [--mode part|attrs|both] [--out f]"); process.exit(1); }
     const mode = (flag(rest, "mode", "part") ?? "part") as "part" | "attrs" | "both";
     const efmt = (flag(rest, "format", "jsonl") ?? "jsonl") as "json" | "jsonl";
     const diff = rest.includes("--diff");
@@ -106,7 +106,7 @@ async function main() {
     return;
   }
 
-  console.error("usage: office-casual <analyze|graph|embed|locate|diagnose> <file...> [--depth d] [--format f] [--mode m] [--diff] [--svg f] [--out f]");
+  console.error("usage: office-causal <analyze|graph|embed|locate|diagnose> <file...> [--depth d] [--format f] [--mode m] [--diff] [--svg f] [--out f]");
   process.exit(1);
 }
 

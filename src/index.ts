@@ -1,5 +1,5 @@
 /**
- * office-casual public API.
+ * office-causal public API.
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { basename } from "node:path";

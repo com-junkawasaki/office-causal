@@ -1,5 +1,5 @@
 /**
- * office-casual — core domain types.
+ * office-causal — core domain types.
  *
  * 単一の `CausalGraph` を IR とする (ADR-0001)。OOXML の全要素・派生エンティティが
  * `data-id` を持つノードになり、5 種の型付きエッジで結ばれる。

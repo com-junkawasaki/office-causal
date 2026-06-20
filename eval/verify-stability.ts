@@ -18,7 +18,7 @@ const fileB = process.argv[3] ?? "/tmp/real2.xlsx";
 function embed(bytes: Uint8Array): Uint8Array {
   return embedDataPart(bytes, buildStructuralGraph(openPackage(bytes)));
 }
-const oczPart = (zip: Uint8Array) => strFromU8(unzipSync(zip)["ocz/casual.jsonl"]!);
+const oczPart = (zip: Uint8Array) => strFromU8(unzipSync(zip)["ocz/causal.jsonl"]!);
 const idSet = (bytes: Uint8Array) => new Set(readDataPart(bytes)!.nodes.map((n) => n.id));
 const count = (zip: Uint8Array, needle: string) => (strFromU8(unzipSync(zip)["_rels/.rels"]!).match(new RegExp(needle, "g")) || []).length;
 

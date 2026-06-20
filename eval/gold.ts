@@ -1,7 +1,7 @@
 /**
- * office-casual edge-LLM 評価用ゴールデータセット (Claude 作成)。
+ * office-causal edge-LLM 評価用ゴールデータセット (Claude 作成)。
  *
- * 日本語の業務文 8 件で小さな因果グラフを構成。office-casual の実タスクに対応:
+ * 日本語の業務文 8 件で小さな因果グラフを構成。office-causal の実タスクに対応:
  *  - 役割① 埋め込み: 「真の因果隣接ペアを高 affinity で surface できるか」(候補選別)
  *                    + 「data-id タグづけの正答」
  *  - 役割② 生成裁定: 「無向ペアに正しい向き・極性を付けられるか」
