@@ -7,7 +7,10 @@
  *   office-casual locate <file.ocz.*> <data-id>      data-id → Office 上の位置/deep-link
  */
 import { writeFile, readFile } from "node:fs/promises";
-import { analyze, exportGraph, embedFile, readDataPart, locate, deepLink } from "./index.js";
+import {
+  analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
+  openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
+} from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
 
 function flag(args: string[], name: string, def?: string): string | undefined {
@@ -83,7 +86,22 @@ async function main() {
     return;
   }
 
-  console.error("usage: office-casual <analyze|graph|embed|locate> <file...> [--depth d] [--format f] [--mode m] [--diff] [--out f]");
+  if (cmd === "diagnose") {
+    const bare = rest.filter((a) => !a.startsWith("--"));
+    const file = bare[0]!;
+    const bytes = new Uint8Array(await readFile(file));
+    // .ocz なら同梱グラフ (causes 込み)、それ以外は構造グラフ。
+    const payload = readDataPart(bytes);
+    const g: CausalGraph = payload ? payloadToGraph(payload) : buildStructuralGraph(openPackage(bytes));
+    const embedder = rest.includes("--no-embed") ? undefined : (await getEmbedder()).embedder;
+    const diag = await diagnose(g, embedder);
+    const svg = flag(rest, "svg");
+    if (svg) { await writeFile(svg, renderDiagnosisSvg(g, diag)); console.error(`SVG → ${svg}`); }
+    console.log(JSON.stringify(diag, null, 2));
+    return;
+  }
+
+  console.error("usage: office-casual <analyze|graph|embed|locate|diagnose> <file...> [--depth d] [--format f] [--mode m] [--diff] [--svg f] [--out f]");
   process.exit(1);
 }
 

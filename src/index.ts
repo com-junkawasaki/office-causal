@@ -19,6 +19,8 @@ export { buildStructuralGraph } from "./graph/builder.js";
 export { openPackage } from "./ooxml/opc.js";
 export { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloadToGraph, type EmbeddedPayload } from "./ooxml/embed.js";
 export { locate, deepLink, type Locator } from "./locate.js";
+export { diagnose, type Diagnosis } from "./analyze/diagnose.js";
+export { renderDiagnosisSvg } from "./visual/svg.js";
 export * as causal from "./causal/analyze.js";
 export * as embed from "./embed/weight.js";
 export { getEmbedder, HashEmbedder, TransformersEmbedder } from "./embed/model.js";

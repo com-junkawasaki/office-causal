@@ -5,8 +5,33 @@
 import type { BuildCtx } from "../../graph/builder.js";
 import type { OpcPart } from "../opc.js";
 import { parseXml, walk, textOf } from "../parse.js";
+import type { XmlEl } from "../parse.js";
+import type { BBox } from "../../types.js";
 
 const SLIDE_RE = /^ppt\/slides\/slide(\d+)\.xml$/;
+
+/** 最初の子孫要素を tag で探す。 */
+function findDesc(el: XmlEl, tag: string): XmlEl | undefined {
+  for (const c of el.children) {
+    if (c.tag === tag) return c;
+    const f = findDesc(c, tag);
+    if (f) return f;
+  }
+  return undefined;
+}
+
+/** シェイプの <a:xfrm><a:off x y/><a:ext cx cy/> を bbox(EMU) に。 */
+function bboxOf(sp: XmlEl): BBox | undefined {
+  const xfrm = findDesc(sp, "a:xfrm");
+  if (!xfrm) return undefined;
+  const off = xfrm.children.find((c) => c.tag === "a:off");
+  const ext = xfrm.children.find((c) => c.tag === "a:ext");
+  if (!off || !ext) return undefined;
+  const n = (v?: string) => (v === undefined ? NaN : Number(v));
+  const x = n(off.attrs["x"]), y = n(off.attrs["y"]), w = n(ext.attrs["cx"]), h = n(ext.attrs["cy"]);
+  if ([x, y, w, h].some((v) => !Number.isFinite(v))) return undefined;
+  return { x, y, w, h, unit: "emu" };
+}
 
 export function extractPptx(part: OpcPart, ctx: BuildCtx): void {
   const m = part.name.match(SLIDE_RE);
@@ -24,11 +49,13 @@ export function extractPptx(part: OpcPart, ctx: BuildCtx): void {
     // シェイプ (テキストボックス等)
     if (el.tag === "p:sp") {
       const text = textOf(el);
+      const bbox = bboxOf(el);
       const shapeId = ctx.node(part.name, path, text || path, {
         kind: "shape",
         text,
         label: text.slice(0, 40),
         source: { app: "ppt", ooxmlTag: "p:sp" },
+        ...(bbox ? { bbox } : {}),
       });
       ctx.edge("contains", slideNode, shapeId);
     }

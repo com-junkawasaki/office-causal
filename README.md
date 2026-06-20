@@ -384,6 +384,30 @@ npx office-casual graph q1.casual.json --format dot | dot -Tsvg > q1.svg
 
 ---
 
+## 7.5 因果の診断と可視化（diagnose / SVG）
+
+pptx/xlsx/docx を解析し、因果を**視覚的に接続**しつつ次の 4 カテゴリを特定する（`src/analyze/diagnose.ts`）:
+
+| カテゴリ | 意味 | 検出 |
+|---|---|---|
+| **独立 (isolated)** | 因果に一度も現れないノード | グラフ（causes 端点でない text/entity ノード） |
+| **成立しない (notHolding)** | refuted / 低 confidence の因果 | causal.status / confidence<0.5 |
+| **表記揺れ (notationVariants)** | 同概念・異表記（売上≈セールス 等） | 埋め込み高類似(≥0.9) かつ ラベル相違、用語粒度(entity/短ラベル)に限定 |
+| **概念のとび (conceptJumps)** | 原因↔結果の意味的距離が大きい論理飛躍 | causes だが cosine(cause,effect)<0.3 |
+
+**スクリーンショット風の可視化** (`src/visual/svg.ts`): 注釈付き SVG を生成。
+- **pptx**: シェイプの `bbox`(EMU) を実配置し**スライド版面を再現**（検証: 実 pptx で 16 シェイプを実座標配置）
+- **xlsx**: `Sheet!A1` をグリッド配置、**docx**: 段落を縦並び
+- 因果=緑実線 / 成立しない=赤破線 / 概念のとび=紫破線⚡ / 表記揺れ=橙点線リンク / 独立=灰、で色分け＋凡例
+
+```bash
+office-casual diagnose report.ocz.pptx --svg report.diag.svg   # .ocz は causes 込みで診断
+office-casual diagnose report.xlsx                              # 構造のみでも 独立/表記揺れ は出る
+```
+
+web デモの **🔍 診断** ボタンでも、Cytoscape グラフ上に 4 カテゴリを色分け表示＋一覧パネル。
+真のピクセル・スクショが要る場合は LibreOffice (`soffice --convert-to pdf` → `pdftoppm`/`magick`) や兄弟 `drawingml-svg`(pptx→SVG) を背景に重ねられる（本実装は bbox 幾何で版面を再現）。
+
 ## 8. 主要な設計判断（ADR）
 
 - [ADR-0001](docs/adr/0001-causal-graph-ir.md) — 単一 CausalGraph IR / 決定論層と LLM 層の分離 / コンテンツアドレス data-id / evidence 必須の causal エッジ

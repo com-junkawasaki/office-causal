@@ -21,6 +21,7 @@ import { tagNodes } from "../dist/src/embed/tag.js";
 import { WebGpuGemmaAdjudicator } from "../dist/src/llm/gemma-webgpu.js";
 import { embedDataPart, readDataPart } from "../dist/src/ooxml/embed.js";
 import { locate, deepLink } from "../dist/src/locate.js";
+import { diagnose } from "../dist/src/analyze/diagnose.js";
 import type { CausalGraph, DataId } from "../dist/src/types.js";
 // @ts-ignore  importmap で解決 (CDN ESM)
 import cytoscape from "cytoscape";
@@ -324,6 +325,11 @@ function renderGraph(g: CausalGraph) {
       { selector: 'edge[kind="causes"]', style: { "line-color": COLOR["causes"], "target-arrow-color": COLOR["causes"],
         "target-arrow-shape": "triangle", opacity: 0.95, label: "data(label)", "font-size": 13, "font-weight": "bold", color: COLOR["causes"], "text-background-color": "#fff", "text-background-opacity": 1 } },
       { selector: "node.hl", style: { "background-color": "#e22", width: 18, height: 18, "border-width": 3, "border-color": "#900", "z-index": 99 } },
+      // 診断 (diagnose) カテゴリ
+      { selector: "node.iso", style: { "background-color": "#bbb" } },
+      { selector: "node.variant", style: { "border-color": "#e89400", "border-width": 3, "border-style": "dotted" } },
+      { selector: "edge.nothold", style: { "line-color": "#d22", "line-style": "dashed", "target-arrow-color": "#d22" } },
+      { selector: "edge.jump", style: { "line-color": "#83c", "line-style": "dashed", "target-arrow-color": "#83c", label: "⚡" } },
     ],
     layout: { name: "cose", animate: false, padding: 20, nodeRepulsion: 8000, idealEdgeLength: 110 },
     wheelSensitivity: 0.3,
@@ -396,8 +402,30 @@ async function downloadOcz() {
   log(`💾 ${name} をダウンロード (File System Access 非対応のため)。`);
 }
 
+// 🔍 診断: 独立 / 成立しない / 表記揺れ / 概念のとび をグラフ上に色分け表示。
+async function runDiagnose() {
+  if (!lastGraph || !cy) return log("⚠ 先に Run してください。");
+  const dev = GPU ? "webgpu" : "wasm";
+  const embedder = new TransformersEmbedder(EMBED_MODEL, dev, "q8");
+  log("[diagnose] 解析中 …");
+  const d = await diagnose(lastGraph, embedder);
+  cy.elements().removeClass("iso variant nothold jump");
+  for (const x of d.isolated) cy.getElementById(x.id).addClass("iso");
+  for (const v of d.notationVariants) for (const m of v.members) cy.getElementById(m.id).addClass("variant");
+  for (const x of d.notHolding) cy.getElementById(x.edge).addClass("nothold");
+  for (const x of d.conceptJumps) cy.getElementById(x.edge).addClass("jump");
+  log(`[diagnose] 独立=${d.summary.isolated} 成立しない=${d.summary.notHolding} 表記揺れ=${d.summary.notationVariants} 概念のとび=${d.summary.conceptJumps}`);
+  $("panel").innerHTML =
+    `<h4>🔍 診断</h4>` +
+    `<div class="mech" style="border-color:#999">▢ 独立 (${d.summary.isolated}): ${d.isolated.slice(0, 8).map((x) => shorten(x.label)).join(", ")}</div>` +
+    `<div class="mech">╌ 成立しない (${d.summary.notHolding}): ${d.notHolding.map((x) => `${shorten(x.from)}→${shorten(x.to)}`).join("; ")}</div>` +
+    `<div class="mech" style="border-color:#e89400">表記揺れ (${d.summary.notationVariants}): ${d.notationVariants.map((v) => v.members.map((m) => m.label).join("≈")).join(" / ")}</div>` +
+    `<div class="mech" style="border-color:#83c">⚡ 概念のとび (${d.summary.conceptJumps}): ${d.conceptJumps.map((x) => `${shorten(x.from)}→${shorten(x.to)}(${x.similarity})`).join("; ")}</div>`;
+}
+
 wireDrop();
 ($("dlBtn") as HTMLButtonElement).addEventListener("click", () => downloadOcz().catch((e) => log("ERROR: " + (e?.message ?? e))));
+($("dxBtn") as HTMLButtonElement).addEventListener("click", () => runDiagnose().catch((e) => log("ERROR: " + (e?.message ?? e))));
 // パネル内の [data-part] ボタン → 該当パートのノードを強調 (innerHTML 差し替えに強い委譲)。
 $("panel").addEventListener("click", (e) => {
   const el = e.target as HTMLElement;
