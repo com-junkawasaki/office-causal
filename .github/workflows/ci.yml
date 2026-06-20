@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      # optional の @huggingface/transformers (大きい ONNX ランタイム) は型チェック/ビルドに不要
+      # (動的 import のため)。CI を軽量・堅牢にするため省略する。
+      - run: npm ci --omit=optional
+      - name: Typecheck (library)
+        run: npm run check
+      - name: Build (library)
+        run: npm run build
+      - name: Build (web demo)
+        run: npm run build:web
