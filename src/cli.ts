@@ -11,6 +11,7 @@ import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
   openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
   WebGpuGemmaAdjudicator, pythonDrawingmlRenderer, renderSlideCausalSvg,
+  consult, mece, renderConsultSvg,
 } from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
 
@@ -122,7 +123,24 @@ async function main() {
     return;
   }
 
-  console.error("usage: office-causal <analyze|graph|embed|locate|diagnose> <file...> [--depth d] [--format f] [--mode m] [--diff] [--svg f] [--out f]");
+  if (cmd === "consult") {
+    // コンサル分析: so-what(因果連鎖→示唆→打ち手) + (--mece) MECE 評価。Gemma 4 使用。
+    const bare = rest.filter((a) => !a.startsWith("--"));
+    const bytes = new Uint8Array(await readFile(bare[0]!));
+    const payload = readDataPart(bytes);
+    const g: CausalGraph = payload ? payloadToGraph(payload) : buildStructuralGraph(openPackage(bytes));
+    const gemma = new WebGpuGemmaAdjudicator({ device: (flag(rest, "device", "cpu") ?? "cpu") as any, maxNewTokens: 160 });
+    const sw = await consult(g, gemma, { maxChains: Number(flag(rest, "max", "10")) });
+    const mc = rest.includes("--mece")
+      ? await mece(g, rest.includes("--no-embed") ? undefined : (await getEmbedder()).embedder, { gemma })
+      : undefined;
+    const svg = flag(rest, "svg");
+    if (svg) { await writeFile(svg, renderConsultSvg(sw)); console.error(`so-what SVG → ${svg}`); }
+    console.log(JSON.stringify({ soWhat: sw.chains, ...(mc ? { mece: mc.effects } : {}) }, null, 2));
+    return;
+  }
+
+  console.error("usage: office-causal <analyze|graph|embed|locate|diagnose|consult> <file...> [--depth d] [--format f] [--mode m] [--diff] [--svg f] [--mece] [--out f]");
   process.exit(1);
 }
 

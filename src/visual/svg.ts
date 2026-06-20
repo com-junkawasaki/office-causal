@@ -8,6 +8,7 @@
  */
 import type { CausalGraph, DataId } from "../types.js";
 import type { Diagnosis } from "../analyze/diagnose.js";
+import type { ConsultResult } from "../analyze/consult.js";
 
 const EMU_PX = 96 / 914400; // EMU → px
 const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
@@ -113,6 +114,24 @@ export function renderDiagnosisSvg(g: CausalGraph, diag: Diagnosis): string {
     <text x="285" y="${ly}" fill="#e89400">╌ 表記揺れ</text>
     <text x="365" y="${ly}" fill="#999">▢ 独立</text>
   </g>`);
+  out.push(`</svg>`);
+  return out.join("\n");
+}
+
+/** so-what(コンサル示唆) を因果連鎖ごとに並べた注記 SVG パネル。 */
+export function renderConsultSvg(c: ConsultResult): string {
+  const esc = (s: string) => s.replace(/[&<>]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[ch]!));
+  const wrap = (s: string, n = 90) => (s.length > n ? s.slice(0, n) + "…" : s);
+  const rowH = 64;
+  const W = 900, H = Math.max(120, 40 + c.chains.length * rowH);
+  const out: string[] = [`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="background:#fff">`];
+  out.push(`<text x="14" y="24" font-size="16" font-weight="bold">so-what (因果連鎖→示唆→打ち手)</text>`);
+  c.chains.forEach((ch, i) => {
+    const y = 44 + i * rowH;
+    out.push(`<text x="14" y="${y}" font-size="12" fill="#345">${esc(wrap(ch.path.join(" → ")))}</text>`);
+    out.push(`<text x="22" y="${y + 18}" font-size="12" fill="#b35">💡 ${esc(wrap(ch.soWhat))}</text>`);
+    if (ch.action) out.push(`<text x="22" y="${y + 34}" font-size="12" fill="#286">▶ ${esc(wrap(ch.action))}</text>`);
+  });
   out.push(`</svg>`);
   return out.join("\n");
 }

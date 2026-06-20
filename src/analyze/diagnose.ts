@@ -9,6 +9,7 @@
  */
 import type { CausalGraph, DataId } from "../types.js";
 import { cosine, type Embedder } from "../embed/model.js";
+import { similarPairs, unionGroups } from "./ann.js";
 
 export interface Diagnosis {
   isolated: { id: string; label: string; kind: string }[];
@@ -90,31 +91,22 @@ export async function diagnose(
     use.forEach(([id], i) => vmap.set(id, arr[i]!));
 
     // 3) notationVariants: 上限内 NL 用語の全ペア (数式/数値を除いたので現実的サイズ)。
+    // (A) 候補ペア: 小規模は厳密 all-pairs、大規模は LSH (O(n²) 回避) → ラベル相違で絞る。
     const ids = termIds.filter((id) => vmap.has(id));
-    const used = new Set<string>();
-    for (let i = 0; i < ids.length; i++) {
-      if (used.has(ids[i]!)) continue;
-      const group = [ids[i]!];
-      for (let j = i + 1; j < ids.length; j++) {
-        if (used.has(ids[j]!)) continue;
-        if (cosine(vmap.get(ids[i]!)!, vmap.get(ids[j]!)!) >= vt && norm(lbl(ids[i]!)) !== norm(lbl(ids[j]!))) {
-          group.push(ids[j]!); used.add(ids[j]!);
+    const termVecs = ids.map((id) => vmap.get(id)!);
+    const pairs = similarPairs(termVecs, vt).filter(([i, j]) => norm(lbl(ids[i]!)) !== norm(lbl(ids[j]!)));
+    for (const grp of unionGroups(ids.length, pairs)) {
+      let members = grp.map((i) => ids[i]!);
+      let concept = lbl(members[0]!);
+      if (opts.gemma) {
+        const confirmed = [members[0]!];
+        for (const m of members.slice(1)) {
+          const r = await opts.gemma.judgeSameConcept(lbl(members[0]!), lbl(m));
+          if (r.same) { confirmed.push(m); if (r.canonical) concept = r.canonical; }
         }
+        members = confirmed;
       }
-      if (group.length > 1) {
-        used.add(ids[i]!);
-        let members = group;
-        let concept = lbl(ids[i]!);
-        if (opts.gemma) {
-          const confirmed = [group[0]!];
-          for (const m of group.slice(1)) {
-            const r = await opts.gemma.judgeSameConcept(lbl(group[0]!), lbl(m));
-            if (r.same) { confirmed.push(m); if (r.canonical) concept = r.canonical; }
-          }
-          members = confirmed;
-        }
-        if (members.length > 1) notationVariants.push({ concept, members: members.map((id) => ({ id, label: lbl(id) })) });
-      }
+      if (members.length > 1) notationVariants.push({ concept, members: members.map((id) => ({ id, label: lbl(id) })) });
     }
 
     // 4) conceptJumps: causes 端点の低類似を一次選別 → (任意) Gemma が論理飛躍を確定。

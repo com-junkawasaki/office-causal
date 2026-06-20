@@ -155,6 +155,16 @@ export class WebGpuGemmaAdjudicator {
     return { soWhat: String(o.soWhat ?? ""), ...(o.action ? { action: String(o.action) } : {}) };
   }
 
+  /** MECE の CE: ある結果の要因群が網羅的か / 欠けている要因は何か。 */
+  async judgeExhaustive(effect: string, factors: string[]): Promise<{ exhaustive: boolean; missing?: string[] }> {
+    const text =
+      `結果「${effect}」の要因として、次は網羅的(collectively exhaustive)か判定し、欠けている要因を挙げよ。\n` +
+      `要因: ${factors.map((f) => `「${f}」`).join("、")}\n` +
+      `出力は JSON のみ: {"exhaustive": true|false, "missing": ["欠けている要因", ...]}`;
+    const o = parseJson(await this.complete(text));
+    return { exhaustive: o.exhaustive === true, ...(Array.isArray(o.missing) && o.missing.length ? { missing: o.missing.map(String) } : {}) };
+  }
+
   /** 2 用語が同一概念の表記揺れか (因果分析の意味判断を Gemma で)。 */
   async judgeSameConcept(a: string, b: string): Promise<{ same: boolean; canonical?: string }> {
     const text =

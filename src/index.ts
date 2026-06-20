@@ -21,7 +21,9 @@ export { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloa
 export { locate, deepLink, type Locator } from "./locate.js";
 export { diagnose, type Diagnosis } from "./analyze/diagnose.js";
 export { consult, type ConsultResult } from "./analyze/consult.js";
-export { renderDiagnosisSvg, overlayCausal } from "./visual/svg.js";
+export { mece, type MeceResult } from "./analyze/mece.js";
+export { similarPairs, lshCandidatePairs } from "./analyze/ann.js";
+export { renderDiagnosisSvg, overlayCausal, renderConsultSvg } from "./visual/svg.js";
 export {
   renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg,
   type SlideRenderer,
