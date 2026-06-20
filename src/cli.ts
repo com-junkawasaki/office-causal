@@ -10,6 +10,7 @@ import { writeFile, readFile } from "node:fs/promises";
 import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
   openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
+  WebGpuGemmaAdjudicator,
 } from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
 
@@ -94,7 +95,11 @@ async function main() {
     const payload = readDataPart(bytes);
     const g: CausalGraph = payload ? payloadToGraph(payload) : buildStructuralGraph(openPackage(bytes));
     const embedder = rest.includes("--no-embed") ? undefined : (await getEmbedder()).embedder;
-    const diag = await diagnose(g, embedder);
+    // --gemma: 因果分析の意味判断 (表記揺れ/概念のとび) を Gemma 4 が確定。
+    const gemma = rest.includes("--gemma")
+      ? new WebGpuGemmaAdjudicator({ device: (flag(rest, "device", "cpu") ?? "cpu") as any, maxNewTokens: 96 })
+      : undefined;
+    const diag = await diagnose(g, embedder, gemma ? { gemma } : {});
     const svg = flag(rest, "svg");
     if (svg) { await writeFile(svg, renderDiagnosisSvg(g, diag)); console.error(`SVG → ${svg}`); }
     console.log(JSON.stringify(diag, null, 2));

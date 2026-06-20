@@ -15,8 +15,14 @@ export interface Diagnosis {
   isolated: { id: string; label: string; kind: string }[];
   notHolding: { edge: string; from: string; to: string; reason: string }[];
   notationVariants: { concept: string; members: { id: string; label: string }[] }[];
-  conceptJumps: { edge: string; from: string; to: string; similarity: number }[];
+  conceptJumps: { edge: string; from: string; to: string; similarity: number; missing?: string; reason?: string }[];
   summary: Record<string, number>;
+}
+
+/** Gemma 4 など生成 LLM による意味判断 (WebGpuGemmaAdjudicator が実装)。 */
+export interface GemmaJudge {
+  judgeSameConcept(a: string, b: string): Promise<{ same: boolean; canonical?: string }>;
+  judgeJump(cause: string, effect: string): Promise<{ jump: boolean; missing?: string; reason?: string }>;
 }
 
 export interface DiagnoseOptions {
@@ -24,6 +30,8 @@ export interface DiagnoseOptions {
   variantThreshold?: number;
   /** 概念のとびと判定するコサイン上限 (既定 0.30)。 */
   jumpThreshold?: number;
+  /** 指定すると、埋め込みで一次選別した候補を Gemma 4 が最終判定 (因果分析を Gemma で)。 */
+  gemma?: GemmaJudge;
 }
 
 export async function diagnose(
@@ -80,16 +88,33 @@ export async function diagnose(
       }
       if (group.length > 1) {
         used.add(ids[i]!);
-        notationVariants.push({ concept: lbl(ids[i]!), members: group.map((id) => ({ id, label: lbl(id) })) });
+        let members = group;
+        let concept = lbl(ids[i]!);
+        // Gemma で「本当に同概念か」を確定 (代表と各メンバーを照合)。
+        if (opts.gemma) {
+          const confirmed = [group[0]!];
+          for (const m of group.slice(1)) {
+            const r = await opts.gemma.judgeSameConcept(lbl(group[0]!), lbl(m));
+            if (r.same) { confirmed.push(m); if (r.canonical) concept = r.canonical; }
+          }
+          members = confirmed;
+        }
+        if (members.length > 1) notationVariants.push({ concept, members: members.map((id) => ({ id, label: lbl(id) })) });
       }
     }
 
-    // 4) conceptJumps: causes だが原因↔結果の意味的距離が大きい
+    // 4) conceptJumps: 埋め込みで低類似 causes を一次選別 → Gemma が論理飛躍を確定。
     for (const e of causeEdges) {
       const a = vecs.get(e.from), b = vecs.get(e.to);
-      if (a && b) {
-        const sim = cosine(a, b);
-        if (sim < jt) conceptJumps.push({ edge: e.id, from: lbl(e.from), to: lbl(e.to), similarity: +sim.toFixed(3) });
+      if (!a || !b) continue;
+      const sim = cosine(a, b);
+      if (sim >= jt) continue;
+      if (opts.gemma) {
+        const r = await opts.gemma.judgeJump(lbl(e.from), lbl(e.to));
+        if (!r.jump) continue; // Gemma が飛躍でないと判断 → 除外
+        conceptJumps.push({ edge: e.id, from: lbl(e.from), to: lbl(e.to), similarity: +sim.toFixed(3), ...(r.missing ? { missing: r.missing } : {}), ...(r.reason ? { reason: r.reason } : {}) });
+      } else {
+        conceptJumps.push({ edge: e.id, from: lbl(e.from), to: lbl(e.to), similarity: +sim.toFixed(3) });
       }
     }
   }

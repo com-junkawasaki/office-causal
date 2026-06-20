@@ -63,6 +63,17 @@ function normDir(s?: string): "A->B" | "B->A" | "none" | undefined {
   return undefined;
 }
 
+/** 応答テキストから最初の JSON オブジェクトを取り出す (汎用)。 */
+function parseJson(text: string): any {
+  const c = text.replace(/```json/gi, "").replace(/```/g, "");
+  const i = c.indexOf("{");
+  const j = c.lastIndexOf("}");
+  if (i >= 0 && j > i) {
+    try { return JSON.parse(c.slice(i, j + 1)); } catch { /* */ }
+  }
+  return {};
+}
+
 function parse(text: string): {
   direction?: string | undefined;
   polarity?: string | undefined;
@@ -105,12 +116,10 @@ export class WebGpuGemmaAdjudicator {
   }
 
   /** 1 ペアを裁定 (テキストのみ)。 */
-  async judgeOne(
-    aText: string,
-    bText: string,
-  ): Promise<{ direction?: string | undefined; polarity?: string | undefined; mechanism?: string | undefined }> {
+  /** 任意プロンプトをテキスト生成 (chat template, greedy)。 */
+  async complete(userText: string): Promise<string> {
     await this.load();
-    const messages = [{ role: "user", content: [{ type: "text", text: buildPrompt(aText, bText) }] }];
+    const messages = [{ role: "user", content: [{ type: "text", text: userText }] }];
     const inputs = this.processor.apply_chat_template(messages, {
       enable_thinking: false,
       add_generation_prompt: true,
@@ -126,7 +135,34 @@ export class WebGpuGemmaAdjudicator {
       outputs.slice(null, [inputs.input_ids.dims.at(-1), null]),
       { skip_special_tokens: true },
     );
-    return parse(decoded[0] ?? "");
+    return decoded[0] ?? "";
+  }
+
+  async judgeOne(
+    aText: string,
+    bText: string,
+  ): Promise<{ direction?: string | undefined; polarity?: string | undefined; mechanism?: string | undefined }> {
+    return parse(await this.complete(buildPrompt(aText, bText)));
+  }
+
+  /** 2 用語が同一概念の表記揺れか (因果分析の意味判断を Gemma で)。 */
+  async judgeSameConcept(a: string, b: string): Promise<{ same: boolean; canonical?: string }> {
+    const text =
+      `次の2つの語句は同じ概念の「表記揺れ」(同義・略称・別表記)か判定せよ。\n` +
+      `A: ${a}\nB: ${b}\n` +
+      `出力は JSON のみ: {"same": true|false, "canonical": "代表表記"}`;
+    const o = parseJson(await this.complete(text));
+    return { same: o.same === true, ...(o.canonical ? { canonical: String(o.canonical) } : {}) };
+  }
+
+  /** 原因→結果に論理飛躍(概念のとび)があるか、欠けている中間概念は何か。 */
+  async judgeJump(causeText: string, effectText: string): Promise<{ jump: boolean; missing?: string; reason?: string }> {
+    const text =
+      `原因「${causeText}」から結果「${effectText}」への因果に論理の飛躍(概念のとび)があるか判定せよ。\n` +
+      `飛躍があれば、間に欠けている中間概念を1つ挙げよ。\n` +
+      `出力は JSON のみ: {"jump": true|false, "missing": "欠けている中間概念", "reason": "理由を一文"}`;
+    const o = parseJson(await this.complete(text));
+    return { jump: o.jump === true, ...(o.missing ? { missing: String(o.missing) } : {}), ...(o.reason ? { reason: String(o.reason) } : {}) };
   }
 
   /** 候補ペア群を裁定し、向きを確定した DirectedVerdict を返す (none は除外)。 */
