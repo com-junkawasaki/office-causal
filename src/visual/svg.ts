@@ -116,3 +116,45 @@ export function renderDiagnosisSvg(g: CausalGraph, diag: Diagnosis): string {
   out.push(`</svg>`);
   return out.join("\n");
 }
+
+/**
+ * drawingml-svg が描いたスライド SVG (背景) に、因果オーバレイを同座標で重ねる。
+ * 背景 px = EMU/9525、本オーバレイ bbox px = EMU*EMU_PX = EMU/9525 で一致。
+ * bbox を持つノード (= 当該スライドのシェイプ) のみ対象。
+ */
+export function overlayCausal(baseSvg: string, g: CausalGraph, diag: Diagnosis): string {
+  const pos = new Map<DataId, Box>();
+  for (const n of g.nodes.values()) {
+    const b = n.meta.bbox;
+    if (b && b.unit === "emu") pos.set(n.id, { x: b.x * EMU_PX, y: b.y * EMU_PX, w: b.w * EMU_PX, h: b.h * EMU_PX });
+  }
+  if (pos.size === 0) return baseSvg; // 重ねる対象なし
+
+  const isolated = new Set(diag.isolated.map((x) => x.id));
+  const variant = new Set(diag.notationVariants.flatMap((v) => v.members.map((m) => m.id)));
+  const notHold = new Set(diag.notHolding.map((x) => x.edge));
+  const jump = new Set(diag.conceptJumps.map((x) => x.edge));
+  const ctr = (b: Box) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2 });
+
+  const o: string[] = [`<g id="ocz-causal-overlay" fill="none">`];
+  o.push(`<defs><marker id="ocaP" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#83c"/></marker>
+    <marker id="ocaR" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#d22"/></marker>
+    <marker id="ocaG" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#2a8a2a"/></marker></defs>`);
+  for (const e of g.edges) {
+    if (e.kind !== "causes") continue;
+    const a = pos.get(e.from), b = pos.get(e.to);
+    if (!a || !b) continue;
+    const ca = ctr(a), cb = ctr(b);
+    const j = jump.has(e.id), bad = notHold.has(e.id);
+    const c = j ? "#83c" : bad ? "#d22" : "#2a8a2a";
+    const mk = j ? "ocaP" : bad ? "ocaR" : "ocaG";
+    o.push(`<line x1="${ca.x.toFixed(1)}" y1="${ca.y.toFixed(1)}" x2="${cb.x.toFixed(1)}" y2="${cb.y.toFixed(1)}" stroke="${c}" stroke-width="2"${j || bad ? ' stroke-dasharray="6 4"' : ""} marker-end="url(#${mk})"/>`);
+  }
+  for (const [id, b] of pos) {
+    const iso = isolated.has(id), v = variant.has(id);
+    const stroke = iso ? "#999" : v ? "#e89400" : "#3a6";
+    o.push(`<rect x="${b.x.toFixed(1)}" y="${b.y.toFixed(1)}" width="${b.w.toFixed(1)}" height="${b.h.toFixed(1)}" stroke="${stroke}" stroke-width="2" ${v ? 'stroke-dasharray="3 3" ' : ""}rx="3"/>`);
+  }
+  o.push(`</g>`);
+  return baseSvg.replace(/<\/svg>\s*$/i, o.join("\n") + "\n</svg>");
+}

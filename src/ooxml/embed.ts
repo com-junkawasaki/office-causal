@@ -29,7 +29,7 @@ export type EmbedFormat = "json" | "jsonl";
 export interface EmbeddedPayload {
   version: 1;
   generator: "office-causal";
-  nodes: { id: string; kind: string; part: string; path: string; label?: string; text?: string; value?: string | number; tags?: string[] }[];
+  nodes: { id: string; kind: string; part: string; path: string; label?: string; text?: string; value?: string | number; tags?: string[]; bbox?: import("../types.js").BBox }[];
   edges: { id: string; kind: string; from: string; to: string; weight?: number; causal?: unknown }[];
 }
 
@@ -46,6 +46,7 @@ function payloadOf(graph: CausalGraph): EmbeddedPayload {
       ...(n.meta.text !== undefined ? { text: n.meta.text } : {}),
       ...(n.meta.value !== undefined ? { value: n.meta.value } : {}),
       ...(n.meta.tags !== undefined ? { tags: n.meta.tags } : {}),
+      ...(n.meta.bbox !== undefined ? { bbox: n.meta.bbox } : {}),
     })),
     edges: graph.edges.map((e) => ({
       id: e.id, kind: e.kind, from: e.from, to: e.to,
@@ -99,6 +100,7 @@ export function payloadToGraph(p: EmbeddedPayload): CausalGraph {
       ...(n.text !== undefined ? { text: n.text } : {}),
       ...(n.value !== undefined ? { value: n.value } : {}),
       ...(n.tags !== undefined ? { tags: n.tags } : {}),
+      ...(n.bbox !== undefined ? { bbox: n.bbox } : {}),
     });
   }
   for (const e of p.edges) {

@@ -10,7 +10,7 @@ import { writeFile, readFile } from "node:fs/promises";
 import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
   openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
-  WebGpuGemmaAdjudicator,
+  WebGpuGemmaAdjudicator, renderDrawingmlSvg, overlayCausal,
 } from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
 
@@ -101,7 +101,21 @@ async function main() {
       : undefined;
     const diag = await diagnose(g, embedder, gemma ? { gemma } : {});
     const svg = flag(rest, "svg");
-    if (svg) { await writeFile(svg, renderDiagnosisSvg(g, diag)); console.error(`SVG → ${svg}`); }
+    if (svg) {
+      if (rest.includes("--render")) {
+        // drawingml-svg で各スライドを忠実描画し、因果オーバレイを同座標で重ねる。
+        const pkg = openPackage(bytes);
+        const dmlOpts = (() => { const p = flag(rest, "drawingml"); return p ? { srcPath: p } : {}; })();
+        const slides = [...pkg.parts.keys()].filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n)).sort();
+        const svgs = slides.map((s) => overlayCausal(renderDrawingmlSvg(pkg.parts.get(s)!.xml, dmlOpts), g, diag));
+        const doc = svgs.length <= 1 ? (svgs[0] ?? "") : `<!doctype html><meta charset="utf-8">\n${svgs.map((s, i) => `<h3>slide${i + 1}</h3>\n${s}`).join("\n")}`;
+        await writeFile(svg, doc);
+        console.error(`render(drawingml-svg + causal overlay) → ${svg} (${svgs.length} slide)`);
+      } else {
+        await writeFile(svg, renderDiagnosisSvg(g, diag));
+        console.error(`SVG → ${svg}`);
+      }
+    }
     console.log(JSON.stringify(diag, null, 2));
     return;
   }
