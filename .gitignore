@@ -1,0 +1,7 @@
+node_modules/
+dist/
+web/*.js
+*.casual.json
+*.ocz.*
+.env
+.cache/

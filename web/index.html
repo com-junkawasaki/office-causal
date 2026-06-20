@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>office-casual — WebGPU 因果グラフ (Gemma 4 E2B)</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 960px; margin: 1.5rem auto; padding: 0 1rem; }
+      textarea { width: 100%; height: 9rem; font-size: 14px; }
+      button { padding: 0.5rem 1.1rem; font-size: 15px; cursor: pointer; }
+      pre { background: #111; color: #b9f; padding: 0.7rem; border-radius: 6px; overflow: auto; max-height: 14rem; font-size: 12px; }
+      h1 { font-size: 1.25rem; } h3 { margin-bottom: 0.3rem; }
+      .note { color: #666; font-size: 13px; }
+      .banner { background: #fff3cd; border: 1px solid #ffe08a; color: #6a5200; border-radius: 6px; padding: 0.7rem 0.9rem; margin: 0.6rem 0; font-size: 13px; }
+      .banner.ok { background: #e7f7ec; border-color: #b6e3c4; color: #1b5e34; }
+      .graphrow { display: flex; gap: 0.6rem; align-items: stretch; }
+      #svg { flex: 1; height: 560px; border: 1px solid #ddd; border-radius: 6px; background: #fff; }
+      #panel { width: 300px; height: 560px; overflow: auto; border: 1px solid #ddd; border-radius: 6px; background: #fafaff; padding: 0.7rem; font-size: 13px; }
+      #panel h4 { margin: 0.2rem 0 0.4rem; }
+      #panel .id { color: #888; font-size: 11px; word-break: break-all; }
+      #panel .mech { background: #fff; border-left: 3px solid #e22; padding: 0.4rem 0.5rem; margin: 0.4rem 0; border-radius: 4px; }
+      #panel .tag { display: inline-block; background: #e6ebff; color: #336; border-radius: 10px; padding: 1px 8px; margin: 2px 2px 0 0; font-size: 11px; }
+      #panel .ev { color: #444; margin: 0.2rem 0; }
+      #panel .muted { color: #999; }
+      #panel [data-node] { cursor: pointer; }
+      #panel [data-node]:hover { outline: 2px solid #88f; }
+      #drop { border: 2px dashed #aac; border-radius: 8px; padding: 1rem; text-align: center; color: #557; background: #f7f8ff; margin: 0.5rem 0; }
+      #drop.over { background: #e6ebff; border-color: #46f; }
+      .row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+      small.k { display:inline-block; margin-right:0.8rem; }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "@huggingface/transformers": "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0",
+          "fflate": "https://esm.sh/fflate@0.8.2",
+          "fast-xml-parser": "https://esm.sh/fast-xml-parser@4.5.0",
+          "cytoscape": "https://esm.sh/cytoscape@3.30.2"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>office-casual — ブラウザ WebGPU 因果グラフ</h1>
+    <p class="note">▶ <a href="./bench.html">E2B vs E4B レイテンシ計測ページ (実機ベンチ)</a></p>
+    <div id="banner" class="banner" hidden></div>
+    <p class="note">
+      ① 埋め込み（候補選別・タグ） → ② <b>Gemma 4 E2B</b>（因果の向き・極性・根拠の裁定）を
+      <b>transformers.js v4 + WebGPU</b> でブラウザ内実行。OOXML 解析も含め全てローカル、API キー不要・データ外部送信なし。
+    </p>
+
+    <div id="drop">ここに .xlsx / .pptx / .docx をドロップ</div>
+    <div class="row">
+      <input id="file" type="file" accept=".xlsx,.pptx,.docx" />
+      <button id="clearFile">ファイル解除</button>
+      <span class="note">またはテキスト（1行=1文）↓</span>
+    </div>
+
+    <textarea id="input">
+第1四半期は売上が大きく増加した。
+原材料価格が世界的に高騰した。
+自社の製造コストが大幅に上昇した。
+採算確保のため製品の販売価格を引き上げた。
+値上げの影響で販売数量が落ち込んだ。
+競合他社が大規模な値下げキャンペーンを実施した。
+当社の市場シェアが低下した。
+四半期の営業利益は前年から悪化した。</textarea>
+
+    <p>
+      <button id="runBtn">Run（WebGPU で解析）</button>
+      <button id="dlBtn">💾 .ocz 書き出し（data-id/meta 埋め込み）</button>
+    </p>
+
+    <h3>因果グラフ</h3>
+    <p class="note">
+      <small class="k" style="color:#e22">━ causes（→ 向き・極性）</small>
+      <small class="k" style="color:#2a2">━ derives-from</small>
+      <small class="k" style="color:#39f">━ references</small>
+      <small class="k" style="color:#bbb">━ contains</small>
+      （線の太さ = 埋め込み weight）
+    </p>
+    <div class="graphrow">
+      <div id="svg"></div>
+      <div id="panel"><span class="muted">ノードやエッジをクリックすると、ここに本文・タグ・因果メカニズム・根拠が表示されます。</span></div>
+    </div>
+
+    <h3>ログ</h3>
+    <pre id="log"></pre>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
