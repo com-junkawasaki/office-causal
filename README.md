@@ -427,7 +427,11 @@ office-causal consult report.ocz.pptx --mece --svg sowhat.svg   # so-what + MECE
 
 > 兄弟プロジェクトは **`svgraph`** に改名（Python モジュールも `svgraph`、CLI `dml2svg`・`EMU_PER_PX=9525` は不変）。
 > 連携は `svgraph` を優先し旧 `drawingml_svg` にフォールバック。src パスは `--drawingml`/`OCZ_SVGRAPH`/`OCZ_DRAWINGML_SVG`/`../svgraph/src`/`../drawingml-svg/src` の順で解決。
-> web デモは「グラフ / 因果ロール一覧」タブを持ち、ロール一覧は各 data-id の 原因→結果 / ←原因 / 依存元 / 利用先 / 診断を表で表示（行クリックで該当ノードへ）。
+> web デモは「グラフ / 因果ロール一覧」タブを持ち、ロール一覧は各 data-id の 原因→結果 / ←原因 / 依存元 / 利用先 / 診断を表で表示（行クリックで該当ノードへ、**🔍検索** と **CSV ⬇** 付き）。
+>
+> - **(c) so-what / MECE 合流**: 対話 HTML (`--html --consult`) のパネルに so-what 連鎖と MECE（重複/網羅不足/欠落）を併記。
+> - **(d) glyph 厳密 box 自動化**: `resolveSlideRenderer` が **svgraph の TS `dml2svg`（環境変数 `OCZ_SVGRAPH_TS` で指定）を自動検知**し、あれば in-process（glyph 厳密 box）、無ければ Python に安全フォールバック（`renderer: ts-svgraph|python` をログ）。
+> - **(e) ロール一覧**: 検索フィルタ + CSV ダウンロード。
 
 
 兄弟 [`drawingml-svg`](../drawingml-svg) が DrawingML/PresentationML → SVG を **`EMU_PER_PX=9525`** で描画し、

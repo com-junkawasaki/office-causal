@@ -6,6 +6,8 @@
  */
 import type { CausalGraph, DataId } from "../types.js";
 import type { Diagnosis } from "../analyze/diagnose.js";
+import type { ConsultResult } from "../analyze/consult.js";
+import type { MeceResult } from "../analyze/mece.js";
 
 export interface NodeInfo {
   label: string;
@@ -53,9 +55,34 @@ export function buildNodeInfo(g: CausalGraph, diag?: Diagnosis): Record<string, 
 
 const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
 
-/** (2) svg-causal-graph を対話 HTML に包む。クリックで data-id/役割パネル。 */
-export function renderInteractiveHtml(svgContent: string, g: CausalGraph, diag?: Diagnosis): string {
+/** (c) コンサル分析 (so-what / MECE) を HTML 断片に。 */
+function consultBlock(extra?: { soWhat?: ConsultResult; mece?: MeceResult }): string {
+  if (!extra?.soWhat && !extra?.mece) return "";
+  let h = `<div style="margin-bottom:10px;padding:8px;background:#fffaf0;border:1px solid #fde">`;
+  if (extra.soWhat?.chains.length) {
+    h += `<h3>💡 so-what</h3>`;
+    for (const c of extra.soWhat.chains)
+      h += `<div class="role"><b>${esc(c.path.join(" → "))}</b><br>💡 ${esc(c.soWhat)}${c.action ? "<br>▶ " + esc(c.action) : ""}</div>`;
+  }
+  if (extra.mece?.effects.length) {
+    h += `<h3>MECE</h3>`;
+    for (const e of extra.mece.effects)
+      h += `<div class="role"><b>${esc(e.effect)}</b> ← ${e.factors.map(esc).join(" / ")}` +
+        (e.overlaps.length ? `<br>⚠ 重複: ${e.overlaps.map((p) => p.join("≈")).join(", ")}` : "") +
+        (e.exhaustive === false ? `<br>⚠ 網羅不足${e.missing?.length ? ": 欠落 " + e.missing.map(esc).join("、") : ""}` : "") + `</div>`;
+  }
+  return h + `</div>`;
+}
+
+/** (2)(c) svg-causal-graph を対話 HTML に包む。クリックで data-id/役割、so-what/MECE も表示。 */
+export function renderInteractiveHtml(
+  svgContent: string,
+  g: CausalGraph,
+  diag?: Diagnosis,
+  extra?: { soWhat?: ConsultResult; mece?: MeceResult },
+): string {
   const info = buildNodeInfo(g, diag);
+  const consultHtml = consultBlock(extra);
   return `<!doctype html><html lang="ja"><head><meta charset="utf-8">
 <title>office-causal — svg-causal-graph viewer</title>
 <style>
@@ -73,7 +100,7 @@ export function renderInteractiveHtml(svgContent: string, g: CausalGraph, diag?:
 </style></head><body>
 <div id="ocz-wrap">
  <div id="ocz-svg">${svgContent}</div>
- <div id="ocz-panel"><p style="color:#999">文字 / シェイプ / ノードをクリックすると、data-id と因果ロールを表示します。</p></div>
+ <div id="ocz-panel">${consultHtml}<p style="color:#999">文字 / シェイプ / ノードをクリックすると、data-id と因果ロールを表示します。</p></div>
 </div>
 <script>
 const INFO = ${JSON.stringify(info)};

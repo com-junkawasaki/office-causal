@@ -26,7 +26,7 @@ export { similarPairs, lshCandidatePairs } from "./analyze/ann.js";
 export { renderDiagnosisSvg, overlayCausal, overlayCharBoxes, renderConsultSvg } from "./visual/svg.js";
 export { renderInteractiveHtml, buildNodeInfo, nodeRoles, type NodeInfo } from "./visual/interactive.js";
 export {
-  renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg,
+  renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg, resolveSlideRenderer,
   type SlideRenderer,
 } from "./visual/drawingml.js";
 export * as causal from "./causal/analyze.js";

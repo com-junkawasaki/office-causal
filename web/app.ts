@@ -427,23 +427,46 @@ async function runDiagnose() {
 }
 
 // (a) 因果ロール一覧タブ: 各ノードの data-id と原因/結果/依存元/利用先を表で表示 (行クリックで該当ノードへ)。
+let roleRows: { id: string; label: string; asCause: string; asEffect: string; dependsOn: string; usedBy: string; flags: string; search: string }[] = [];
 function renderRolesTable() {
   if (!lastGraph) { $("viewRoles").innerHTML = '<span class="muted">先に Run してください。</span>'; return; }
-  const nodes = [...lastGraph.nodes.values()].filter((n) => n.meta.text || n.meta.kind === "entity").slice(0, 300);
-  const cell = (a: string[]) => (a.length ? a.map((x) => shorten(x, 16)).join("<br>") : "—");
-  let h = `<table style="border-collapse:collapse;width:100%"><tr style="background:#eef">` +
-    ["data-id / ラベル", "原因→結果", "←結果の原因", "依存元", "利用先", "診断"].map((c) => `<th style="text-align:left;padding:3px">${c}</th>`).join("") + "</tr>";
-  for (const n of nodes) {
-    const r = nodeRoles(lastGraph, n.id, lastDiag ?? undefined);
-    h += `<tr data-node="${escH(n.id)}" style="cursor:pointer;border-top:1px solid #eee">` +
-      `<td style="padding:3px"><b>${escH(shorten(r.label || r.text || r.kind, 24))}</b><br><span class="id">${escH(n.id)}</span></td>` +
-      `<td style="padding:3px;color:#a13">${cell(r.asCause)}</td>` +
-      `<td style="padding:3px;color:#36a">${cell(r.asEffect)}</td>` +
-      `<td style="padding:3px;color:#2a2">${cell(r.dependsOn)}</td>` +
-      `<td style="padding:3px;color:#777">${cell(r.usedBy)}</td>` +
-      `<td style="padding:3px">${r.flags.map((f) => `<span class="tag">${escH(f)}</span>`).join("")}</td></tr>`;
+  const nodes = [...lastGraph.nodes.values()].filter((n) => n.meta.text || n.meta.kind === "entity").slice(0, 1000);
+  roleRows = nodes.map((n) => {
+    const r = nodeRoles(lastGraph!, n.id, lastDiag ?? undefined);
+    const j = (a: string[]) => a.join("; ");
+    return {
+      id: n.id, label: r.label || r.text || r.kind,
+      asCause: j(r.asCause), asEffect: j(r.asEffect), dependsOn: j(r.dependsOn), usedBy: j(r.usedBy), flags: j(r.flags),
+      search: `${n.id} ${r.label} ${r.text ?? ""} ${j(r.asCause)} ${j(r.asEffect)} ${j(r.dependsOn)} ${j(r.flags)}`.toLowerCase(),
+    };
+  });
+  const cell = (s: string) => (s ? escH(s).replace(/; /g, "<br>") : "—");
+  const head = ["data-id / ラベル", "原因→結果", "←結果の原因", "依存元", "利用先", "診断"];
+  let h = `<div style="margin-bottom:6px"><input id="roleSearch" placeholder="🔍 検索 (label/data-id/役割)" style="width:60%;padding:3px"> <button id="roleCsv">CSV ⬇</button> <span class="muted" id="roleCount"></span></div>`;
+  h += `<table style="border-collapse:collapse;width:100%"><tr style="background:#eef">` + head.map((c) => `<th style="text-align:left;padding:3px">${c}</th>`).join("") + "</tr>";
+  for (const r of roleRows) {
+    h += `<tr data-node="${escH(r.id)}" data-s="${escH(r.search)}" style="cursor:pointer;border-top:1px solid #eee">` +
+      `<td style="padding:3px"><b>${escH(shorten(r.label, 24))}</b><br><span class="id">${escH(r.id)}</span></td>` +
+      `<td style="padding:3px;color:#a13">${cell(r.asCause)}</td><td style="padding:3px;color:#36a">${cell(r.asEffect)}</td>` +
+      `<td style="padding:3px;color:#2a2">${cell(r.dependsOn)}</td><td style="padding:3px;color:#777">${cell(r.usedBy)}</td>` +
+      `<td style="padding:3px">${r.flags ? r.flags.split("; ").map((f) => `<span class="tag">${escH(f)}</span>`).join("") : ""}</td></tr>`;
   }
   $("viewRoles").innerHTML = h + "</table>";
+  const count = () => { ($("roleCount") as HTMLElement).textContent = `${[...$("viewRoles").querySelectorAll("tr[data-node]")].filter((r) => !(r as HTMLElement).hidden).length} 件`; };
+  ($("roleSearch") as HTMLInputElement).addEventListener("input", (e) => {
+    const q = (e.target as HTMLInputElement).value.toLowerCase();
+    for (const tr of $("viewRoles").querySelectorAll("tr[data-node]")) (tr as HTMLElement).hidden = !!q && !(tr.getAttribute("data-s") ?? "").includes(q);
+    count();
+  });
+  ($("roleCsv") as HTMLButtonElement).addEventListener("click", () => {
+    const esc = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
+    const csv = ["data-id,label,asCause,asEffect,dependsOn,usedBy,flags",
+      ...roleRows.map((r) => [r.id, r.label, r.asCause, r.asEffect, r.dependsOn, r.usedBy, r.flags].map(esc).join(","))].join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "roles.csv"; a.click(); URL.revokeObjectURL(a.href);
+  });
+  count();
 }
 function showTab(roles: boolean) {
   $("viewGraph").hidden = roles;

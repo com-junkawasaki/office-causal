@@ -10,7 +10,7 @@ import { writeFile, readFile } from "node:fs/promises";
 import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
   openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
-  WebGpuGemmaAdjudicator, pythonDrawingmlRenderer, renderSlideCausalSvg, overlayCharBoxes,
+  WebGpuGemmaAdjudicator, resolveSlideRenderer, renderSlideCausalSvg, overlayCharBoxes,
   consult, mece, renderConsultSvg, renderInteractiveHtml,
 } from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
@@ -108,7 +108,8 @@ async function main() {
         const pkg = openPackage(bytes);
         const dmlOpts = (() => { const p = flag(rest, "drawingml"); return p ? { srcPath: p } : {}; })();
         const slides = [...pkg.parts.keys()].filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n)).sort();
-        const renderer = pythonDrawingmlRenderer(dmlOpts); // TS 版 drawingml-svg が出たらここを差し替え
+        const { renderer, engine } = await resolveSlideRenderer(dmlOpts); // svgraph TS があれば自動で glyph 厳密 box
+        console.error(`renderer: ${engine}`);
         const chars = rest.includes("--chars"); // 文字単位 box+label を重ねる
         const svgs: string[] = [];
         for (const s of slides) {
@@ -116,11 +117,16 @@ async function main() {
           if (chars) svgStr = overlayCharBoxes(svgStr, g, diag);
           svgs.push(svgStr);
         }
-        // (2)(3) クリックで data-id/役割を出す対話 HTML
+        // (2)(3)(c) クリックで data-id/役割、--consult で so-what/MECE も合流表示
         if (rest.includes("--html")) {
-          const html = svgs.map((s) => renderInteractiveHtml(s, g, diag)).join("\n");
+          let extra: { soWhat?: any; mece?: any } | undefined;
+          if (rest.includes("--consult")) {
+            const gm = new WebGpuGemmaAdjudicator({ device: (flag(rest, "device", "cpu") ?? "cpu") as any, maxNewTokens: 160 });
+            extra = { soWhat: await consult(g, gm, { maxChains: Number(flag(rest, "max", "6")) }), mece: await mece(g, embedder, { gemma: gm }) };
+          }
           const htmlPath = svg.replace(/\.svg$/i, "") + ".html";
-          await writeFile(htmlPath, svgs.length <= 1 ? renderInteractiveHtml(svgs[0] ?? "", g, diag) : html);
+          const doc1 = svgs.length <= 1 ? renderInteractiveHtml(svgs[0] ?? "", g, diag, extra) : svgs.map((s) => renderInteractiveHtml(s, g, diag, extra)).join("\n");
+          await writeFile(htmlPath, doc1);
           console.error(`interactive viewer → ${htmlPath}`);
         }
         const doc = svgs.length <= 1 ? (svgs[0] ?? "") : `<!doctype html><meta charset="utf-8">\n${svgs.map((s, i) => `<h3>slide${i + 1}</h3>\n${s}`).join("\n")}`;

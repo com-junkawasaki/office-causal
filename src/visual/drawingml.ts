@@ -67,9 +67,31 @@ export function isDrawingmlAvailable(opts: DrawingmlOptions = {}): boolean {
   }
 }
 
-/** 既定 (Node) レンダラ: Python drawingml-svg を子プロセス実行。 */
+/** 既定 (Node) レンダラ: Python svgraph を子プロセス実行。 */
 export function pythonDrawingmlRenderer(opts: DrawingmlOptions = {}): SlideRenderer {
   return (xml) => renderDrawingmlSvg(xml, opts);
+}
+
+/**
+ * (d) svgraph の **TS 版 dml2svg** を自動検知して採用、無ければ Python にフォールバック。
+ * TS 版は 1文字=1<tspan x> の glyph 出力をすれば overlayCharBoxes が**厳密 box** になる。
+ * モジュールは opts.tsModule / 環境変数 OCZ_SVGRAPH_TS で指定（`dml2svg` を export していること）。
+ */
+export async function resolveSlideRenderer(
+  opts: DrawingmlOptions & { tsModule?: string } = {},
+): Promise<{ renderer: SlideRenderer; engine: "ts-svgraph" | "python" }> {
+  const mod = opts.tsModule ?? process.env["OCZ_SVGRAPH_TS"];
+  if (mod) {
+    try {
+      const spec = mod; // 変数化して未導入環境でも tsc を通す
+      const m: any = await import(spec);
+      const fn = m.dml2svg ?? m.default?.dml2svg;
+      if (typeof fn === "function") return { renderer: (xml) => fn(xml), engine: "ts-svgraph" };
+    } catch {
+      /* TS 未提供 → Python へ */
+    }
+  }
+  return { renderer: pythonDrawingmlRenderer(opts), engine: "python" };
 }
 
 /**
