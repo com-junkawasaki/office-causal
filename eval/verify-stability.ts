@@ -31,7 +31,7 @@ console.log("1) 決定性: 2回 embed の jsonl 一致 =", oczPart(e1) === oczPa
 // 2) 冪等性 (.ocz を再 embed)
 const e3 = embed(e1);
 console.log("2) 冪等性: 再 embed で jsonl 一致 =", oczPart(e1) === oczPart(e3),
-  "| rel 重複なし =", count(e3, "rIdOfficeCasual") === 1,
+  "| rel 重複なし =", count(e3, "rIdOfficeCausal") === 1,
   "| CT 重複なし =", (strFromU8(unzipSync(e3)["[Content_Types].xml"]!).match(/Extension="jsonl"/g) || []).length === 1);
 
 // 3) 差分更新

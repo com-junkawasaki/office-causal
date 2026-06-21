@@ -28,7 +28,7 @@ function timed<T>(fn: () => T): [T, number] {
 const rows: any[] = [];
 for (const fmt of ["json", "jsonl"] as const) {
   const zip = embedDataPart(orig, graph, { format: fmt });
-  const partName = `ocz/casual.${fmt}`;
+  const partName = `ocz/causal.${fmt}`;
   const part = unzipSync(zip)[partName]!;
   const text = strFromU8(part);
 

@@ -44,7 +44,7 @@ add("Content_Types 登録", /Extension="jsonl"|Extension="json"/.test(ct));
 
 // 5) ルート rels に登録
 const rels = entries["_rels/.rels"] ? strFromU8(entries["_rels/.rels"]!) : "";
-add("ルート rels 登録", rels.includes("rIdOfficeCasual"));
+add("ルート rels 登録", rels.includes("rIdOfficeCausal"));
 
 // 6) 既存 OOXML 主要パートが存在
 const hasMain = names.some((n) => /(document|presentation|workbook)\.xml$/.test(n));

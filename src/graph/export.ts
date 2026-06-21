@@ -37,7 +37,7 @@ const COLOR: Record<string, string> = {
 };
 
 function toDot(g: CausalGraph): string {
-  const lines = ["digraph casual {", '  rankdir=LR; node [shape=box];'];
+  const lines = ["digraph causal {", '  rankdir=LR; node [shape=box];'];
   for (const n of g.nodes.values()) {
     const lbl = (n.meta.label ?? n.meta.kind).replace(/"/g, "'");
     lines.push(`  "${n.id}" [label="${lbl}"];`);

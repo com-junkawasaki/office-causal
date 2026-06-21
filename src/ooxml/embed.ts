@@ -21,8 +21,6 @@ import { bookmarkName } from "../locate.js";
 export const OCZ_NS = "urn:com-junkawasaki:office-causal:1";
 const PART = "ocz/causal.json";
 const PART_JSONL = "ocz/causal.jsonl";
-// 旧名 (office-casual 時代) の同梱パートも読めるよう後方互換。
-const LEGACY = ["ocz/casual.jsonl", "ocz/casual.json"] as const;
 
 export type EmbedFormat = "json" | "jsonl";
 export const OCZ_VERSION = 1;
@@ -134,7 +132,7 @@ export function payloadToGraph(p: EmbeddedPayload): CausalGraph {
 }
 
 const REL_TYPE = "https://com-junkawasaki.org/office-causal/relationship";
-const REL_ID = "rIdOfficeCasual";
+const REL_ID = "rIdOfficeCausal";
 
 /** ルート _rels/.rels に同梱パートへのリレーションを追記 (OPC 準拠 → Office 互換性向上)。 */
 function ensureRootRel(xml: string, target: string): string {
@@ -179,7 +177,7 @@ export function embedDataPart(
  */
 export function embedDataPartDiff(bytes: Uint8Array, graph: CausalGraph): Uint8Array {
   const entries = unzipSync(bytes);
-  const existing = entries[PART_JSONL] ?? entries["ocz/casual.jsonl"]; // 旧名も追記対象に
+  const existing = entries[PART_JSONL];
   if (!existing) return embedDataPart(bytes, graph, { format: "jsonl" });
   const existingText = strFromU8(existing);
 
@@ -208,16 +206,11 @@ export function embedDataPartDiff(bytes: Uint8Array, graph: CausalGraph): Uint8A
   return zipSync(entries);
 }
 
-/** 埋め込んだ data-id/meta グラフを読み出す (json/jsonl・旧名 casual も)。 */
+/** 埋め込んだ data-id/meta グラフを読み出す (json/jsonl)。 */
 export function readDataPart(bytes: Uint8Array): EmbeddedPayload | null {
   const entries = unzipSync(bytes);
   if (entries[PART_JSONL]) return fromJsonl(strFromU8(entries[PART_JSONL]));
   if (entries[PART]) return JSON.parse(strFromU8(entries[PART])) as EmbeddedPayload;
-  for (const legacy of LEGACY) {
-    if (entries[legacy]) return legacy.endsWith(".jsonl")
-      ? fromJsonl(strFromU8(entries[legacy]))
-      : (JSON.parse(strFromU8(entries[legacy])) as EmbeddedPayload);
-  }
   return null;
 }
 
