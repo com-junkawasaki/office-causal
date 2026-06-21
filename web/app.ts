@@ -22,6 +22,8 @@ import { WebGpuGemmaAdjudicator } from "../dist/src/llm/gemma-webgpu.js";
 import { embedDataPart, readDataPart } from "../dist/src/ooxml/embed.js";
 import { locate, deepLink } from "../dist/src/locate.js";
 import { diagnose, type Diagnosis } from "../dist/src/analyze/diagnose.js";
+import { consult } from "../dist/src/analyze/consult.js";
+import { mece } from "../dist/src/analyze/mece.js";
 import { nodeRoles } from "../dist/src/visual/interactive.js";
 import type { CausalGraph, DataId } from "../dist/src/types.js";
 // @ts-ignore  importmap で解決 (CDN ESM)
@@ -426,6 +428,27 @@ async function runDiagnose() {
     `<div class="mech" style="border-color:#83c">⚡ 概念のとび (${d.summary.conceptJumps}): ${d.conceptJumps.map((x) => `${shorten(x.from)}→${shorten(x.to)}(${x.similarity})`).join("; ")}</div>`;
 }
 
+// (g) so-what / MECE を WebGPU Gemma で算出しパネル表示。
+async function runConsult() {
+  if (!lastGraph) return log("⚠ 先に Run してください。");
+  const causes = lastGraph.edges.filter((e) => e.kind === "causes").length;
+  if (!causes) return log("⚠ causes エッジがありません（先に Run で因果を作成）。");
+  const dev = GPU ? "webgpu" : "wasm";
+  log(`[consult] Gemma (${dev}) で so-what/MECE 解析中 …`);
+  const gemma = new WebGpuGemmaAdjudicator({ model: GEMMA_MODEL, device: dev, maxNewTokens: 160 });
+  const embedder = new TransformersEmbedder(EMBED_MODEL, dev, "q8");
+  const sw = await consult(lastGraph, gemma, { maxChains: 6 });
+  const mc = await mece(lastGraph, embedder, { gemma });
+  $("panel").innerHTML =
+    `<h4>💡 so-what (${sw.chains.length})</h4>` +
+    sw.chains.map((c) => `<div class="mech">${escH(c.path.join(" → "))}<br><small>💡 ${escH(c.soWhat)}${c.action ? "<br>▶ " + escH(c.action) : ""}</small></div>`).join("") +
+    `<h4>MECE (${mc.effects.length})</h4>` +
+    mc.effects.map((e) => `<div class="mech" style="border-color:#e89400"><b>${escH(e.effect)}</b> ← ${e.factors.map((f) => escH(f)).join(" / ")}` +
+      (e.overlaps.length ? `<br>⚠ 重複: ${e.overlaps.map((p) => escH(p.join("≈"))).join(", ")}` : "") +
+      (e.exhaustive === false ? `<br>⚠ 網羅不足${e.missing?.length ? ": 欠落 " + e.missing.map((m) => escH(m)).join("、") : ""}` : "") + `</div>`).join("");
+  log(`[consult] so-what=${sw.chains.length} / MECE 対象=${mc.effects.length}`);
+}
+
 // (a) 因果ロール一覧タブ: 各ノードの data-id と原因/結果/依存元/利用先を表で表示 (行クリックで該当ノードへ)。
 let roleRows: { id: string; label: string; asCause: string; asEffect: string; dependsOn: string; usedBy: string; flags: string; search: string }[] = [];
 function renderRolesTable() {
@@ -452,19 +475,23 @@ function renderRolesTable() {
       `<td style="padding:3px">${r.flags ? r.flags.split("; ").map((f) => `<span class="tag">${escH(f)}</span>`).join("") : ""}</td></tr>`;
   }
   $("viewRoles").innerHTML = h + "</table>";
+  let roleQuery = "";
   const count = () => { ($("roleCount") as HTMLElement).textContent = `${[...$("viewRoles").querySelectorAll("tr[data-node]")].filter((r) => !(r as HTMLElement).hidden).length} 件`; };
   ($("roleSearch") as HTMLInputElement).addEventListener("input", (e) => {
-    const q = (e.target as HTMLInputElement).value.toLowerCase();
-    for (const tr of $("viewRoles").querySelectorAll("tr[data-node]")) (tr as HTMLElement).hidden = !!q && !(tr.getAttribute("data-s") ?? "").includes(q);
+    roleQuery = (e.target as HTMLInputElement).value.toLowerCase();
+    for (const tr of $("viewRoles").querySelectorAll("tr[data-node]")) (tr as HTMLElement).hidden = !!roleQuery && !(tr.getAttribute("data-s") ?? "").includes(roleQuery);
     count();
   });
   ($("roleCsv") as HTMLButtonElement).addEventListener("click", () => {
     const esc = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
+    // (f) 検索フィルタに一致する行だけ CSV 化
+    const rows = roleQuery ? roleRows.filter((r) => r.search.includes(roleQuery)) : roleRows;
     const csv = ["data-id,label,asCause,asEffect,dependsOn,usedBy,flags",
-      ...roleRows.map((r) => [r.id, r.label, r.asCause, r.asEffect, r.dependsOn, r.usedBy, r.flags].map(esc).join(","))].join("\n");
+      ...rows.map((r) => [r.id, r.label, r.asCause, r.asEffect, r.dependsOn, r.usedBy, r.flags].map(esc).join(","))].join("\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-    a.download = "roles.csv"; a.click(); URL.revokeObjectURL(a.href);
+    a.download = roleQuery ? `roles-${roleQuery.replace(/[^a-z0-9]+/g, "_").slice(0, 20)}.csv` : "roles.csv";
+    a.click(); URL.revokeObjectURL(a.href);
   });
   count();
 }
@@ -477,6 +504,7 @@ function showTab(roles: boolean) {
 wireDrop();
 ($("dlBtn") as HTMLButtonElement).addEventListener("click", () => downloadOcz().catch((e) => log("ERROR: " + (e?.message ?? e))));
 ($("dxBtn") as HTMLButtonElement).addEventListener("click", () => runDiagnose().catch((e) => log("ERROR: " + (e?.message ?? e))));
+($("cnBtn") as HTMLButtonElement).addEventListener("click", () => runConsult().catch((e) => log("ERROR: " + (e?.message ?? e))));
 ($("tabGraph") as HTMLButtonElement).addEventListener("click", () => showTab(false));
 ($("tabRoles") as HTMLButtonElement).addEventListener("click", () => showTab(true));
 $("viewRoles").addEventListener("click", (e) => {
