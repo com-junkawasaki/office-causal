@@ -104,7 +104,7 @@ export async function analyze(
 
 export interface EmbedOptions {
   /**
-   *  - "part" (既定): 完全安全。元 XML 不変、zip に ocz/casual.json 同梱。
+   *  - "part" (既定): 完全安全。元 XML 不変、zip に ocz/causal.json 同梱。
    *  - "attrs": docx/pptx 要素に ocz:id を MCE Ignorable で注入 (実験的)。
    *  - "both": 両方。
    */

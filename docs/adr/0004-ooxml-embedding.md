@@ -13,7 +13,7 @@
 
 ### D1. 既定は OPC 準拠の「カスタムパート同梱」（part 方式）
 
-zip 内に `ocz/casual.jsonl` を追加し、
+zip 内に `ocz/causal.jsonl` を追加し、
 (1) `[Content_Types].xml` に拡張子登録、(2) ルート `_rels/.rels` に正式なリレーション登録、
 (3) **既存データパートは 1 バイトも変えない**。未参照パートを作らないため PowerPoint/Word/Excel でも開ける。
 
@@ -28,7 +28,7 @@ docx は段落に Word ブックマーク（`ocz1_<id>`）も注入し `file.doc
 
 ### D3. 同梱形式は JSONL を既定（json も選択可）
 
-`ocz/casual.jsonl`（1行目 meta、以降 1 ノード/エッジ=1 行）。**追記・部分読み・git 局所差分**に強い。
+`ocz/causal.jsonl`（1行目 meta、以降 1 ノード/エッジ=1 行）。**追記・部分読み・git 局所差分**に強い。
 実測（7201ノード/21242エッジ）: JSONL は append ~0ms / 部分読み 6.5ms、JSON は全読込 22.8ms と raw サイズで勝るが gzip 後は同等。`readDataPart()` は両形式を自動判別。
 
 ### D4. 差分 embed（追記のみ）

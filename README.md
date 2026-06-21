@@ -1,7 +1,7 @@
 # office-causal
 
 [![CI](https://github.com/com-junkawasaki/office-causal/actions/workflows/ci.yml/badge.svg)](https://github.com/com-junkawasaki/office-causal/actions/workflows/ci.yml)
-[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-%40com--junkawasaki%2Foffice--casual-2188ff?logo=github)](https://github.com/com-junkawasaki/office-causal/pkgs/npm/office-causal)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-%40com--junkawasaki%2Foffice--causal-2188ff?logo=github)](https://github.com/com-junkawasaki/office-causal/pkgs/npm/office-causal)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## インストール（GitHub Packages）
@@ -22,7 +22,7 @@ import { analyze, embedFile, readDataPart, WebGpuGemmaAdjudicator } from "@com-j
 > `pptx` / `xlsx` / `docx` の各 XML 要素に **安定した `data-id`** と **`meta`** を付与し、構造グラフ → 参照・依存グラフ → **因果 (causal) グラフ** へと段階的に持ち上げ、LLM エージェント (LangGraph.js) で因果仮説の抽出・検証・分析を行う。
 
 - org: `com-junkawasaki`
-- 兄弟プロジェクト: [`drawingml-svg`](../drawingml-svg)（DrawingML → SVG。本プロジェクトの描画系パーサと相互利用可能）
+- 兄弟プロジェクト: **`svgraph`**（旧 drawingml-svg, DrawingML/PresentationML → SVG, EMU_PER_PX=9525）。スクショ描画(§7.6)に連携
 
 ---
 
@@ -89,7 +89,7 @@ office-causal/
 | レイヤ | 入力 | 出力 | LLM |
 |---|---|---|---|
 | **OPC/parse** | `.xlsx/.pptx/.docx` (zip) | `OoxmlPackage` (part ごとの AST) | ✗ |
-| **id/inject** | `OoxmlPackage` | `data-id` + `meta` 付き AST + sidecar `*.casual.json` | ✗ |
+| **id/inject** | `OoxmlPackage` | `data-id` + `meta` 付き AST + sidecar `*.causal.json` | ✗ |
 | **graph/builder** | identified AST | `CausalGraph`（構造/参照/依存エッジのみ） | ✗ |
 | **embed** | グラフ + テキスト | エッジ `weight` + data-id `tags` + **無向の候補ペア** | ◍ ローカル小型 |
 | **agent/semantic** | グラフ + テキスト | `Entity` ノード + `mentions` エッジ | ✓ |
@@ -140,7 +140,7 @@ data-id は決定論的なので、再埋め込みしても同じ要素には同
 
 | 方式 | 仕組み | 安全性 | 用途 |
 |---|---|---|---|
-| **part**（既定・推奨） | 既存パートを 1 バイトも変えず、zip 内に `ocz/casual.json`（id+meta+グラフ）を同梱。`[Content_Types].xml` に json Default を追記するのみ | ◎ Office は未参照パートを無視。**元パート byte 完全一致を検証済** | id/meta/因果グラフを「データ」としてファイルに同梱して持ち運ぶ |
+| **part**（既定・推奨） | 既存パートを 1 バイトも変えず、zip 内に `ocz/causal.json`（id+meta+グラフ）を同梱。`[Content_Types].xml` に json Default を追記するのみ | ◎ Office は未参照パートを無視。**元パート byte 完全一致を検証済** | id/meta/因果グラフを「データ」としてファイルに同梱して持ち運ぶ |
 | **attrs**（opt-in・実験的） | docx/pptx の要素に `ocz:id` を注入し、ルートに `xmlns:ocz` + `mc:Ignorable="ocz"` を宣言（markup-compatibility） | ○ 準拠アプリは ignorable 属性を無視し開ける。ただし Office 再保存で正規化・脱落しうる。xlsx セルは合成パスのため対象外（part を使う） | 各要素に inline で id を持たせたい場合 |
 
 ```bash
@@ -195,7 +195,7 @@ data-id はコンテンツアドレス指定なので、**何度 embed しても
 office-causal embed report.pptx                          # → report.ocz.pptx
 node --import tsx eval/verify-ocz.ts report.ocz.pptx     # 構造プリフライト (全項目 ✅ を確認)
 open report.ocz.pptx                                     # PowerPoint で通常どおり開く
-unzip -p report.ocz.pptx ocz/casual.jsonl | head         # 同梱データを確認
+unzip -p report.ocz.pptx ocz/causal.jsonl | head         # 同梱データを確認
 ```
 
 #### `.ocz` を即描画 / 再解析スキップ（web も Node も）
@@ -205,7 +205,7 @@ unzip -p report.ocz.pptx ocz/casual.jsonl | head         # 同梱データを確
 
 #### 差分 embed（追記のみ・大規模/監査向き）
 
-`embed --diff`（API `embedFile(f,{diff:true})` / `embedDataPartDiff`）は既存 `ocz/casual.jsonl` を**書き換えず、変更/新規/削除レコードだけ末尾に追記**（last-wins + 墓標）。既存行は prefix として保持 → **git 差分は追加行のみ**、巨大ファイルでも安価。検証: 既存 prefix 保持 ✓ / 1エッジ追加 → 1行のみ追記 / 読戻し last-wins ✓。
+`embed --diff`（API `embedFile(f,{diff:true})` / `embedDataPartDiff`）は既存 `ocz/causal.jsonl` を**書き換えず、変更/新規/削除レコードだけ末尾に追記**（last-wins + 墓標）。既存行は prefix として保持 → **git 差分は追加行のみ**、巨大ファイルでも安価。検証: 既存 prefix 保持 ✓ / 1エッジ追加 → 1行のみ追記 / 読戻し last-wins ✓。
 
 #### data-id → Office 上の位置 (deep-link)
 
@@ -369,8 +369,8 @@ await analyze(["deck.pptx", "model.xlsx"], { link: "cross-file" });
 ```
 
 ```bash
-npx office-causal analyze Q1-report.pptx --depth causal --out q1.casual.json
-npx office-causal graph q1.casual.json --format dot | dot -Tsvg > q1.svg
+npx office-causal analyze Q1-report.pptx --depth causal --out q1.causal.json
+npx office-causal graph q1.causal.json --format dot | dot -Tsvg > q1.svg
 ```
 
 ---

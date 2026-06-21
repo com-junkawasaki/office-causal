@@ -2,7 +2,7 @@
  * data-id / meta を OOXML に「非破壊で」埋め込む 2 方式 (ADR-0001 D4)。
  *
  *  (A) embedDataPart … 推奨・完全安全。既存パートは 1 バイトも変えず、zip 内に
- *      `ocz/casual.json` を追加 ([Content_Types].xml に json Default を追記するのみ)。
+ *      `ocz/causal.jsonl`(既定) を追加 ([Content_Types].xml に拡張子 Default を追記するのみ)。
  *      Office は未参照パートを無視するため壊れない。データは readDataPart で取り出す。
  *
  *  (B) embedAttributes … opt-in・実験的。docx/pptx の要素に `ocz:id` 属性を注入し、
@@ -145,7 +145,7 @@ function ensureRootRel(xml: string, target: string): string {
   );
 }
 
-/** (A) 安全な埋め込み。元パートは不変、ocz/casual.{json|jsonl} を同梱。 */
+/** (A) 安全な埋め込み。元パートは不変、ocz/causal.{json|jsonl} を同梱。 */
 export function embedDataPart(
   bytes: Uint8Array,
   graph: CausalGraph,
@@ -173,7 +173,7 @@ export function embedDataPart(
 }
 
 /**
- * (p) 差分 embed: 既存 ocz/casual.jsonl は書き換えず、変更/新規/削除レコードだけ末尾に追記。
+ * (p) 差分 embed: 既存 ocz/causal.jsonl は書き換えず、変更/新規/削除レコードだけ末尾に追記。
  * 既存行はそのまま prefix として残る → git 差分は追加行のみ・巨大ファイルでも安価。
  * 既存が無ければ通常の full embed にフォールバック。
  */
