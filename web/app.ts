@@ -19,7 +19,7 @@ import { TransformersEmbedder } from "../dist/src/embed/model.js";
 import { embedNodes, weightEdges, proposeEdges, dedupUndirected } from "../dist/src/embed/weight.js";
 import { tagNodes } from "../dist/src/embed/tag.js";
 import { WebGpuGemmaAdjudicator } from "../dist/src/llm/gemma-webgpu.js";
-import { embedDataPart, readDataPart } from "../dist/src/ooxml/embed.js";
+import { embedDataPart, readDataPart, validatePayload } from "../dist/src/ooxml/embed.js";
 import { locate, deepLink } from "../dist/src/locate.js";
 import { diagnose, type Diagnosis } from "../dist/src/analyze/diagnose.js";
 import { consult } from "../dist/src/analyze/consult.js";
@@ -123,10 +123,12 @@ async function run() {
       lastGraph = g;
       const causes = g.edges.filter((e) => e.kind === "causes").length;
       log(`✓ 埋め込み済み .ocz を検出 → 再解析せず描画 (nodes=${g.nodes.size}, causes=${causes})`);
+      for (const w of validatePayload(payload)) log(`⚠ ${w}`); // (p) 整合チェック
       renderGraph(g);
       // (m) 同梱 analysis があれば診断色 + so-what/MECE を即復元 (再計算なし)。
       const an = (payload as any).analysis;
       if (an) {
+        if (an.generatedAt) log(`  analysis: ${an.generatedAt}${an.models ? ` / embed=${an.models.embed ?? "?"} gemma=${an.models.gemma ?? "?"}` : ""}`);
         if (an.diagnosis) { lastDiag = an.diagnosis; applyDiagClasses(an.diagnosis); }
         if (an.consult) lastConsult = an.consult;
         if (an.mece) lastMece = an.mece;
@@ -392,6 +394,11 @@ async function downloadOcz() {
   if (lastDiag) analysis.diagnosis = lastDiag;
   if (lastConsult) analysis.consult = lastConsult;
   if (lastMece) analysis.mece = lastMece;
+  if (Object.keys(analysis).length) { // (q) 生成メタ
+    analysis.version = 1;
+    analysis.generatedAt = new Date().toISOString();
+    analysis.models = { embed: EMBED_MODEL, gemma: GEMMA_MODEL };
+  }
   const out = embedDataPart(droppedFile.bytes, lastGraph, { format: "jsonl", ...(Object.keys(analysis).length ? { analysis } : {}) });
   const name = droppedFile.name.replace(/(\.[^.]+)$/, ".ocz$1");
   const ext = name.split(".").pop()!;

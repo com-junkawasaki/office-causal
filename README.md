@@ -439,6 +439,8 @@ office-causal consult report.ocz.pptx --mece --svg sowhat.svg   # so-what + MECE
 >   `.ocz` を再ロードすると**再計算なしで診断色・so-what・MECE を即復元**（jsonl/json 両対応・往復検証済）。
 > - **(n) CLI で解析同梱**: `embed --analysis [--gemma]` が diagnose（+so-what/MECE）を実行して `.ocz` に同梱（入力が .ocz なら同梱グラフの causes を使用）。
 > - **(o) 整合チェック**: `validatePayload()` が version と **analysis の古さ**（診断ノードが現グラフに不在）を検出。CLI の analyze/diagnose/consult は `.ocz` 読込時に ⚠ 警告。
+> - **(p) web 整合警告**: `.ocz` 再ロード時に `validatePayload` の警告をログ表示。
+> - **(q) 解析メタ**: 同梱 analysis に `version` / `generatedAt`(ISO) / `models`(embed/gemma) を付与（再ロード時に表示）。
 
 
 兄弟 [`drawingml-svg`](../drawingml-svg) が DrawingML/PresentationML → SVG を **`EMU_PER_PX=9525`** で描画し、

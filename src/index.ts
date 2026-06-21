@@ -135,13 +135,15 @@ export async function embedFile(path: string, options: EmbedOptions = {}) {
   const graph = existing ? payloadToGraph(existing) : buildGraph(pkg);
 
   // (n) analysis: diagnose (+ --gemma で so-what/MECE) を実行して同梱
-  let analysis: { version: number; diagnosis?: unknown; consult?: unknown; mece?: unknown } | undefined;
+  let analysis: { version: number; generatedAt: string; models: Record<string, string>; diagnosis?: unknown; consult?: unknown; mece?: unknown } | undefined;
   if (options.analysis) {
     const embedder = (await getEmbedder().catch(() => ({ embedder: undefined }))).embedder;
     const diagnosis = await runDiagnose(graph, embedder);
-    analysis = { version: 1, diagnosis };
+    const models: Record<string, string> = { ...(embedder ? { embed: embedder.name } : {}) };
+    analysis = { version: 1, generatedAt: new Date().toISOString(), models, diagnosis };
     if (options.gemma) {
       const gm = new WebGpuGemmaAdjudicator(options.device ? ({ device: options.device } as any) : {});
+      models.gemma = gm.modelId;
       analysis.consult = await runConsult(graph, gm, { maxChains: 8 });
       analysis.mece = await runMece(graph, embedder, { gemma: gm });
     }
