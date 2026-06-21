@@ -11,7 +11,7 @@ import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
   openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
   WebGpuGemmaAdjudicator, pythonDrawingmlRenderer, renderSlideCausalSvg, overlayCharBoxes,
-  consult, mece, renderConsultSvg,
+  consult, mece, renderConsultSvg, renderInteractiveHtml,
 } from "./index.js";
 import type { CausalGraph, Depth, ExportFormat } from "./types.js";
 
@@ -115,6 +115,13 @@ async function main() {
           let svgStr = await renderSlideCausalSvg(pkg.parts.get(s)!.xml, g, diag, renderer);
           if (chars) svgStr = overlayCharBoxes(svgStr, g, diag);
           svgs.push(svgStr);
+        }
+        // (2)(3) クリックで data-id/役割を出す対話 HTML
+        if (rest.includes("--html")) {
+          const html = svgs.map((s) => renderInteractiveHtml(s, g, diag)).join("\n");
+          const htmlPath = svg.replace(/\.svg$/i, "") + ".html";
+          await writeFile(htmlPath, svgs.length <= 1 ? renderInteractiveHtml(svgs[0] ?? "", g, diag) : html);
+          console.error(`interactive viewer → ${htmlPath}`);
         }
         const doc = svgs.length <= 1 ? (svgs[0] ?? "") : `<!doctype html><meta charset="utf-8">\n${svgs.map((s, i) => `<h3>slide${i + 1}</h3>\n${s}`).join("\n")}`;
         await writeFile(svg, doc);

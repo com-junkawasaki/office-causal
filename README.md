@@ -440,6 +440,10 @@ office-causal diagnose report.ocz.pptx --svg out.svg --render --drawingml ../dra
   文字送り幅(CJK=1em/英=0.55em+letter-spacing)を推定して **1文字ずつ矩形**を描画。各文字が属する
   シェイプ(bbox 包含)の **data-id をラベル表示**＋診断色で着色（実測: "converts"→8文字boxを実座標配置）。
   `office-causal diagnose report.pptx --render --chars --drawingml ../drawingml-svg/src --svg out.svg`
+  - **厳密 glyph box**: drawingml-svg(TS) が **1文字=1 `<tspan x>`** を出せば、その x を厳密採用（複数文字 tspan のみ送り幅近似）。移行後は描画器差し替えだけで精度向上。
+- **対話ビューア** (`--html` / `renderInteractiveHtml`): 各要素に `data-ocz-id` を付与し、HTML に役割 JSON を埋込。
+  **文字/シェイプ/ノードをクリック → サイドパネルに「文字 → data-id → 因果ロール（原因/結果/依存元 derives-from/利用先）＋診断（独立/表記揺れ/タグ）」**を表示（`buildNodeInfo`）。
+  `office-causal diagnose report.pptx --render --chars --html --drawingml ../drawingml-svg/src --svg out.svg` → `out.html`
 - `.ocz` は **bbox も同梱**するため、`.ocz` 単体から背景＋因果を再生成可能（再解析不要）。
 - **検証**: 実 pptx で背景 viewBox `715.857×372` に実コンテンツ + overlay 16 ノードが同座標で重畳。
 

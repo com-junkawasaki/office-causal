@@ -24,6 +24,7 @@ export { consult, type ConsultResult } from "./analyze/consult.js";
 export { mece, type MeceResult } from "./analyze/mece.js";
 export { similarPairs, lshCandidatePairs } from "./analyze/ann.js";
 export { renderDiagnosisSvg, overlayCausal, overlayCharBoxes, renderConsultSvg } from "./visual/svg.js";
+export { renderInteractiveHtml, buildNodeInfo, type NodeInfo } from "./visual/interactive.js";
 export {
   renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg,
   type SlideRenderer,

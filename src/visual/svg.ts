@@ -186,10 +186,12 @@ export function overlayCharBoxes(baseSvg: string, g: CausalGraph, diag?: Diagnos
         seenOwner.add(owner.id);
         o.push(`<text x="${tx.toFixed(1)}" y="${(baseline - fs - 2).toFixed(1)}" font-size="8" fill="${stroke}" stroke="none" text-anchor="${anchor}">${esc(owner.id)}</text>`);
       }
+      // (1) 1文字=1tspan (TS drawingml-svg の glyph 出力) なら tx が厳密。複数文字 tspan のみ送り幅で近似。
       chars.forEach((c, i) => {
         if (drawn >= maxChars) return;
         const w = adv[i]!;
-        o.push(`<rect x="${cx.toFixed(1)}" y="${(baseline - fs * 0.82).toFixed(1)}" width="${w.toFixed(1)}" height="${fs.toFixed(1)}" stroke="${stroke}" stroke-width="0.5" opacity="0.8"/>`);
+        const oid = owner ? ` data-ocz-id="${esc(owner.id)}" data-char="${esc(c)}"` : "";
+        o.push(`<rect x="${cx.toFixed(1)}" y="${(baseline - fs * 0.82).toFixed(1)}" width="${w.toFixed(1)}" height="${fs.toFixed(1)}" stroke="${stroke}" stroke-width="0.5" opacity="0.8"${oid}/>`);
         cx += w;
         drawn++;
       });
@@ -236,7 +238,7 @@ export function overlayCausal(baseSvg: string, g: CausalGraph, diag: Diagnosis):
   for (const [id, b] of pos) {
     const iso = isolated.has(id), v = variant.has(id);
     const stroke = iso ? "#999" : v ? "#e89400" : "#3a6";
-    o.push(`<rect x="${b.x.toFixed(1)}" y="${b.y.toFixed(1)}" width="${b.w.toFixed(1)}" height="${b.h.toFixed(1)}" stroke="${stroke}" stroke-width="2" ${v ? 'stroke-dasharray="3 3" ' : ""}rx="3"/>`);
+    o.push(`<rect x="${b.x.toFixed(1)}" y="${b.y.toFixed(1)}" width="${b.w.toFixed(1)}" height="${b.h.toFixed(1)}" stroke="${stroke}" stroke-width="2" ${v ? 'stroke-dasharray="3 3" ' : ""}rx="3" data-ocz-id="${id}"/>`);
   }
   o.push(`</g>`);
   return baseSvg.replace(/<\/svg>\s*$/i, o.join("\n") + "\n</svg>");
