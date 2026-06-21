@@ -19,38 +19,35 @@ export interface NodeInfo {
   flags: string[]; // 診断: isolated / 表記揺れ / 概念のとび端点 / 成立しない端点
 }
 
-/** (3) 各ノードの data-id と因果ロールを集計。 */
-export function buildNodeInfo(g: CausalGraph, diag?: Diagnosis): Record<string, NodeInfo> {
-  const lbl = (id: string) => g.nodes.get(id as DataId)?.meta.label ?? g.nodes.get(id as DataId)?.meta.text ?? id;
-  const iso = new Set(diag?.isolated.map((x) => x.id) ?? []);
-  const variant = new Set((diag?.notationVariants ?? []).flatMap((v) => v.members.map((m) => m.id)));
-  const jumpEnds = new Set((diag?.conceptJumps ?? []).flatMap((x) => [x.edge]));
-  const info: Record<string, NodeInfo> = {};
-  // ロール対象: bbox を持つシェイプ (描画上クリックされる要素)。
-  const targets = [...g.nodes.values()].filter((n) => n.meta.bbox);
-  for (const n of targets) {
-    const id = n.id;
-    const asCause: string[] = [], asEffect: string[] = [], dependsOn: string[] = [], usedBy: string[] = [];
-    for (const e of g.edges) {
-      if (e.kind === "causes") {
-        if (e.from === id) asCause.push(lbl(e.to));
-        if (e.to === id) asEffect.push(lbl(e.from));
-      } else if (e.kind === "derives-from") {
-        if (e.from === id) dependsOn.push(lbl(e.to));
-        if (e.to === id) usedBy.push(lbl(e.from));
-      }
+/** (3) 単一ノードの data-id と因果ロールを集計 (任意ノードに使える)。 */
+export function nodeRoles(g: CausalGraph, id: string, diag?: Diagnosis): NodeInfo {
+  const lbl = (x: string) => g.nodes.get(x as DataId)?.meta.label ?? g.nodes.get(x as DataId)?.meta.text ?? x;
+  const m = g.nodes.get(id as DataId)?.meta;
+  const asCause: string[] = [], asEffect: string[] = [], dependsOn: string[] = [], usedBy: string[] = [];
+  for (const e of g.edges) {
+    if (e.kind === "causes") {
+      if (e.from === id) asCause.push(lbl(e.to));
+      if (e.to === id) asEffect.push(lbl(e.from));
+    } else if (e.kind === "derives-from") {
+      if (e.from === id) dependsOn.push(lbl(e.to));
+      if (e.to === id) usedBy.push(lbl(e.from));
     }
-    const flags: string[] = [];
-    if (iso.has(id)) flags.push("独立(因果なし)");
-    if (variant.has(id)) flags.push("表記揺れ");
-    info[id] = {
-      label: n.meta.label ?? "", kind: n.meta.kind,
-      ...(n.meta.text ? { text: n.meta.text } : {}),
-      ...(n.meta.tags?.length ? { tags: n.meta.tags } : {}),
-      asCause, asEffect, dependsOn, usedBy, flags,
-    };
   }
-  void jumpEnds;
+  const flags: string[] = [];
+  if (diag?.isolated.some((x) => x.id === id)) flags.push("独立(因果なし)");
+  if ((diag?.notationVariants ?? []).some((v) => v.members.some((mm) => mm.id === id))) flags.push("表記揺れ");
+  return {
+    label: m?.label ?? "", kind: m?.kind ?? "",
+    ...(m?.text ? { text: m.text } : {}),
+    ...(m?.tags?.length ? { tags: m.tags } : {}),
+    asCause, asEffect, dependsOn, usedBy, flags,
+  };
+}
+
+/** (3) 各ノードの data-id と因果ロールを集計 (描画対象=bbox ノード)。 */
+export function buildNodeInfo(g: CausalGraph, diag?: Diagnosis): Record<string, NodeInfo> {
+  const info: Record<string, NodeInfo> = {};
+  for (const n of g.nodes.values()) if (n.meta.bbox) info[n.id] = nodeRoles(g, n.id, diag);
   return info;
 }
 

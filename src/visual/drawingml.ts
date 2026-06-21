@@ -11,6 +11,7 @@
  *    Python 不要・in-process・**ブラウザ(WebGPU デモ)でも背景描画**が可能になる。
  */
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import type { CausalGraph } from "../types.js";
 import type { Diagnosis } from "../analyze/diagnose.js";
 import { overlayCausal } from "./svg.js";
@@ -24,35 +25,43 @@ import { overlayCausal } from "./svg.js";
 export type SlideRenderer = (xml: string) => string | Promise<string>;
 
 export interface DrawingmlOptions {
-  /** drawingml-svg の src ディレクトリ (PYTHONPATH)。既定: 兄弟 ../drawingml-svg/src。 */
+  /** svgraph (旧 drawingml-svg) の src ディレクトリ (PYTHONPATH)。 */
   srcPath?: string;
   python?: string; // 既定 python3
 }
 
-/** スライド/DrawingML の XML を SVG 文字列に変換。 */
+// svgraph(新) を優先、drawingml_svg(旧名) にフォールバックして dml2svg を呼ぶ。
+const DML2SVG = "import sys\ntry:\n from svgraph.cli import main\nexcept ImportError:\n from drawingml_svg.cli import main\nsys.exit(main(['dml2svg']))";
+
+/** src ディレクトリを解決 (svgraph → 旧 drawingml-svg の順)。 */
+function resolveSrc(opts: DrawingmlOptions): string {
+  const cands = [opts.srcPath, process.env["OCZ_SVGRAPH"], process.env["OCZ_DRAWINGML_SVG"], "../svgraph/src", "../drawingml-svg/src"].filter(Boolean) as string[];
+  return cands.find((p) => existsSync(p)) ?? "../svgraph/src";
+}
+
+/** スライド/DrawingML の XML を SVG 文字列に変換 (svgraph dml2svg)。 */
 export function renderDrawingmlSvg(xml: string, opts: DrawingmlOptions = {}): string {
-  const src = opts.srcPath ?? process.env["OCZ_DRAWINGML_SVG"] ?? "../drawingml-svg/src";
+  const src = resolveSrc(opts);
   const py = opts.python ?? "python3";
-  const code = "import sys; from drawingml_svg.cli import main; sys.exit(main(['dml2svg']))";
-  const r = spawnSync(py, ["-c", code], {
+  const r = spawnSync(py, ["-c", DML2SVG], {
     input: xml,
     env: { ...process.env, PYTHONPATH: src },
     encoding: "utf8",
     maxBuffer: 64 * 1024 * 1024,
   });
   if (r.status !== 0) {
-    throw new Error(`drawingml-svg dml2svg failed (PYTHONPATH=${src}): ${(r.stderr || r.error?.message || "").slice(0, 200)}`);
+    throw new Error(`svgraph dml2svg failed (PYTHONPATH=${src}): ${(r.stderr || r.error?.message || "").slice(0, 200)}`);
   }
   return r.stdout;
 }
 
 export function isDrawingmlAvailable(opts: DrawingmlOptions = {}): boolean {
   try {
-    const src = opts.srcPath ?? process.env["OCZ_DRAWINGML_SVG"] ?? "../drawingml-svg/src";
-    const r = spawnSync(opts.python ?? "python3", ["-c", "import drawingml_svg"], {
-      env: { ...process.env, PYTHONPATH: src },
-    });
-    return r.status === 0;
+    const src = resolveSrc(opts);
+    const r = spawnSync(opts.python ?? "python3", ["-c", "import svgraph"], { env: { ...process.env, PYTHONPATH: src } });
+    if (r.status === 0) return true;
+    const r2 = spawnSync(opts.python ?? "python3", ["-c", "import drawingml_svg"], { env: { ...process.env, PYTHONPATH: src } });
+    return r2.status === 0;
   } catch {
     return false;
   }

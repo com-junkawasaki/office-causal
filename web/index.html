@@ -72,7 +72,10 @@
       <button id="dlBtn">💾 .ocz 書き出し（data-id/meta 埋め込み）</button>
     </p>
 
-    <h3>因果グラフ</h3>
+    <h3>因果グラフ
+      <button id="tabGraph">グラフ</button>
+      <button id="tabRoles">因果ロール一覧</button>
+    </h3>
     <p class="note">
       <small class="k" style="color:#e22">━ causes（→ 向き・極性）</small>
       <small class="k" style="color:#2a2">━ derives-from</small>
@@ -80,10 +83,11 @@
       <small class="k" style="color:#bbb">━ contains</small>
       （線の太さ = 埋め込み weight）
     </p>
-    <div class="graphrow">
+    <div class="graphrow" id="viewGraph">
       <div id="svg"></div>
-      <div id="panel"><span class="muted">ノードやエッジをクリックすると、ここに本文・タグ・因果メカニズム・根拠が表示されます。</span></div>
+      <div id="panel"><span class="muted">ノードやエッジをクリックすると、ここに本文・タグ・因果メカニズム・根拠（原因/結果/依存元/利用先）が表示されます。</span></div>
     </div>
+    <div id="viewRoles" hidden style="height:560px;overflow:auto;border:1px solid #ddd;border-radius:6px;padding:8px;font-size:12px"></div>
 
     <h3>ログ</h3>
     <pre id="log"></pre>

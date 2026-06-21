@@ -21,7 +21,8 @@ import { tagNodes } from "../dist/src/embed/tag.js";
 import { WebGpuGemmaAdjudicator } from "../dist/src/llm/gemma-webgpu.js";
 import { embedDataPart, readDataPart } from "../dist/src/ooxml/embed.js";
 import { locate, deepLink } from "../dist/src/locate.js";
-import { diagnose } from "../dist/src/analyze/diagnose.js";
+import { diagnose, type Diagnosis } from "../dist/src/analyze/diagnose.js";
+import { nodeRoles } from "../dist/src/visual/interactive.js";
 import type { CausalGraph, DataId } from "../dist/src/types.js";
 // @ts-ignore  importmap で解決 (CDN ESM)
 import cytoscape from "cytoscape";
@@ -173,12 +174,13 @@ async function run() {
   log("完了。");
 }
 
-const shorten = (s: string) => (s.length > 22 ? s.slice(0, 22) + "…" : s);
+const shorten = (s: string, n = 22) => (s.length > n ? s.slice(0, n) + "…" : s);
 
 const COLOR: Record<string, string> = { contains: "#bbb", references: "#39f", "derives-from": "#2a2", mentions: "#f90", causes: "#e22" };
 
 let cy: any = null;
 let lastGraph: CausalGraph | null = null;
+let lastDiag: Diagnosis | null = null;
 
 const escH = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
 
@@ -409,6 +411,7 @@ async function runDiagnose() {
   const embedder = new TransformersEmbedder(EMBED_MODEL, dev, "q8");
   log("[diagnose] 解析中 …");
   const d = await diagnose(lastGraph, embedder);
+  lastDiag = d;
   cy.elements().removeClass("iso variant nothold jump");
   for (const x of d.isolated) cy.getElementById(x.id).addClass("iso");
   for (const v of d.notationVariants) for (const m of v.members) cy.getElementById(m.id).addClass("variant");
@@ -423,9 +426,40 @@ async function runDiagnose() {
     `<div class="mech" style="border-color:#83c">⚡ 概念のとび (${d.summary.conceptJumps}): ${d.conceptJumps.map((x) => `${shorten(x.from)}→${shorten(x.to)}(${x.similarity})`).join("; ")}</div>`;
 }
 
+// (a) 因果ロール一覧タブ: 各ノードの data-id と原因/結果/依存元/利用先を表で表示 (行クリックで該当ノードへ)。
+function renderRolesTable() {
+  if (!lastGraph) { $("viewRoles").innerHTML = '<span class="muted">先に Run してください。</span>'; return; }
+  const nodes = [...lastGraph.nodes.values()].filter((n) => n.meta.text || n.meta.kind === "entity").slice(0, 300);
+  const cell = (a: string[]) => (a.length ? a.map((x) => shorten(x, 16)).join("<br>") : "—");
+  let h = `<table style="border-collapse:collapse;width:100%"><tr style="background:#eef">` +
+    ["data-id / ラベル", "原因→結果", "←結果の原因", "依存元", "利用先", "診断"].map((c) => `<th style="text-align:left;padding:3px">${c}</th>`).join("") + "</tr>";
+  for (const n of nodes) {
+    const r = nodeRoles(lastGraph, n.id, lastDiag ?? undefined);
+    h += `<tr data-node="${escH(n.id)}" style="cursor:pointer;border-top:1px solid #eee">` +
+      `<td style="padding:3px"><b>${escH(shorten(r.label || r.text || r.kind, 24))}</b><br><span class="id">${escH(n.id)}</span></td>` +
+      `<td style="padding:3px;color:#a13">${cell(r.asCause)}</td>` +
+      `<td style="padding:3px;color:#36a">${cell(r.asEffect)}</td>` +
+      `<td style="padding:3px;color:#2a2">${cell(r.dependsOn)}</td>` +
+      `<td style="padding:3px;color:#777">${cell(r.usedBy)}</td>` +
+      `<td style="padding:3px">${r.flags.map((f) => `<span class="tag">${escH(f)}</span>`).join("")}</td></tr>`;
+  }
+  $("viewRoles").innerHTML = h + "</table>";
+}
+function showTab(roles: boolean) {
+  $("viewGraph").hidden = roles;
+  $("viewRoles").hidden = !roles;
+  if (roles) renderRolesTable();
+}
+
 wireDrop();
 ($("dlBtn") as HTMLButtonElement).addEventListener("click", () => downloadOcz().catch((e) => log("ERROR: " + (e?.message ?? e))));
 ($("dxBtn") as HTMLButtonElement).addEventListener("click", () => runDiagnose().catch((e) => log("ERROR: " + (e?.message ?? e))));
+($("tabGraph") as HTMLButtonElement).addEventListener("click", () => showTab(false));
+($("tabRoles") as HTMLButtonElement).addEventListener("click", () => showTab(true));
+$("viewRoles").addEventListener("click", (e) => {
+  const t = (e.target as HTMLElement).closest("[data-node]");
+  if (t) { showTab(false); focusNode(t.getAttribute("data-node")! as DataId); }
+});
 // パネル内の [data-part] ボタン → 該当パートのノードを強調 (innerHTML 差し替えに強い委譲)。
 $("panel").addEventListener("click", (e) => {
   const el = e.target as HTMLElement;
