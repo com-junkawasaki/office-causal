@@ -10,14 +10,19 @@ import * as causalAnalysis from "./causal/analyze.js";
 import { analyzeWeights } from "./embed/weight.js";
 import { openPackage as openPkg } from "./ooxml/opc.js";
 import { buildStructuralGraph as buildGraph } from "./graph/builder.js";
-import { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloadToGraph } from "./ooxml/embed.js";
+import { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloadToGraph, validatePayload as validatePayloadFn } from "./ooxml/embed.js";
 import { stats } from "./graph/model.js";
+import { diagnose as runDiagnose } from "./analyze/diagnose.js";
+import { consult as runConsult } from "./analyze/consult.js";
+import { mece as runMece } from "./analyze/mece.js";
+import { getEmbedder } from "./embed/model.js";
+import { WebGpuGemmaAdjudicator } from "./llm/gemma-webgpu.js";
 
 export * from "./types.js";
 export { exportGraph } from "./graph/export.js";
 export { buildStructuralGraph } from "./graph/builder.js";
 export { openPackage } from "./ooxml/opc.js";
-export { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloadToGraph, type EmbeddedPayload } from "./ooxml/embed.js";
+export { embedDataPart, embedDataPartDiff, embedAttributes, readDataPart, payloadToGraph, validatePayload, OCZ_VERSION, type EmbeddedPayload } from "./ooxml/embed.js";
 export { locate, deepLink, type Locator } from "./locate.js";
 export { diagnose, type Diagnosis } from "./analyze/diagnose.js";
 export { consult, type ConsultResult } from "./analyze/consult.js";
@@ -71,6 +76,7 @@ export async function analyze(
     if (payload) {
       const graph = payloadToGraph(payload);
       const log = [`embedded: ${basename(paths[0]!)} の同梱グラフを使用 (再解析スキップ, nodes=${graph.nodes.size})`];
+      for (const w of validatePayloadFn(payload)) log.push(`⚠ ${w}`);
       return {
         graph, log,
         export: (fmt) => exportGraph(graph, fmt),
@@ -107,6 +113,11 @@ export interface EmbedOptions {
   format?: "json" | "jsonl";
   /** (p) 既存 .ocz の jsonl を書換えず、変更分のみ追記する差分 embed。 */
   diff?: boolean;
+  /** (n) diagnose を実行し analysis として同梱。 */
+  analysis?: boolean;
+  /** (n) analysis に so-what/MECE も含める (Gemma 使用)。 */
+  gemma?: boolean;
+  device?: "webgpu" | "wasm" | "cpu" | "coreml";
   /** 出力パス。既定は元名に .ocz を挿入 (report.pptx → report.ocz.pptx)。 */
   out?: string;
 }
@@ -119,11 +130,28 @@ export async function embedFile(path: string, options: EmbedOptions = {}) {
   const mode = options.mode ?? "part";
   const bytes = new Uint8Array(await readFile(path));
   const pkg = openPkg(bytes);
-  const graph = buildGraph(pkg);
+  // .ocz (causes 同梱) なら既存グラフを使い、無ければ構造グラフ。
+  const existing = readDataPart(bytes);
+  const graph = existing ? payloadToGraph(existing) : buildGraph(pkg);
+
+  // (n) analysis: diagnose (+ --gemma で so-what/MECE) を実行して同梱
+  let analysis: { version: number; diagnosis?: unknown; consult?: unknown; mece?: unknown } | undefined;
+  if (options.analysis) {
+    const embedder = (await getEmbedder().catch(() => ({ embedder: undefined }))).embedder;
+    const diagnosis = await runDiagnose(graph, embedder);
+    analysis = { version: 1, diagnosis };
+    if (options.gemma) {
+      const gm = new WebGpuGemmaAdjudicator(options.device ? ({ device: options.device } as any) : {});
+      analysis.consult = await runConsult(graph, gm, { maxChains: 8 });
+      analysis.mece = await runMece(graph, embedder, { gemma: gm });
+    }
+  }
 
   let out: Uint8Array = bytes;
   if (mode === "part" || mode === "both") {
-    out = options.diff ? embedDataPartDiff(out, graph) : embedDataPart(out, graph, { format: options.format ?? "jsonl" });
+    out = options.diff
+      ? embedDataPartDiff(out, graph)
+      : embedDataPart(out, graph, { format: options.format ?? "jsonl", ...(analysis ? { analysis } : {}) });
   }
   if (mode === "attrs" || mode === "both") out = embedAttributes(out);
 

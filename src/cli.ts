@@ -9,7 +9,7 @@
 import { writeFile, readFile } from "node:fs/promises";
 import {
   analyze, exportGraph, embedFile, readDataPart, locate, deepLink,
-  openPackage, buildStructuralGraph, payloadToGraph, diagnose, renderDiagnosisSvg, getEmbedder,
+  openPackage, buildStructuralGraph, payloadToGraph, validatePayload, diagnose, renderDiagnosisSvg, getEmbedder,
   WebGpuGemmaAdjudicator, resolveSlideRenderer, renderSlideCausalSvg, overlayCharBoxes,
   consult, mece, renderConsultSvg, renderInteractiveHtml,
 } from "./index.js";
@@ -56,8 +56,10 @@ async function main() {
     const mode = (flag(rest, "mode", "part") ?? "part") as "part" | "attrs" | "both";
     const efmt = (flag(rest, "format", "jsonl") ?? "jsonl") as "json" | "jsonl";
     const diff = rest.includes("--diff");
-    const r = await embedFile(file, { mode, format: efmt, diff, ...(out ? { out } : {}) });
-    console.error(`embedded (${r.mode}${diff ? ", diff" : ""}) → ${r.outPath}`);
+    const analysis = rest.includes("--analysis");
+    const gemma = rest.includes("--gemma");
+    const r = await embedFile(file, { mode, format: efmt, diff, analysis, gemma, device: (flag(rest, "device") as any), ...(out ? { out } : {}) });
+    console.error(`embedded (${r.mode}${diff ? ", diff" : ""}${analysis ? ", analysis" : ""}${analysis && gemma ? "+so-what/MECE" : ""}) → ${r.outPath}`);
     console.error(JSON.stringify(r.stats, null, 2));
     return;
   }
@@ -94,6 +96,7 @@ async function main() {
     const bytes = new Uint8Array(await readFile(file));
     // .ocz なら同梱グラフ (causes 込み)、それ以外は構造グラフ。
     const payload = readDataPart(bytes);
+    if (payload) for (const w of validatePayload(payload)) console.error(`⚠ ${w}`);
     const g: CausalGraph = payload ? payloadToGraph(payload) : buildStructuralGraph(openPackage(bytes));
     const embedder = rest.includes("--no-embed") ? undefined : (await getEmbedder()).embedder;
     // --gemma: 因果分析の意味判断 (表記揺れ/概念のとび) を Gemma 4 が確定。
@@ -146,6 +149,7 @@ async function main() {
     const bare = rest.filter((a) => !a.startsWith("--"));
     const bytes = new Uint8Array(await readFile(bare[0]!));
     const payload = readDataPart(bytes);
+    if (payload) for (const w of validatePayload(payload)) console.error(`⚠ ${w}`);
     const g: CausalGraph = payload ? payloadToGraph(payload) : buildStructuralGraph(openPackage(bytes));
     const gemma = new WebGpuGemmaAdjudicator({ device: (flag(rest, "device", "cpu") ?? "cpu") as any, maxNewTokens: 160 });
     const sw = await consult(g, gemma, { maxChains: Number(flag(rest, "max", "10")) });

@@ -25,6 +25,21 @@ const PART_JSONL = "ocz/causal.jsonl";
 const LEGACY = ["ocz/casual.jsonl", "ocz/casual.json"] as const;
 
 export type EmbedFormat = "json" | "jsonl";
+export const OCZ_VERSION = 1;
+
+/** (o) 同梱 payload / analysis の整合チェック。問題があれば警告文の配列を返す (空=OK)。 */
+export function validatePayload(p: EmbeddedPayload): string[] {
+  const w: string[] = [];
+  if (p.version !== OCZ_VERSION) w.push(`payload version ${p.version} が未知 (期待 ${OCZ_VERSION})`);
+  const a = p.analysis as { diagnosis?: { isolated?: { id: string }[] }; consult?: unknown; mece?: unknown } | undefined;
+  if (a) {
+    const ids = new Set(p.nodes.map((n) => n.id));
+    const iso = a.diagnosis?.isolated ?? [];
+    const missing = iso.filter((x) => !ids.has(x.id)).length;
+    if (missing > 0) w.push(`同梱 analysis が古い可能性: 診断の ${missing}/${iso.length} ノードが現グラフに不在 (再解析推奨)`);
+  }
+  return w;
+}
 
 export interface EmbeddedPayload {
   version: 1;
