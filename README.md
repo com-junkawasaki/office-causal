@@ -434,6 +434,9 @@ office-causal consult report.ocz.pptx --mece --svg sowhat.svg   # so-what + MECE
 > - **(e)(f)(h) ロール一覧**: 検索フィルタ + **列ソート**（ヘッダクリック ▲▼）+ **CSV ダウンロード（検索/ソート結果のみ）**。
 > - **(g) web so-what/MECE ボタン**: 「💡 so-what / MECE（Gemma）」で WebGPU Gemma により so-what 連鎖 + MECE をその場算出しパネル表示。
 > - **(i) so-what/MECE 書き出し**: パネルから **JSON / so-what CSV / MECE CSV** をダウンロード。
+> - **(h)(k) 列ソート**: ラベル列は文字列順、役割/診断列は**項目数**順（▲▼）。
+> - **(m) 解析結果の同梱**: `.ocz` 書き出し時に diagnose / so-what / mece を `analysis` として同梱（`embedDataPart(..,{analysis})`）。
+>   `.ocz` を再ロードすると**再計算なしで診断色・so-what・MECE を即復元**（jsonl/json 両対応・往復検証済）。
 
 
 兄弟 [`drawingml-svg`](../drawingml-svg) が DrawingML/PresentationML → SVG を **`EMU_PER_PX=9525`** で描画し、

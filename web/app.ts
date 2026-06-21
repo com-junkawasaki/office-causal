@@ -124,6 +124,15 @@ async function run() {
       const causes = g.edges.filter((e) => e.kind === "causes").length;
       log(`✓ 埋め込み済み .ocz を検出 → 再解析せず描画 (nodes=${g.nodes.size}, causes=${causes})`);
       renderGraph(g);
+      // (m) 同梱 analysis があれば診断色 + so-what/MECE を即復元 (再計算なし)。
+      const an = (payload as any).analysis;
+      if (an) {
+        if (an.diagnosis) { lastDiag = an.diagnosis; applyDiagClasses(an.diagnosis); }
+        if (an.consult) lastConsult = an.consult;
+        if (an.mece) lastMece = an.mece;
+        if (an.consult || an.mece) showConsultPanel(an.consult, an.mece);
+        log(`✓ 同梱 analysis を復元 (診断${an.diagnosis ? "✓" : "-"} / so-what${an.consult ? "✓" : "-"} / MECE${an.mece ? "✓" : "-"})`);
+      }
       log("完了。");
       return;
     }
@@ -183,6 +192,8 @@ const COLOR: Record<string, string> = { contains: "#bbb", references: "#39f", "d
 let cy: any = null;
 let lastGraph: CausalGraph | null = null;
 let lastDiag: Diagnosis | null = null;
+let lastConsult: any = null;
+let lastMece: any = null;
 
 const escH = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
 
@@ -376,7 +387,12 @@ function wireDrop() {
 async function downloadOcz() {
   if (!droppedFile) return log("⚠ .ocz 書き出しは OOXML ファイルをドロップした場合のみ可能です。");
   if (!lastGraph) return log("⚠ 先に Run してください。");
-  const out = embedDataPart(droppedFile.bytes, lastGraph, { format: "jsonl" });
+  // (m) 解析結果 (診断/so-what/MECE) があれば同梱 → 再ロードで即表示。
+  const analysis: any = {};
+  if (lastDiag) analysis.diagnosis = lastDiag;
+  if (lastConsult) analysis.consult = lastConsult;
+  if (lastMece) analysis.mece = lastMece;
+  const out = embedDataPart(droppedFile.bytes, lastGraph, { format: "jsonl", ...(Object.keys(analysis).length ? { analysis } : {}) });
   const name = droppedFile.name.replace(/(\.[^.]+)$/, ".ocz$1");
   const ext = name.split(".").pop()!;
   const blob = new Blob([out as BlobPart], { type: "application/octet-stream" });
@@ -406,6 +422,30 @@ async function downloadOcz() {
   log(`💾 ${name} をダウンロード (File System Access 非対応のため)。`);
 }
 
+// 診断結果を Cytoscape に色分け適用 (診断 / .ocz 復元 共用)。
+function applyDiagClasses(d: any) {
+  if (!cy) return;
+  cy.elements().removeClass("iso variant nothold jump");
+  for (const x of d.isolated ?? []) cy.getElementById(x.id).addClass("iso");
+  for (const v of d.notationVariants ?? []) for (const m of v.members) cy.getElementById(m.id).addClass("variant");
+  for (const x of d.notHolding ?? []) cy.getElementById(x.edge).addClass("nothold");
+  for (const x of d.conceptJumps ?? []) cy.getElementById(x.edge).addClass("jump");
+}
+
+// so-what/MECE パネル + 書き出しボタン (Gemma 算出 / .ocz 復元 共用)。
+function showConsultPanel(sw?: any, mc?: any) {
+  const q = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
+  $("panel").innerHTML =
+    `<div style="margin-bottom:6px"><button id="cnJson">JSON ⬇</button> <button id="cnSwCsv">so-what CSV ⬇</button> <button id="cnMeceCsv">MECE CSV ⬇</button></div>` +
+    (sw ? `<h4>💡 so-what (${sw.chains.length})</h4>` + sw.chains.map((c: any) => `<div class="mech">${escH(c.path.join(" → "))}<br><small>💡 ${escH(c.soWhat)}${c.action ? "<br>▶ " + escH(c.action) : ""}</small></div>`).join("") : "") +
+    (mc ? `<h4>MECE (${mc.effects.length})</h4>` + mc.effects.map((e: any) => `<div class="mech" style="border-color:#e89400"><b>${escH(e.effect)}</b> ← ${e.factors.map((f: string) => escH(f)).join(" / ")}` +
+      (e.overlaps.length ? `<br>⚠ 重複: ${e.overlaps.map((p: string[]) => escH(p.join("≈"))).join(", ")}` : "") +
+      (e.exhaustive === false ? `<br>⚠ 網羅不足${e.missing?.length ? ": 欠落 " + e.missing.map((m: string) => escH(m)).join("、") : ""}` : "") + `</div>`).join("") : "");
+  ($("cnJson") as HTMLButtonElement).addEventListener("click", () => downloadText("consult.json", JSON.stringify({ soWhat: sw?.chains ?? [], mece: mc?.effects ?? [] }, null, 2), "application/json"));
+  ($("cnSwCsv") as HTMLButtonElement).addEventListener("click", () => downloadText("sowhat.csv", ["chain,soWhat,action", ...(sw?.chains ?? []).map((c: any) => [c.path.join(" → "), c.soWhat, c.action ?? ""].map(q).join(","))].join("\n"), "text/csv"));
+  ($("cnMeceCsv") as HTMLButtonElement).addEventListener("click", () => downloadText("mece.csv", ["effect,factors,overlaps,exhaustive,missing", ...(mc?.effects ?? []).map((e: any) => [e.effect, e.factors.join(" / "), e.overlaps.map((p: string[]) => p.join("≈")).join("; "), String(e.exhaustive ?? ""), (e.missing ?? []).join("; ")].map(q).join(","))].join("\n"), "text/csv"));
+}
+
 // 🔍 診断: 独立 / 成立しない / 表記揺れ / 概念のとび をグラフ上に色分け表示。
 async function runDiagnose() {
   if (!lastGraph || !cy) return log("⚠ 先に Run してください。");
@@ -414,11 +454,7 @@ async function runDiagnose() {
   log("[diagnose] 解析中 …");
   const d = await diagnose(lastGraph, embedder);
   lastDiag = d;
-  cy.elements().removeClass("iso variant nothold jump");
-  for (const x of d.isolated) cy.getElementById(x.id).addClass("iso");
-  for (const v of d.notationVariants) for (const m of v.members) cy.getElementById(m.id).addClass("variant");
-  for (const x of d.notHolding) cy.getElementById(x.edge).addClass("nothold");
-  for (const x of d.conceptJumps) cy.getElementById(x.edge).addClass("jump");
+  applyDiagClasses(d);
   log(`[diagnose] 独立=${d.summary.isolated} 成立しない=${d.summary.notHolding} 表記揺れ=${d.summary.notationVariants} 概念のとび=${d.summary.conceptJumps}`);
   $("panel").innerHTML =
     `<h4>🔍 診断</h4>` +
@@ -439,21 +475,8 @@ async function runConsult() {
   const embedder = new TransformersEmbedder(EMBED_MODEL, dev, "q8");
   const sw = await consult(lastGraph, gemma, { maxChains: 6 });
   const mc = await mece(lastGraph, embedder, { gemma });
-  $("panel").innerHTML =
-    `<div style="margin-bottom:6px"><button id="cnJson">JSON ⬇</button> <button id="cnSwCsv">so-what CSV ⬇</button> <button id="cnMeceCsv">MECE CSV ⬇</button></div>` +
-    `<h4>💡 so-what (${sw.chains.length})</h4>` +
-    sw.chains.map((c) => `<div class="mech">${escH(c.path.join(" → "))}<br><small>💡 ${escH(c.soWhat)}${c.action ? "<br>▶ " + escH(c.action) : ""}</small></div>`).join("") +
-    `<h4>MECE (${mc.effects.length})</h4>` +
-    mc.effects.map((e) => `<div class="mech" style="border-color:#e89400"><b>${escH(e.effect)}</b> ← ${e.factors.map((f) => escH(f)).join(" / ")}` +
-      (e.overlaps.length ? `<br>⚠ 重複: ${e.overlaps.map((p) => escH(p.join("≈"))).join(", ")}` : "") +
-      (e.exhaustive === false ? `<br>⚠ 網羅不足${e.missing?.length ? ": 欠落 " + e.missing.map((m) => escH(m)).join("、") : ""}` : "") + `</div>`).join("");
-  // (i) so-what/MECE の CSV/JSON 書き出し
-  const q = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
-  ($("cnJson") as HTMLButtonElement).addEventListener("click", () => downloadText("consult.json", JSON.stringify({ soWhat: sw.chains, mece: mc.effects }, null, 2), "application/json"));
-  ($("cnSwCsv") as HTMLButtonElement).addEventListener("click", () => downloadText("sowhat.csv",
-    ["chain,soWhat,action", ...sw.chains.map((c) => [c.path.join(" → "), c.soWhat, c.action ?? ""].map(q).join(","))].join("\n"), "text/csv"));
-  ($("cnMeceCsv") as HTMLButtonElement).addEventListener("click", () => downloadText("mece.csv",
-    ["effect,factors,overlaps,exhaustive,missing", ...mc.effects.map((e) => [e.effect, e.factors.join(" / "), e.overlaps.map((p) => p.join("≈")).join("; "), String(e.exhaustive ?? ""), (e.missing ?? []).join("; ")].map(q).join(","))].join("\n"), "text/csv"));
+  lastConsult = sw; lastMece = mc;
+  showConsultPanel(sw, mc);
   log(`[consult] so-what=${sw.chains.length} / MECE 対象=${mc.effects.length}`);
 }
 
@@ -484,7 +507,10 @@ function buildRoleRows() {
 function currentRoleRows(): RoleRow[] {
   const rows = roleQuery ? roleRows.filter((r) => r.search.includes(roleQuery)) : roleRows.slice();
   const k = ROLE_KEYS[roleSort.col]!;
-  return rows.sort((a, b) => String(a[k]).localeCompare(String(b[k])) * roleSort.dir);
+  // (k) ラベル列(0)は文字列順、役割/診断列は「項目数」順 (";" 区切りの個数)。
+  const cnt = (s: string) => (s ? s.split("; ").length : 0);
+  return rows.sort((a, b) =>
+    (roleSort.col === 0 ? String(a[k]).localeCompare(String(b[k])) : cnt(String(a[k])) - cnt(String(b[k]))) * roleSort.dir);
 }
 function paintRoles() {
   const cell = (s: string) => (s ? escH(s).replace(/; /g, "<br>") : "—");

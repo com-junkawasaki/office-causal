@@ -31,6 +31,8 @@ export interface EmbeddedPayload {
   generator: "office-causal";
   nodes: { id: string; kind: string; part: string; path: string; label?: string; text?: string; value?: string | number; tags?: string[]; bbox?: import("../types.js").BBox }[];
   edges: { id: string; kind: string; from: string; to: string; weight?: number; causal?: unknown }[];
+  /** (m) 解析結果の同梱 (diagnose / consult / mece)。再ロードで即表示できる。 */
+  analysis?: { diagnosis?: unknown; consult?: unknown; mece?: unknown };
 }
 
 function payloadOf(graph: CausalGraph): EmbeddedPayload {
@@ -65,6 +67,7 @@ function ensureContentType(xml: string, ext: string, ctype: string): string {
 /** JSONL 直列化: 1行目に meta、以降は 1 ノード/エッジ = 1 行 (追記・ストリーム・diff 向き)。 */
 function toJsonl(p: EmbeddedPayload): string {
   const lines = [JSON.stringify({ t: "meta", version: p.version, generator: p.generator })];
+  if (p.analysis) lines.push(JSON.stringify({ t: "analysis", analysis: p.analysis }));
   for (const n of p.nodes) lines.push(JSON.stringify({ t: "node", ...n }));
   for (const e of p.edges) lines.push(JSON.stringify({ t: "edge", ...e }));
   return lines.join("\n") + "\n";
@@ -76,18 +79,20 @@ function fromJsonl(text: string): EmbeddedPayload {
   const edges = new Map<string, EmbeddedPayload["edges"][number]>();
   let version: 1 = 1;
   let generator: "office-causal" = "office-causal";
+  let analysis: EmbeddedPayload["analysis"];
   for (const line of text.split("\n")) {
     if (!line.trim()) continue;
     const o = JSON.parse(line);
     switch (o.t) {
       case "meta": version = o.version ?? 1; generator = o.generator ?? "office-causal"; break;
+      case "analysis": analysis = o.analysis; break;
       case "node": { const { t, ...rest } = o; nodes.set(rest.id, rest); break; }
       case "node-del": nodes.delete(o.id); break;
       case "edge": { const { t, ...rest } = o; edges.set(rest.id, rest); break; }
       case "edge-del": edges.delete(o.id); break;
     }
   }
-  return { version, generator, nodes: [...nodes.values()], edges: [...edges.values()] };
+  return { version, generator, nodes: [...nodes.values()], edges: [...edges.values()], ...(analysis ? { analysis } : {}) };
 }
 
 /** (o) 埋め込み payload から CausalGraph を復元 (再解析なし)。 */
@@ -129,7 +134,7 @@ function ensureRootRel(xml: string, target: string): string {
 export function embedDataPart(
   bytes: Uint8Array,
   graph: CausalGraph,
-  opts: { format?: EmbedFormat } = {},
+  opts: { format?: EmbedFormat; analysis?: EmbeddedPayload["analysis"] } = {},
 ): Uint8Array {
   const fmt = opts.format ?? "jsonl"; // (k) 既定 jsonl (大規模・追記・diff 向き)
   const entries = unzipSync(bytes);
@@ -145,8 +150,9 @@ export function embedDataPart(
   const rels = entries["_rels/.rels"];
   if (rels) entries["_rels/.rels"] = strToU8(ensureRootRel(strFromU8(rels), partName));
 
-  // 3) データパート本体
+  // 3) データパート本体 (+ 解析結果の同梱)
   const payload = payloadOf(graph);
+  if (opts.analysis) payload.analysis = opts.analysis;
   entries[partName] = strToU8(fmt === "jsonl" ? toJsonl(payload) : JSON.stringify(payload));
   return zipSync(entries);
 }
