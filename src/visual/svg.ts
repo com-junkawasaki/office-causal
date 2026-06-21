@@ -137,6 +137,70 @@ export function renderConsultSvg(c: ConsultResult): string {
 }
 
 /**
+ * (文字単位) drawingml-svg の描画 SVG 上の各文字に box + label を重ねる。
+ * `<text>`/`<tspan x dy>` を解析し、文字送り幅を推定して 1 文字ずつ矩形を描く。
+ * 各文字が属する office-causal シェイプ(data-id)を bbox 包含で対応づけ、ラベル表示。
+ */
+const isWide = (c: string) => {
+  const code = c.codePointAt(0) ?? 0;
+  return (code >= 0x1100 && code <= 0x9fff) || (code >= 0xac00 && code <= 0xd7a3) || (code >= 0xff00 && code <= 0xffef) || (code >= 0x3000 && code <= 0x30ff);
+};
+const attr = (tag: string, name: string) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1];
+
+export function overlayCharBoxes(baseSvg: string, g: CausalGraph, diag?: Diagnosis, maxChars = 3000): string {
+  // シェイプ(bbox px) 一覧 → 点包含で data-id を引く
+  const shapes: { id: DataId; x: number; y: number; w: number; h: number }[] = [];
+  for (const n of g.nodes.values()) {
+    const b = n.meta.bbox;
+    if (b?.unit === "emu") shapes.push({ id: n.id, x: b.x * EMU_PX, y: b.y * EMU_PX, w: b.w * EMU_PX, h: b.h * EMU_PX });
+  }
+  const ownerOf = (x: number, y: number) => shapes.find((s) => x >= s.x && x <= s.x + s.w && y >= s.y && y <= s.y + s.h);
+  const isolated = new Set(diag?.isolated.map((x) => x.id) ?? []);
+  const variant = new Set((diag?.notationVariants ?? []).flatMap((v) => v.members.map((m) => m.id)));
+  const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]!));
+
+  const o: string[] = [`<g id="ocz-char-boxes" fill="none" font-family="monospace">`];
+  let drawn = 0;
+  const seenOwner = new Set<string>();
+  for (const tm of baseSvg.matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)) {
+    if (drawn >= maxChars) break;
+    const tAttrs = tm[1]!;
+    const fs = Number(attr(tAttrs, "font-size") ?? "16");
+    const ls = Number(attr(tAttrs, "letter-spacing") ?? "0");
+    const anchor = attr(tAttrs, "text-anchor") ?? "start";
+    const textY = Number(attr(tAttrs, "y") ?? "0");
+    let baseline = textY;
+    for (const sm of tm[2]!.matchAll(/<tspan\b([^>]*)>([^<]*)<\/tspan>/g)) {
+      const sAttrs = sm[1]!;
+      const content = sm[2]!;
+      const tx = Number(attr(sAttrs, "x") ?? attr(tAttrs, "x") ?? "0");
+      baseline += Number(attr(sAttrs, "dy") ?? "0");
+      const chars = [...content];
+      const adv = chars.map((c) => fs * (isWide(c) ? 1.0 : 0.55) + ls);
+      const lineW = adv.reduce((a, b) => a + b, 0);
+      let cx = anchor === "middle" ? tx - lineW / 2 : anchor === "end" ? tx - lineW : tx;
+      const owner = ownerOf(tx, baseline);
+      const stroke = owner && isolated.has(owner.id) ? "#999" : owner && variant.has(owner.id) ? "#e89400" : "#39f";
+      // run 先頭に data-id ラベル (1 シェイプ 1 回)
+      if (owner && !seenOwner.has(owner.id)) {
+        seenOwner.add(owner.id);
+        o.push(`<text x="${tx.toFixed(1)}" y="${(baseline - fs - 2).toFixed(1)}" font-size="8" fill="${stroke}" stroke="none" text-anchor="${anchor}">${esc(owner.id)}</text>`);
+      }
+      chars.forEach((c, i) => {
+        if (drawn >= maxChars) return;
+        const w = adv[i]!;
+        o.push(`<rect x="${cx.toFixed(1)}" y="${(baseline - fs * 0.82).toFixed(1)}" width="${w.toFixed(1)}" height="${fs.toFixed(1)}" stroke="${stroke}" stroke-width="0.5" opacity="0.8"/>`);
+        cx += w;
+        drawn++;
+      });
+    }
+  }
+  o.push(`</g>`);
+  if (drawn === 0) return baseSvg;
+  return baseSvg.replace(/<\/svg>\s*$/i, o.join("\n") + "\n</svg>");
+}
+
+/**
  * drawingml-svg が描いたスライド SVG (背景) に、因果オーバレイを同座標で重ねる。
  * 背景 px = EMU/9525、本オーバレイ bbox px = EMU*EMU_PX = EMU/9525 で一致。
  * bbox を持つノード (= 当該スライドのシェイプ) のみ対象。

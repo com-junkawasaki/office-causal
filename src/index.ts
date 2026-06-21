@@ -23,7 +23,7 @@ export { diagnose, type Diagnosis } from "./analyze/diagnose.js";
 export { consult, type ConsultResult } from "./analyze/consult.js";
 export { mece, type MeceResult } from "./analyze/mece.js";
 export { similarPairs, lshCandidatePairs } from "./analyze/ann.js";
-export { renderDiagnosisSvg, overlayCausal, renderConsultSvg } from "./visual/svg.js";
+export { renderDiagnosisSvg, overlayCausal, overlayCharBoxes, renderConsultSvg } from "./visual/svg.js";
 export {
   renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg,
   type SlideRenderer,

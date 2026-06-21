@@ -436,6 +436,10 @@ office-causal diagnose report.ocz.pptx --svg out.svg --render --drawingml ../dra
 ```
 - `renderDrawingmlSvg(slideXml)` が drawingml-svg CLI(`dml2svg`) を子プロセス実行 → 忠実 SVG。
 - `overlayCausal(baseSvg, graph, diag)` が `<g id="ocz-causal-overlay">` を同 viewBox に注入。
+- **文字単位の box+label** (`--chars` / `overlayCharBoxes`): 描画 SVG の `<text>`/`<tspan>` を解析し、
+  文字送り幅(CJK=1em/英=0.55em+letter-spacing)を推定して **1文字ずつ矩形**を描画。各文字が属する
+  シェイプ(bbox 包含)の **data-id をラベル表示**＋診断色で着色（実測: "converts"→8文字boxを実座標配置）。
+  `office-causal diagnose report.pptx --render --chars --drawingml ../drawingml-svg/src --svg out.svg`
 - `.ocz` は **bbox も同梱**するため、`.ocz` 単体から背景＋因果を再生成可能（再解析不要）。
 - **検証**: 実 pptx で背景 viewBox `715.857×372` に実コンテンツ + overlay 16 ノードが同座標で重畳。
 
