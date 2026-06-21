@@ -431,8 +431,9 @@ office-causal consult report.ocz.pptx --mece --svg sowhat.svg   # so-what + MECE
 >
 > - **(c) so-what / MECE 合流**: 対話 HTML (`--html --consult`) のパネルに so-what 連鎖と MECE（重複/網羅不足/欠落）を併記。
 > - **(d) glyph 厳密 box 自動化**: `resolveSlideRenderer` が **svgraph の TS `dml2svg`（環境変数 `OCZ_SVGRAPH_TS` で指定）を自動検知**し、あれば in-process（glyph 厳密 box）、無ければ Python に安全フォールバック（`renderer: ts-svgraph|python` をログ）。
-> - **(e) ロール一覧**: 検索フィルタ + CSV ダウンロード（**検索結果のみ CSV** 出力）。
+> - **(e)(f)(h) ロール一覧**: 検索フィルタ + **列ソート**（ヘッダクリック ▲▼）+ **CSV ダウンロード（検索/ソート結果のみ）**。
 > - **(g) web so-what/MECE ボタン**: 「💡 so-what / MECE（Gemma）」で WebGPU Gemma により so-what 連鎖 + MECE をその場算出しパネル表示。
+> - **(i) so-what/MECE 書き出し**: パネルから **JSON / so-what CSV / MECE CSV** をダウンロード。
 
 
 兄弟 [`drawingml-svg`](../drawingml-svg) が DrawingML/PresentationML → SVG を **`EMU_PER_PX=9525`** で描画し、

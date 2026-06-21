@@ -440,60 +440,87 @@ async function runConsult() {
   const sw = await consult(lastGraph, gemma, { maxChains: 6 });
   const mc = await mece(lastGraph, embedder, { gemma });
   $("panel").innerHTML =
+    `<div style="margin-bottom:6px"><button id="cnJson">JSON ⬇</button> <button id="cnSwCsv">so-what CSV ⬇</button> <button id="cnMeceCsv">MECE CSV ⬇</button></div>` +
     `<h4>💡 so-what (${sw.chains.length})</h4>` +
     sw.chains.map((c) => `<div class="mech">${escH(c.path.join(" → "))}<br><small>💡 ${escH(c.soWhat)}${c.action ? "<br>▶ " + escH(c.action) : ""}</small></div>`).join("") +
     `<h4>MECE (${mc.effects.length})</h4>` +
     mc.effects.map((e) => `<div class="mech" style="border-color:#e89400"><b>${escH(e.effect)}</b> ← ${e.factors.map((f) => escH(f)).join(" / ")}` +
       (e.overlaps.length ? `<br>⚠ 重複: ${e.overlaps.map((p) => escH(p.join("≈"))).join(", ")}` : "") +
       (e.exhaustive === false ? `<br>⚠ 網羅不足${e.missing?.length ? ": 欠落 " + e.missing.map((m) => escH(m)).join("、") : ""}` : "") + `</div>`).join("");
+  // (i) so-what/MECE の CSV/JSON 書き出し
+  const q = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
+  ($("cnJson") as HTMLButtonElement).addEventListener("click", () => downloadText("consult.json", JSON.stringify({ soWhat: sw.chains, mece: mc.effects }, null, 2), "application/json"));
+  ($("cnSwCsv") as HTMLButtonElement).addEventListener("click", () => downloadText("sowhat.csv",
+    ["chain,soWhat,action", ...sw.chains.map((c) => [c.path.join(" → "), c.soWhat, c.action ?? ""].map(q).join(","))].join("\n"), "text/csv"));
+  ($("cnMeceCsv") as HTMLButtonElement).addEventListener("click", () => downloadText("mece.csv",
+    ["effect,factors,overlaps,exhaustive,missing", ...mc.effects.map((e) => [e.effect, e.factors.join(" / "), e.overlaps.map((p) => p.join("≈")).join("; "), String(e.exhaustive ?? ""), (e.missing ?? []).join("; ")].map(q).join(","))].join("\n"), "text/csv"));
   log(`[consult] so-what=${sw.chains.length} / MECE 対象=${mc.effects.length}`);
 }
 
-// (a) 因果ロール一覧タブ: 各ノードの data-id と原因/結果/依存元/利用先を表で表示 (行クリックで該当ノードへ)。
-let roleRows: { id: string; label: string; asCause: string; asEffect: string; dependsOn: string; usedBy: string; flags: string; search: string }[] = [];
-function renderRolesTable() {
-  if (!lastGraph) { $("viewRoles").innerHTML = '<span class="muted">先に Run してください。</span>'; return; }
-  const nodes = [...lastGraph.nodes.values()].filter((n) => n.meta.text || n.meta.kind === "entity").slice(0, 1000);
+// (a)(h) 因果ロール一覧タブ: data-id と 原因/結果/依存元/利用先 を表で。検索フィルタ + 列ソート + CSV。
+interface RoleRow { id: string; label: string; asCause: string; asEffect: string; dependsOn: string; usedBy: string; flags: string; search: string }
+let roleRows: RoleRow[] = [];
+let roleQuery = "";
+let roleSort: { col: number; dir: 1 | -1 } = { col: 0, dir: 1 };
+const ROLE_KEYS: (keyof RoleRow)[] = ["label", "asCause", "asEffect", "dependsOn", "usedBy", "flags"];
+const downloadText = (name: string, text: string, type = "text/plain") => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name; a.click(); URL.revokeObjectURL(a.href);
+};
+
+function buildRoleRows() {
+  const nodes = [...lastGraph!.nodes.values()].filter((n) => n.meta.text || n.meta.kind === "entity").slice(0, 2000);
+  const j = (a: string[]) => a.join("; ");
   roleRows = nodes.map((n) => {
     const r = nodeRoles(lastGraph!, n.id, lastDiag ?? undefined);
-    const j = (a: string[]) => a.join("; ");
     return {
       id: n.id, label: r.label || r.text || r.kind,
       asCause: j(r.asCause), asEffect: j(r.asEffect), dependsOn: j(r.dependsOn), usedBy: j(r.usedBy), flags: j(r.flags),
       search: `${n.id} ${r.label} ${r.text ?? ""} ${j(r.asCause)} ${j(r.asEffect)} ${j(r.dependsOn)} ${j(r.flags)}`.toLowerCase(),
     };
   });
+}
+function currentRoleRows(): RoleRow[] {
+  const rows = roleQuery ? roleRows.filter((r) => r.search.includes(roleQuery)) : roleRows.slice();
+  const k = ROLE_KEYS[roleSort.col]!;
+  return rows.sort((a, b) => String(a[k]).localeCompare(String(b[k])) * roleSort.dir);
+}
+function paintRoles() {
   const cell = (s: string) => (s ? escH(s).replace(/; /g, "<br>") : "—");
+  const rows = currentRoleRows();
+  $("roleBody").innerHTML = rows.map((r) =>
+    `<tr data-node="${escH(r.id)}" style="cursor:pointer;border-top:1px solid #eee">` +
+    `<td style="padding:3px"><b>${escH(shorten(r.label, 24))}</b><br><span class="id">${escH(r.id)}</span></td>` +
+    `<td style="padding:3px;color:#a13">${cell(r.asCause)}</td><td style="padding:3px;color:#36a">${cell(r.asEffect)}</td>` +
+    `<td style="padding:3px;color:#2a2">${cell(r.dependsOn)}</td><td style="padding:3px;color:#777">${cell(r.usedBy)}</td>` +
+    `<td style="padding:3px">${r.flags ? r.flags.split("; ").map((f) => `<span class="tag">${escH(f)}</span>`).join("") : ""}</td></tr>`).join("");
+  ($("roleCount") as HTMLElement).textContent = `${rows.length} 件`;
+}
+function renderRolesTable() {
+  if (!lastGraph) { $("viewRoles").innerHTML = '<span class="muted">先に Run してください。</span>'; return; }
+  buildRoleRows();
   const head = ["data-id / ラベル", "原因→結果", "←結果の原因", "依存元", "利用先", "診断"];
-  let h = `<div style="margin-bottom:6px"><input id="roleSearch" placeholder="🔍 検索 (label/data-id/役割)" style="width:60%;padding:3px"> <button id="roleCsv">CSV ⬇</button> <span class="muted" id="roleCount"></span></div>`;
-  h += `<table style="border-collapse:collapse;width:100%"><tr style="background:#eef">` + head.map((c) => `<th style="text-align:left;padding:3px">${c}</th>`).join("") + "</tr>";
-  for (const r of roleRows) {
-    h += `<tr data-node="${escH(r.id)}" data-s="${escH(r.search)}" style="cursor:pointer;border-top:1px solid #eee">` +
-      `<td style="padding:3px"><b>${escH(shorten(r.label, 24))}</b><br><span class="id">${escH(r.id)}</span></td>` +
-      `<td style="padding:3px;color:#a13">${cell(r.asCause)}</td><td style="padding:3px;color:#36a">${cell(r.asEffect)}</td>` +
-      `<td style="padding:3px;color:#2a2">${cell(r.dependsOn)}</td><td style="padding:3px;color:#777">${cell(r.usedBy)}</td>` +
-      `<td style="padding:3px">${r.flags ? r.flags.split("; ").map((f) => `<span class="tag">${escH(f)}</span>`).join("") : ""}</td></tr>`;
-  }
-  $("viewRoles").innerHTML = h + "</table>";
-  let roleQuery = "";
-  const count = () => { ($("roleCount") as HTMLElement).textContent = `${[...$("viewRoles").querySelectorAll("tr[data-node]")].filter((r) => !(r as HTMLElement).hidden).length} 件`; };
-  ($("roleSearch") as HTMLInputElement).addEventListener("input", (e) => {
-    roleQuery = (e.target as HTMLInputElement).value.toLowerCase();
-    for (const tr of $("viewRoles").querySelectorAll("tr[data-node]")) (tr as HTMLElement).hidden = !!roleQuery && !(tr.getAttribute("data-s") ?? "").includes(roleQuery);
-    count();
+  const th = head.map((c, i) => `<th data-col="${i}" style="text-align:left;padding:3px;cursor:pointer;background:#eef">${c}${roleSort.col === i ? (roleSort.dir === 1 ? " ▲" : " ▼") : ""}</th>`).join("");
+  $("viewRoles").innerHTML =
+    `<div style="margin-bottom:6px"><input id="roleSearch" placeholder="🔍 検索" style="width:55%;padding:3px"> <button id="roleCsv">CSV ⬇</button> <span class="muted" id="roleCount"></span></div>` +
+    `<table style="border-collapse:collapse;width:100%"><thead><tr id="roleHead">${th}</tr></thead><tbody id="roleBody"></tbody></table>`;
+  ($("roleSearch") as HTMLInputElement).value = roleQuery;
+  ($("roleSearch") as HTMLInputElement).addEventListener("input", (e) => { roleQuery = (e.target as HTMLInputElement).value.toLowerCase(); paintRoles(); });
+  $("roleHead").addEventListener("click", (e) => {
+    const t = (e.target as HTMLElement).closest("th[data-col]"); if (!t) return;
+    const col = Number(t.getAttribute("data-col"));
+    roleSort = { col, dir: roleSort.col === col ? (roleSort.dir === 1 ? -1 : 1) : 1 };
+    renderRolesTable();
   });
   ($("roleCsv") as HTMLButtonElement).addEventListener("click", () => {
-    const esc = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
-    // (f) 検索フィルタに一致する行だけ CSV 化
-    const rows = roleQuery ? roleRows.filter((r) => r.search.includes(roleQuery)) : roleRows;
+    const q = (s: string) => `"${(s ?? "").replace(/"/g, '""')}"`;
+    const rows = currentRoleRows(); // (f) 検索/ソート結果のみ
     const csv = ["data-id,label,asCause,asEffect,dependsOn,usedBy,flags",
-      ...rows.map((r) => [r.id, r.label, r.asCause, r.asEffect, r.dependsOn, r.usedBy, r.flags].map(esc).join(","))].join("\n");
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-    a.download = roleQuery ? `roles-${roleQuery.replace(/[^a-z0-9]+/g, "_").slice(0, 20)}.csv` : "roles.csv";
-    a.click(); URL.revokeObjectURL(a.href);
+      ...rows.map((r) => [r.id, r.label, r.asCause, r.asEffect, r.dependsOn, r.usedBy, r.flags].map(q).join(","))].join("\n");
+    downloadText(roleQuery ? `roles-${roleQuery.replace(/[^a-z0-9]+/g, "_").slice(0, 20)}.csv` : "roles.csv", csv, "text/csv");
   });
-  count();
+  paintRoles();
 }
 function showTab(roles: boolean) {
   $("viewGraph").hidden = roles;
