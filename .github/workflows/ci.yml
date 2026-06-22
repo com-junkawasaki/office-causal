@@ -15,12 +15,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      # optional の @huggingface/transformers (大きい ONNX ランタイム) は型チェック/ビルドに不要
-      # (動的 import のため)。CI を軽量・堅牢にするため省略する。
-      - run: npm ci --omit=optional
+      # Vite(rolldown) はプラットフォーム固有のネイティブ binding を optionalDependencies
+      # として持つため --omit=optional は使えない (binding が入らず vite build が失敗)。
+      # @huggingface/transformers も optional だが CDN external なのでバンドルされない。
+      - run: npm ci
       - name: Typecheck (library)
         run: npm run check
       - name: Build (library)
         run: npm run build
-      - name: Build (web demo)
+      - name: Build (web demo · Vite/Svelte)
         run: npm run build:web

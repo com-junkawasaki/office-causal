@@ -28,8 +28,9 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      # optional の @huggingface/transformers は web デモが CDN(importmap) から読むため不要
-      - run: npm ci --omit=optional
+      # Vite(rolldown) のネイティブ binding が optionalDependencies のため --omit=optional 不可。
+      # @huggingface/transformers は optional だが CDN external でバンドルされない。
+      - run: npm ci
       # Svelte/Vite デモは dist/src/* (ライブラリビルド成果) を import するため先に build が必要
       - name: Build library (→ dist/)
         run: npm run build
