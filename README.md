@@ -248,6 +248,8 @@ fs.writeFileSync("tn.svg", renderTensorNetworkSvg(tn));
 - [ADR-0002](docs/adr/0002-local-embeddings.md) — transformers.js local model for edge weights & tagging
 - [ADR-0003](docs/adr/0003-edge-llm-tiering.md) — edge-LLM tiering (embedding → local Gemma 4/WebGPU adjudication + verify), cloud-free, with measurements
 - [ADR-0004](docs/adr/0004-ooxml-embedding.md) — non-destructive OOXML embedding (OPC-compliant part / attrs / bookmarks / JSONL / diff / deep-link)
+- [ADR-0005](docs/adr/0005-tensor-network.md) — corpus as a 4-layer tensor network (Document → Page → Object → Causal; bonds with χ; cross-document causes)
+- [ADR-0006](docs/adr/0006-browser-demo-stack.md) — browser demo on Svelte + Vite, GitHub Pages, transparent WebGPU→WASM fallback, transformers external via importmap
 
 ---
 
