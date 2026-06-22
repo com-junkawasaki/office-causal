@@ -33,6 +33,11 @@
       table { border-collapse: collapse; width: 100%; font-size: 0.9rem; margin: 0.5rem 0; }
       th, td { border: 1px solid var(--line); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
       th { background: #f2f6fb; }
+      .examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem; margin: 0.8rem 0; }
+      .examples figure { margin: 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; overflow: hidden; }
+      .examples img { display: block; width: 100%; height: 220px; object-fit: contain; background: #fff; padding: 6px; }
+      .examples figcaption { font-size: 0.82rem; color: var(--muted); padding: 0.5rem 0.7rem 0.7rem; border-top: 1px solid var(--line); }
+      @media (max-width: 720px) { .examples { grid-template-columns: 1fr; } }
       footer { margin: 3rem 0 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.88rem; }
       a { color: var(--accent); }
       @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 1.7rem; } }
@@ -94,6 +99,14 @@ office-causal embed    report.pptx --analysis      # → report.ocz.pptx (graph 
 office-causal diagnose report.ocz.pptx --gemma     # isolated / not-holding / notation / concept-jumps
 office-causal consult  report.ocz.pptx --mece --svg sowhat.svg
 office-causal locate   report.ocz.pptx &lt;data-id&gt;   # deep-link an element</code></pre>
+
+      <h2>Output examples — diagnosis SVG</h2>
+      <p class="lead"><code>diagnose --svg out.svg</code> renders a self-contained annotated SVG. Layout adapts to the source: docx/text uses a topological-DAG layout, xlsx places cells on the <code>Sheet!A1</code> grid, pptx reproduces the slide using shape <code>bbox</code>. Edges: <span style="color:#2a8a2a">green = holds</span>, <span style="color:#d22">red dashed = not-holding</span>; <code>+/-</code> = polarity; gray box = isolated.</p>
+      <div class="examples">
+        <figure><a href="./examples/diagnosis-docx.svg"><img src="./examples/diagnosis-docx.svg" alt="docx diagnosis SVG — DAG layout" loading="lazy" /></a><figcaption><b>docx / text</b> — topological DAG (layering + horizontal spread + edge routing)</figcaption></figure>
+        <figure><a href="./examples/diagnosis-xlsx.svg"><img src="./examples/diagnosis-xlsx.svg" alt="xlsx diagnosis SVG — cell grid" loading="lazy" /></a><figcaption><b>xlsx</b> — <code>Sheet!A1</code> cell grid</figcaption></figure>
+        <figure><a href="./examples/diagnosis-pptx.svg"><img src="./examples/diagnosis-pptx.svg" alt="pptx diagnosis SVG — slide bbox" loading="lazy" /></a><figcaption><b>pptx</b> — shape <code>bbox</code> (slide layout)</figcaption></figure>
+      </div>
 
       <h2>Edge-LLM tiering (cloud-free)</h2>
       <table>

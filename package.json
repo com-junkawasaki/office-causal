@@ -21,6 +21,7 @@
     "prepublishOnly": "tsc -p tsconfig.json",
     "build:web": "tsc -p tsconfig.web.json",
     "serve:web": "python3 -m http.server 8000",
+    "gen:svg-samples": "node scripts/gen-svg-samples.mjs",
     "check": "tsc -p tsconfig.json --noEmit",
     "demo": "node --import tsx examples/analyze.ts",
     "eval:embed": "node --import tsx eval/embed-bench.ts",

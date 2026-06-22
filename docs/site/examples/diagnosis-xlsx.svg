@@ -1,0 +1,38 @@
+<svg viewBox="0 0 640 404" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="background:#fff">
+<defs>
+    <marker id="aG" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#2a8a2a"/></marker>
+    <marker id="aR" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#d22"/></marker>
+    <marker id="aP" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#83c"/></marker>
+  </defs>
+<line x1="220.0" y1="160.0" x2="220.0" y2="168.0" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="226.0" y="164.0" font-size="12" fill="#2a8a2a" font-weight="bold">+</text>
+<line x1="220.0" y1="206.0" x2="220.0" y2="214.0" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="226.0" y="210.0" font-size="12" fill="#2a8a2a" font-weight="bold">+</text>
+<line x1="220.0" y1="252.0" x2="220.0" y2="260.0" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="226.0" y="256.0" font-size="12" fill="#2a8a2a" font-weight="bold">-</text>
+<line x1="220.0" y1="279.0" x2="220.0" y2="95.0" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="226.0" y="187.0" font-size="12" fill="#2a8a2a" font-weight="bold">+</text>
+<path d="M220.0,114.0 C146.8,177.4 146.8,242.6 220.0,306.0" fill="none" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="165.1" y="210.0" font-size="12" fill="#2a8a2a" font-weight="bold">+</text>
+<path d="M220.0,206.0 C160.8,239.0 160.8,273.0 220.0,306.0" fill="none" stroke="#d22" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#aR)"/>
+<text x="175.6" y="256.0" font-size="12" fill="#d22" font-weight="bold">-</text>
+<rect x="160.0" y="76.0" width="120.0" height="38.0" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="166.0" y="99.0" font-size="11" fill="#222">売上 1200</text>
+<rect x="160.0" y="122.0" width="120.0" height="38.0" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="166.0" y="145.0" font-size="11" fill="#222">原材料費 520</text>
+<rect x="160.0" y="168.0" width="120.0" height="38.0" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="166.0" y="191.0" font-size="11" fill="#222">製造コスト 760</text>
+<rect x="160.0" y="214.0" width="120.0" height="38.0" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="166.0" y="237.0" font-size="11" fill="#222">販売価格 +8%</text>
+<rect x="160.0" y="260.0" width="120.0" height="38.0" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="166.0" y="283.0" font-size="11" fill="#222">販売数量 -6%</text>
+<rect x="160.0" y="306.0" width="120.0" height="38.0" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="166.0" y="329.0" font-size="11" fill="#222">営業利益 90</text>
+<g font-size="11">
+    <text x="10" y="396" fill="#2a8a2a">━ 因果(成立)</text>
+    <text x="95" y="396" fill="#d22">╌ 成立しない</text>
+    <text x="185" y="396" fill="#83c">╌⚡ 概念のとび</text>
+    <text x="285" y="396" fill="#e89400">╌ 表記揺れ</text>
+    <text x="365" y="396" fill="#999">▢ 独立</text>
+  </g>
+</svg>

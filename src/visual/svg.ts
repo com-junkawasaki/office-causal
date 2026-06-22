@@ -2,7 +2,7 @@
  * 因果グラフを「スクリーンショット風」の注釈付き SVG として描画する。
  *  - pptx: シェイプの bbox(EMU) を実配置（スライド版面の再現）
  *  - xlsx: Sheet!A1 をグリッド配置
- *  - docx/その他: 段落を縦並び
+ *  - docx/その他: causes による簡易 DAG レイアウト（トポロジカル層化 + 層内バリセンタ整列）
  * 診断 (diagnose) のカテゴリで色分け:
  *  isolated=灰 / 表記揺れ=橙 / それ以外=青、causes=緑実線・成立しない=赤破線・概念のとび=紫破線。
  */
@@ -25,7 +25,7 @@ function colLetterToIndex(s: string): number {
 /** 描画対象ノードの座標を決める。 */
 function layout(g: CausalGraph, ids: DataId[]): Map<DataId, Box> {
   const pos = new Map<DataId, Box>();
-  let schematicRow = 0;
+  const schematic: DataId[] = [];
   for (const id of ids) {
     const m = g.nodes.get(id)!.meta;
     if (m.bbox && m.bbox.unit === "emu") {
@@ -34,11 +34,83 @@ function layout(g: CausalGraph, ids: DataId[]): Map<DataId, Box> {
       const mm = (m.label ?? "").match(/!([A-Z]+)(\d+)/)!;
       pos.set(id, { x: 30 + colLetterToIndex(mm[1]!) * 130, y: 30 + (Number(mm[2]) - 1) * 46, w: 120, h: 38 });
     } else {
-      pos.set(id, { x: 40, y: 30 + schematicRow * 52, w: 420, h: 42 });
-      schematicRow++;
+      schematic.push(id); // docx/段落/entity: まとめて DAG レイアウト
     }
   }
+  if (schematic.length) layoutDag(g, schematic, pos);
   return pos;
+}
+
+/**
+ * causes エッジから簡易 DAG レイアウトを組む（縦に因果が流れる層化図）。
+ *  1) 各ノードの「層」= 始点からの最長距離（トポロジカル層化, 閉路は後退辺を無視）。
+ *  2) 層内はバリセンタ（先行ノードの平均 x）で並べ替えて交差を減らす。
+ *  3) 各層を水平に中央寄せで横展開。孤立ノードは最下段に別バンドで配置。
+ */
+function layoutDag(g: CausalGraph, ids: DataId[], pos: Map<DataId, Box>): void {
+  const boxW = 190, boxH = 46, gapX = 26, rowPitch = 92, mTop = 30, mLeft = 40;
+  const idset = new Set(ids);
+  const incoming = new Map<DataId, DataId[]>();
+  const outgoing = new Map<DataId, DataId[]>();
+  for (const id of ids) { incoming.set(id, []); outgoing.set(id, []); }
+  for (const e of g.edges) {
+    if (e.kind !== "causes" || e.from === e.to) continue;
+    if (!idset.has(e.from) || !idset.has(e.to)) continue;
+    outgoing.get(e.from)!.push(e.to);
+    incoming.get(e.to)!.push(e.from);
+  }
+
+  // 1) 最長距離による層付け（閉路は onstack 後退辺を無視して停止）
+  const layer = new Map<DataId, number>();
+  const state = new Map<DataId, 0 | 1 | 2>();
+  const depth = (id: DataId): number => {
+    const memo = layer.get(id);
+    if (memo !== undefined) return memo;
+    state.set(id, 1);
+    let d = 0;
+    for (const p of incoming.get(id)!) {
+      if (state.get(p) === 1) continue; // 後退辺（閉路）は無視
+      d = Math.max(d, depth(p) + 1);
+    }
+    state.set(id, 2);
+    layer.set(id, d);
+    return d;
+  };
+  const connected = ids.filter((id) => incoming.get(id)!.length || outgoing.get(id)!.length);
+  const isolated = ids.filter((id) => !incoming.get(id)!.length && !outgoing.get(id)!.length);
+  for (const id of connected) depth(id);
+
+  // 層ごとに集約
+  const byLayer = new Map<number, DataId[]>();
+  let maxLayer = 0;
+  for (const id of connected) {
+    const L = layer.get(id)!;
+    maxLayer = Math.max(maxLayer, L);
+    (byLayer.get(L) ?? byLayer.set(L, []).get(L)!).push(id);
+  }
+  if (isolated.length) byLayer.set(maxLayer + 1, isolated); // 孤立は最下段バンド
+
+  // 中央寄せ用に最大行幅を先に算出
+  let maxRowW = 0;
+  for (const [, row] of byLayer) maxRowW = Math.max(maxRowW, row.length * boxW + (row.length - 1) * gapX);
+
+  // 2)(3) 層を上から順に: バリセンタ整列 → 横展開（先行層は配置済みなので参照可）
+  const cx = (id: DataId) => { const b = pos.get(id); return b ? b.x + b.w / 2 : 0; };
+  for (let L = 0; L <= maxLayer + (isolated.length ? 1 : 0); L++) {
+    const row = byLayer.get(L);
+    if (!row) continue;
+    if (L > 0) {
+      row.sort((a, b) => {
+        const pa = incoming.get(a) ?? [], pb = incoming.get(b) ?? [];
+        const ba = pa.length ? pa.reduce((s, p) => s + cx(p), 0) / pa.length : Infinity;
+        const bb = pb.length ? pb.reduce((s, p) => s + cx(p), 0) / pb.length : Infinity;
+        return ba - bb;
+      });
+    }
+    const rowW = row.length * boxW + (row.length - 1) * gapX;
+    const startX = mLeft + (maxRowW - rowW) / 2;
+    row.forEach((id, i) => pos.set(id, { x: startX + i * (boxW + gapX), y: mTop + L * rowPitch, w: boxW, h: boxH }));
+  }
 }
 
 export function renderDiagnosisSvg(g: CausalGraph, diag: Diagnosis): string {
@@ -78,7 +150,9 @@ export function renderDiagnosisSvg(g: CausalGraph, diag: Diagnosis): string {
     }
   }
 
-  // causes エッジ
+  // causes エッジ。下向き（因果が下層へ流れる）なら箱の下端→上端で接続し、
+  // 層を跨ぐ長いエッジは中間の箱を避けて横にふくらませる（簡易迂回ルーティング）。
+  const W2 = W / 2;
   for (const e of g.edges) {
     if (e.kind !== "causes") continue;
     const a = pos.get(e.from), b = pos.get(e.to);
@@ -88,9 +162,26 @@ export function renderDiagnosisSvg(g: CausalGraph, diag: Diagnosis): string {
     const color = jump ? "#83c" : bad ? "#d22" : "#2a8a2a";
     const marker = jump ? "aP" : bad ? "aR" : "aG";
     const dash = jump || bad ? ' stroke-dasharray="6 4"' : "";
-    out.push(`<line x1="${ca.x.toFixed(1)}" y1="${ca.y.toFixed(1)}" x2="${cb.x.toFixed(1)}" y2="${cb.y.toFixed(1)}" stroke="${color}" stroke-width="2"${dash} marker-end="url(#${marker})"/>`);
-    const mid = { x: (ca.x + cb.x) / 2, y: (ca.y + cb.y) / 2 };
-    out.push(`<text x="${mid.x.toFixed(1)}" y="${mid.y.toFixed(1)}" font-size="12" fill="${color}" font-weight="bold">${esc(e.causal?.polarity ?? "")}${jump ? " ⚡" : ""}</text>`);
+
+    const down = cb.y - ca.y > a.h * 0.5;
+    const sx = down ? ca.x : ca.x, sy = down ? a.y + a.h : ca.y; // 始点（下向きは下端中央）
+    const tx = cb.x, ty = down ? b.y : cb.y;                      // 終点（下向きは上端中央）
+    let labelX: number, labelY: number;
+    if (down && ty - sy > 80) {
+      // 層跨ぎ: 箱列の外側（広い方）へふくらむ 3 次ベジエで迂回
+      const side = (sx + tx) / 2 <= W2 ? -1 : 1;
+      const off = side * (44 + 14 * ((ty - sy) / 92));
+      const cx1 = sx + off, cy1 = sy + (ty - sy) * 0.33;
+      const cx2 = tx + off, cy2 = sy + (ty - sy) * 0.67;
+      out.push(`<path d="M${sx.toFixed(1)},${sy.toFixed(1)} C${cx1.toFixed(1)},${cy1.toFixed(1)} ${cx2.toFixed(1)},${cy2.toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)}" fill="none" stroke="${color}" stroke-width="2"${dash} marker-end="url(#${marker})"/>`);
+      labelX = (sx + tx) / 2 + off * 0.75;
+      labelY = (sy + ty) / 2;
+    } else {
+      out.push(`<line x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="${color}" stroke-width="2"${dash} marker-end="url(#${marker})"/>`);
+      labelX = (sx + tx) / 2 + 6;
+      labelY = (sy + ty) / 2;
+    }
+    out.push(`<text x="${labelX.toFixed(1)}" y="${labelY.toFixed(1)}" font-size="12" fill="${color}" font-weight="bold">${esc(e.causal?.polarity ?? "")}${jump ? " ⚡" : ""}</text>`);
   }
 
   // ノード
@@ -101,8 +192,9 @@ export function renderDiagnosisSvg(g: CausalGraph, diag: Diagnosis): string {
     const fill = iso ? "#eee" : variant ? "#fff3e0" : "#e8f0ff";
     const stroke = iso ? "#999" : variant ? "#e89400" : "#3a6";
     out.push(`<rect x="${b.x.toFixed(1)}" y="${b.y.toFixed(1)}" width="${b.w.toFixed(1)}" height="${b.h.toFixed(1)}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${variant ? 2 : 1}"/>`);
-    const label = short(m.text ?? m.label ?? m.kind);
-    out.push(`<text x="${(b.x + 5).toFixed(1)}" y="${(b.y + 16).toFixed(1)}" font-size="11" fill="#222">${esc(label)}</text>`);
+    // 箱幅に合わせて切り詰め（約 11px/全角）。複数列レイアウトでもはみ出さない。
+    const label = short(m.text ?? m.label ?? m.kind, Math.max(6, Math.floor((b.w - 12) / 11)));
+    out.push(`<text x="${(b.x + 6).toFixed(1)}" y="${(b.y + b.h / 2 + 4).toFixed(1)}" font-size="11" fill="#222">${esc(label)}</text>`);
   }
 
   // 凡例

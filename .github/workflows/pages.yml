@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir -p _site/demo
           cp -r web/. _site/demo/
-          cp docs/site/index.html _site/index.html
+          cp -r docs/site/. _site/     # ランディング(index.html) + examples/*.svg
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

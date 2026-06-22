@@ -1,0 +1,32 @@
+<svg viewBox="0 0 952 703" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="background:#fff">
+<defs>
+    <marker id="aG" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#2a8a2a"/></marker>
+    <marker id="aR" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#d22"/></marker>
+    <marker id="aP" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0L8,3L0,6Z" fill="#83c"/></marker>
+  </defs>
+<path d="M240.0,307.2 C162.4,380.1 402.4,455.1 480.0,528.0" fill="none" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="301.8" y="417.6" font-size="12" fill="#2a8a2a" font-weight="bold">+</text>
+<line x1="624.0" y1="307.2" x2="624.0" y2="355.2" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="630.0" y="331.2" font-size="12" fill="#2a8a2a" font-weight="bold">-</text>
+<line x1="624.0" y1="470.4" x2="480.0" y2="528.0" stroke="#2a8a2a" stroke-width="2" marker-end="url(#aG)"/>
+<text x="558.0" y="499.2" font-size="12" fill="#2a8a2a" font-weight="bold">+</text>
+<line x1="240.0" y1="307.2" x2="624.0" y2="355.2" stroke="#d22" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#aR)"/>
+<text x="438.0" y="331.2" font-size="12" fill="#d22" font-weight="bold">+</text>
+<rect x="48.0" y="28.8" width="864.0" height="76.8" rx="4" fill="#eee" stroke="#999" stroke-width="1"/>
+<text x="54.0" y="71.2" font-size="11" fill="#222">Q1 業績サマリ</text>
+<rect x="48.0" y="172.8" width="384.0" height="134.4" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="54.0" y="244.0" font-size="11" fill="#222">値上げで販売数量が減少</text>
+<rect x="432.0" y="172.8" width="384.0" height="134.4" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="438.0" y="244.0" font-size="11" fill="#222">競合の大規模値下げ</text>
+<rect x="432.0" y="355.2" width="384.0" height="115.2" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="438.0" y="416.8" font-size="11" fill="#222">市場シェアが低下</text>
+<rect x="192.0" y="528.0" width="576.0" height="115.2" rx="4" fill="#e8f0ff" stroke="#3a6" stroke-width="1"/>
+<text x="198.0" y="589.6" font-size="11" fill="#222">営業利益が前年から悪化</text>
+<g font-size="11">
+    <text x="10" y="695.2" fill="#2a8a2a">━ 因果(成立)</text>
+    <text x="95" y="695.2" fill="#d22">╌ 成立しない</text>
+    <text x="185" y="695.2" fill="#83c">╌⚡ 概念のとび</text>
+    <text x="285" y="695.2" fill="#e89400">╌ 表記揺れ</text>
+    <text x="365" y="695.2" fill="#999">▢ 独立</text>
+  </g>
+</svg>
