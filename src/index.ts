@@ -29,6 +29,11 @@ export { consult, type ConsultResult } from "./analyze/consult.js";
 export { mece, type MeceResult } from "./analyze/mece.js";
 export { similarPairs, lshCandidatePairs } from "./analyze/ann.js";
 export { renderDiagnosisSvg, overlayCausal, overlayCharBoxes, renderConsultSvg } from "./visual/svg.js";
+export {
+  toTensorNetwork, tensorNetworkToJson, TENSOR_LAYERS,
+  type TensorNetwork, type TensorNode, type TensorBond, type TensorLayer,
+} from "./tensor/network.js";
+export { renderTensorNetworkSvg } from "./visual/tensor-svg.js";
 export { renderInteractiveHtml, buildNodeInfo, nodeRoles, type NodeInfo } from "./visual/interactive.js";
 export {
   renderDrawingmlSvg, isDrawingmlAvailable, pythonDrawingmlRenderer, renderSlideCausalSvg, resolveSlideRenderer,

@@ -211,7 +211,38 @@ npm run build && npm run build:web && npm run serve:web   # Chrome/Edge → web/
 
 ---
 
-## 9. Design decisions (ADR)
+## 9. Tensor network — Document → Page → Object → Causal
+
+A whole corpus lifts into one 4-layer **tensor network** (`src/tensor/network.ts`):
+
+```
+Document ─contains→ Page (slide/sheet/section) ─contains→ Object (shape/cell/paragraph)
+         ─mentions→ Causal (entity/claim) ─causes→ Causal …
+```
+
+- Each node = a tensor; **rank** = number of incident bonds. Each edge = a **bond** with dimension χ (structural `contains`/`references`/`derives-from`/`mentions` = 1; **`causes` = 3** to encode polarity `+/-/?`). Physical index dim = a node's tag count.
+- `causes` and same-concept `references` bonds connect entities **across documents**, so the corpus forms a single causal cluster. `toTensorNetwork(graph)` reports `perLayer`, `maxRank`, `χ-params` (Σ physDim·Π χ), `causalComponents`, `crossDocCauses` and a min-degree contraction order (structure only — no numeric contraction).
+- `renderTensorNetworkSvg(tn)` draws the 4 bands; cross-document `causes` are bold dashed.
+
+```ts
+import { analyze, toTensorNetwork, renderTensorNetworkSvg } from "@com-junkawasaki/office-causal";
+const tn = toTensorNetwork(graph);          // CausalGraph → TensorNetwork
+fs.writeFileSync("tn.svg", renderTensorNetworkSvg(tn));
+```
+
+**Sample corpus** — `npm run build && npm run gen:sample-data` writes real OOXML (round-trip-verified by the parser) + fixtures to [`examples/sample-data/`](examples/sample-data):
+
+| files | pages each | objects | entities |
+|---|---|---|---|
+| 3 × `.pptx` | 10 slides | 30 shapes | — |
+| 3 × `.docx` | 3 pages | paragraphs | — |
+| 3 × `.xlsx` | 3 sheets | cells (+ formulas) | — |
+
+→ tensor network of **210 nodes** (doc 9 / page 48 / object 114 / causal 39), 339 bonds, **1 causal component**, 5 cross-document causes. Live example: [tensor-network.svg](https://com-junkawasaki.github.io/office-causal/examples/tensor-network.svg).
+
+---
+
+## 10. Design decisions (ADR)
 
 - [ADR-0001](docs/adr/0001-causal-graph-ir.md) — single CausalGraph IR / deterministic-vs-LLM split / content-addressed data-id / evidence-required causal edges
 - [ADR-0002](docs/adr/0002-local-embeddings.md) — transformers.js local model for edge weights & tagging

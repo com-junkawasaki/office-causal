@@ -14,6 +14,7 @@ export type NodeKind =
   // 構造ノード (決定論的に確定)
   | "document"
   | "slide"
+  | "section" // docx の論理ページ/節 (sectPr / 改ページ区切り)
   | "shape"
   | "sheet"
   | "cell"

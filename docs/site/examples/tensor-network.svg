@@ -1,0 +1,664 @@
+<svg viewBox="0 0 4788 610" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="background:#fff">
+<defs>
+    <marker id="tC" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0L7,3L0,6Z" fill="#2a8a2a"/></marker>
+    <marker id="tR" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0L7,3L0,6Z" fill="#d22"/></marker>
+  </defs>
+<text x="8" y="46" font-size="12" fill="#888" font-weight="bold">Document</text>
+<text x="8" y="176" font-size="12" fill="#888" font-weight="bold">Page (slide/sheet/section)</text>
+<text x="8" y="316" font-size="12" fill="#888" font-weight="bold">Object (shape/cell/paragraph)</text>
+<text x="8" y="476" font-size="12" fill="#888" font-weight="bold">Causal (entity/claim)</text>
+<line x1="150" y1="90" x2="89" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="89" y1="212" x2="70" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="70" y1="344" x2="114" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="89" y1="212" x2="96" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="96" y1="344" x2="234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="159" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="159" y1="212" x2="122" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="122" y1="344" x2="354" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="159" y1="212" x2="148" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="148" y1="344" x2="474" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="229" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="229" y1="212" x2="174" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="174" y1="344" x2="594" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="229" y1="212" x2="200" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="200" y1="344" x2="714" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="299" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="299" y1="212" x2="226" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="226" y1="344" x2="114" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="299" y1="212" x2="252" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="252" y1="344" x2="234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="369" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="369" y1="212" x2="278" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="278" y1="344" x2="354" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="369" y1="212" x2="304" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="304" y1="344" x2="474" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="439" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="439" y1="212" x2="330" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="330" y1="344" x2="594" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="439" y1="212" x2="356" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="356" y1="344" x2="714" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="509" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="509" y1="212" x2="382" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="382" y1="344" x2="114" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="509" y1="212" x2="408" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="408" y1="344" x2="234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="579" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="579" y1="212" x2="434" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="434" y1="344" x2="354" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="579" y1="212" x2="460" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="460" y1="344" x2="474" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="649" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="649" y1="212" x2="486" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="486" y1="344" x2="594" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="649" y1="212" x2="512" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="512" y1="344" x2="714" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="150" y1="90" x2="719" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="719" y1="212" x2="538" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="538" y1="344" x2="114" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="719" y1="212" x2="564" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="564" y1="344" x2="234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M114,490 Q174,552.4 234,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M234,490 Q294,552.4 354,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M354,490 Q414,552.4 474,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<path d="M474,490 Q534,552.4 594,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M594,490 Q654,552.4 714,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M234,490 Q474,590 714,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<line x1="350" y1="90" x2="789" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="789" y1="212" x2="590" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="590" y1="344" x2="834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="789" y1="212" x2="616" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="616" y1="344" x2="954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="859" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="859" y1="212" x2="642" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="642" y1="344" x2="1074" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="859" y1="212" x2="668" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="668" y1="344" x2="1194" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="929" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="929" y1="212" x2="694" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="694" y1="344" x2="1314" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="929" y1="212" x2="720" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="720" y1="344" x2="1434" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="999" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="999" y1="212" x2="746" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="746" y1="344" x2="834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="999" y1="212" x2="772" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="772" y1="344" x2="954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="1069" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1069" y1="212" x2="798" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="798" y1="344" x2="1074" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1069" y1="212" x2="824" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="824" y1="344" x2="1194" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="1139" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1139" y1="212" x2="850" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="850" y1="344" x2="1314" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1139" y1="212" x2="876" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="876" y1="344" x2="1434" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="1209" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1209" y1="212" x2="902" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="902" y1="344" x2="834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1209" y1="212" x2="928" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="928" y1="344" x2="954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="1279" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1279" y1="212" x2="954" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="954" y1="344" x2="1074" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1279" y1="212" x2="980" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="980" y1="344" x2="1194" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="1349" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1349" y1="212" x2="1006" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1006" y1="344" x2="1314" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1349" y1="212" x2="1032" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1032" y1="344" x2="1434" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="350" y1="90" x2="1419" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1419" y1="212" x2="1058" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1058" y1="344" x2="834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1419" y1="212" x2="1084" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1084" y1="344" x2="954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M1314,490 Q1374,552.4 1434,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M834,490 Q894,552.4 954,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<path d="M954,490 Q1014,552.4 1074,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M1074,490 Q1134,552.4 1194,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M1434,490 Q1314,566.8 1194,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<line x1="550" y1="90" x2="1489" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1489" y1="212" x2="1110" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1110" y1="344" x2="1554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1489" y1="212" x2="1136" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1136" y1="344" x2="1674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1559" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1559" y1="212" x2="1162" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1162" y1="344" x2="1794" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1559" y1="212" x2="1188" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1188" y1="344" x2="1914" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1629" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1629" y1="212" x2="1214" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1214" y1="344" x2="2034" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1629" y1="212" x2="1240" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1240" y1="344" x2="2154" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1699" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1699" y1="212" x2="1266" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1266" y1="344" x2="1554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1699" y1="212" x2="1292" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1292" y1="344" x2="1674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1769" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1769" y1="212" x2="1318" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1318" y1="344" x2="1794" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1769" y1="212" x2="1344" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1344" y1="344" x2="1914" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1839" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1839" y1="212" x2="1370" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1370" y1="344" x2="2034" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1839" y1="212" x2="1396" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1396" y1="344" x2="2154" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1909" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1909" y1="212" x2="1422" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1422" y1="344" x2="1554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1909" y1="212" x2="1448" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1448" y1="344" x2="1674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="1979" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1979" y1="212" x2="1474" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1474" y1="344" x2="1794" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1979" y1="212" x2="1500" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1500" y1="344" x2="1914" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="2049" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2049" y1="212" x2="1526" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1526" y1="344" x2="2034" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2049" y1="212" x2="1552" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1552" y1="344" x2="2154" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="550" y1="90" x2="2119" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2119" y1="212" x2="1578" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1578" y1="344" x2="1554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2119" y1="212" x2="1604" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1604" y1="344" x2="1674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M1554,490 Q1614,552.4 1674,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M1674,490 Q1734,552.4 1794,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M1794,490 Q1854,552.4 1914,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M2034,490 Q2094,552.4 2154,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M1794,490 Q1974,581.2 2154,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<line x1="750" y1="90" x2="2189" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2189" y1="212" x2="1630" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1630" y1="344" x2="2274" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2189" y1="212" x2="1656" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1656" y1="344" x2="2394" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2189" y1="212" x2="1682" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1682" y1="344" x2="2514" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="750" y1="90" x2="2259" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2259" y1="212" x2="1708" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1708" y1="344" x2="2634" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2259" y1="212" x2="1734" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1734" y1="344" x2="2274" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2259" y1="212" x2="1760" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1760" y1="344" x2="2394" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="750" y1="90" x2="2329" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2329" y1="212" x2="1786" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1786" y1="344" x2="2514" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2329" y1="212" x2="1812" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1812" y1="344" x2="2634" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2329" y1="212" x2="1838" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1838" y1="344" x2="2274" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M2634,490 Q2454,581.2 2274,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M2274,490 Q2334,552.4 2394,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M2514,490 Q2454,552.4 2394,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<line x1="950" y1="90" x2="2399" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2399" y1="212" x2="1864" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1864" y1="344" x2="2754" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2399" y1="212" x2="1890" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1890" y1="344" x2="2874" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2399" y1="212" x2="1916" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1916" y1="344" x2="2994" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="950" y1="90" x2="2469" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2469" y1="212" x2="1942" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1942" y1="344" x2="3114" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2469" y1="212" x2="1968" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1968" y1="344" x2="2754" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2469" y1="212" x2="1994" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="1994" y1="344" x2="2874" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="950" y1="90" x2="2539" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2539" y1="212" x2="2020" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2020" y1="344" x2="2994" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2539" y1="212" x2="2046" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2046" y1="344" x2="3114" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2539" y1="212" x2="2072" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2072" y1="344" x2="2754" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M2754,490 Q2814,552.4 2874,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<line x1="1150" y1="90" x2="2609" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2609" y1="212" x2="2098" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2098" y1="344" x2="3234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2609" y1="212" x2="2124" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2124" y1="344" x2="3354" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2609" y1="212" x2="2150" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2150" y1="344" x2="3474" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1150" y1="90" x2="2679" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2679" y1="212" x2="2176" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2176" y1="344" x2="3594" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2679" y1="212" x2="2202" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2202" y1="344" x2="3234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2679" y1="212" x2="2228" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2228" y1="344" x2="3354" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1150" y1="90" x2="2749" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2749" y1="212" x2="2254" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2254" y1="344" x2="3474" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2749" y1="212" x2="2280" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2280" y1="344" x2="3594" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2749" y1="212" x2="2306" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2306" y1="344" x2="3234" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M3234,490 Q3294,552.4 3354,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M3354,490 Q3474,566.8 3594,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M3594,490 Q3534,552.4 3474,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<line x1="1350" y1="90" x2="2819" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2819" y1="212" x2="2332" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2332" y1="344" x2="3714" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2819" y1="212" x2="2358" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2358" y1="344" x2="3834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2819" y1="212" x2="2384" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2384" y1="344" x2="3954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1350" y1="90" x2="2889" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2889" y1="212" x2="2410" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2410" y1="344" x2="3714" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2889" y1="212" x2="2436" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2436" y1="344" x2="3834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2889" y1="212" x2="2462" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2462" y1="344" x2="3954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1350" y1="90" x2="2959" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2959" y1="212" x2="2488" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2488" y1="344" x2="3714" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2959" y1="212" x2="2514" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2514" y1="344" x2="3834" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="2959" y1="212" x2="2540" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2540" y1="344" x2="3954" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M3714,490 Q3834,566.8 3954,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M3834,490 Q3894,552.4 3954,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<line x1="1550" y1="90" x2="3029" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3029" y1="212" x2="2566" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2566" y1="344" x2="4074" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3029" y1="212" x2="2592" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2592" y1="344" x2="4194" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3029" y1="212" x2="2618" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2618" y1="344" x2="4314" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1550" y1="90" x2="3099" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3099" y1="212" x2="2644" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2644" y1="344" x2="4074" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3099" y1="212" x2="2670" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2670" y1="344" x2="4194" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3099" y1="212" x2="2696" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2696" y1="344" x2="4314" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1550" y1="90" x2="3169" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3169" y1="212" x2="2722" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2722" y1="344" x2="4074" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3169" y1="212" x2="2748" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2748" y1="344" x2="4194" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3169" y1="212" x2="2774" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2774" y1="344" x2="4314" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M4074,490 Q4194,566.8 4314,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M4194,490 Q4254,552.4 4314,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<line x1="1750" y1="90" x2="3239" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3239" y1="212" x2="2800" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2800" y1="344" x2="4434" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3239" y1="212" x2="2826" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2826" y1="344" x2="4554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3239" y1="212" x2="2852" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2852" y1="344" x2="4674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1750" y1="90" x2="3309" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3309" y1="212" x2="2878" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2878" y1="344" x2="4434" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3309" y1="212" x2="2904" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2904" y1="344" x2="4554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3309" y1="212" x2="2930" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2930" y1="344" x2="4674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="1750" y1="90" x2="3379" y2="190" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3379" y1="212" x2="2956" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2956" y1="344" x2="4434" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3379" y1="212" x2="2982" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="2982" y1="344" x2="4554" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<line x1="3379" y1="212" x2="3008" y2="330" stroke="#ccc" stroke-width="0.8"/>
+<line x1="3008" y1="344" x2="4674" y2="490" stroke="#b9c" stroke-width="0.9"/>
+<path d="M4434,490 Q4494,552.4 4554,490" fill="none" stroke="#d22" stroke-width="1.4" marker-end="url(#tR)"/>
+<path d="M4554,490 Q4614,552.4 4674,490" fill="none" stroke="#2a8a2a" stroke-width="1.4" marker-end="url(#tC)"/>
+<path d="M594,490 Q2274,590 3954,490" fill="none" stroke="#2a8a2a" stroke-width="2.4" stroke-dasharray="7 4" marker-end="url(#tC)"/>
+<path d="M2754,490 Q1434,590 114,490" fill="none" stroke="#2a8a2a" stroke-width="2.4" stroke-dasharray="7 4" marker-end="url(#tC)"/>
+<path d="M4194,490 Q2634,590 1074,490" fill="none" stroke="#2a8a2a" stroke-width="2.4" stroke-dasharray="7 4" marker-end="url(#tC)"/>
+<path d="M4554,490 Q3414,590 2274,490" fill="none" stroke="#2a8a2a" stroke-width="2.4" stroke-dasharray="7 4" marker-end="url(#tC)"/>
+<path d="M3234,490 Q2514,590 1794,490" fill="none" stroke="#2a8a2a" stroke-width="2.4" stroke-dasharray="7 4" marker-end="url(#tC)"/>
+<line x1="114" y1="512" x2="1674" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1674" y1="512" x2="2874" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="234" y1="512" x2="1434" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1434" y1="512" x2="1794" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1794" y1="512" x2="2514" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="2514" y1="512" x2="3354" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="3354" y1="512" x2="3834" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="354" y1="512" x2="1914" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1914" y1="512" x2="3594" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="3594" y1="512" x2="4434" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="474" y1="512" x2="3474" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="3474" y1="512" x2="4074" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="4074" y1="512" x2="4554" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="594" y1="512" x2="1074" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1074" y1="512" x2="2034" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="2034" y1="512" x2="2274" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="2274" y1="512" x2="3714" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="3714" y1="512" x2="4314" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="4314" y1="512" x2="4674" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="714" y1="512" x2="1194" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1194" y1="512" x2="2154" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="2154" y1="512" x2="2394" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="2394" y1="512" x2="3954" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="834" y1="512" x2="2994" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="954" y1="512" x2="2634" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="2634" y1="512" x2="4194" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1314" y1="512" x2="3114" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="3114" y1="512" x2="3234" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1554" y1="512" x2="2754" y2="490" stroke="#39f" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="60" y="60" width="180" height="30" rx="3" fill="#2a6" stroke="#2a6" stroke-width="0"/>
+<text x="64" y="79" font-size="11" fill="#fff">Q1 決算デッキ</text>
+<rect x="60" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="64" y="505" font-size="9" fill="#223">原材料費</text>
+<rect x="180" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="184" y="505" font-size="9" fill="#223">製造コスト</text>
+<rect x="300" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="304" y="505" font-size="9" fill="#223">販売価格</text>
+<rect x="420" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="424" y="505" font-size="9" fill="#223">販売数量</text>
+<rect x="540" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="544" y="505" font-size="9" fill="#223">売上</text>
+<rect x="660" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="664" y="505" font-size="9" fill="#223">営業利益</text>
+<rect x="60" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="64" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="60" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="86" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="130" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="134" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="112" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="138" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="200" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="204" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="164" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="190" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="270" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="274" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="216" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="242" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="340" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="344" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="268" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="294" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="410" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="414" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="320" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="346" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="480" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="484" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="372" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="398" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="550" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="554" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="424" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="450" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="620" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="624" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="476" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="502" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="690" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<text x="694" y="205" font-size="9" fill="#223">Q1 決算デッキ…</text>
+<rect x="528" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="554" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#2a6" stroke-width="1"/>
+<rect x="260" y="60" width="180" height="30" rx="3" fill="#36c" stroke="#36c" stroke-width="0"/>
+<text x="264" y="79" font-size="11" fill="#fff">Q2 決算デッキ</text>
+<rect x="780" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="784" y="505" font-size="9" fill="#223">競合値下げ</text>
+<rect x="900" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="904" y="505" font-size="9" fill="#223">市場シェア</text>
+<rect x="1020" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1024" y="505" font-size="9" fill="#223">売上</text>
+<rect x="1140" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1144" y="505" font-size="9" fill="#223">営業利益</text>
+<rect x="1260" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1264" y="505" font-size="9" fill="#223">在庫</text>
+<rect x="1380" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1384" y="505" font-size="9" fill="#223">製造コスト</text>
+<rect x="760" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="764" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="580" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="606" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="830" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="834" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="632" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="658" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="900" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="904" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="684" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="710" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="970" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="974" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="736" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="762" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1040" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="1044" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="788" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="814" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1110" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="1114" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="840" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="866" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1180" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="1184" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="892" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="918" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1250" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="1254" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="944" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="970" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1320" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="1324" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="996" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1022" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1390" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<text x="1394" y="205" font-size="9" fill="#223">Q2 決算デッキ…</text>
+<rect x="1048" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="1074" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36c" stroke-width="1"/>
+<rect x="460" y="60" width="180" height="30" rx="3" fill="#b63" stroke="#b63" stroke-width="0"/>
+<text x="464" y="79" font-size="11" fill="#fff">戦略デッキ</text>
+<rect x="1500" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1504" y="505" font-size="9" fill="#223">為替</text>
+<rect x="1620" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1624" y="505" font-size="9" fill="#223">原材料費</text>
+<rect x="1740" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1744" y="505" font-size="9" fill="#223">製造コスト</text>
+<rect x="1860" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1864" y="505" font-size="9" fill="#223">販売価格</text>
+<rect x="1980" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="1984" y="505" font-size="9" fill="#223">売上</text>
+<rect x="2100" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2104" y="505" font-size="9" fill="#223">営業利益</text>
+<rect x="1460" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1464" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1100" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1126" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1530" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1534" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1152" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1178" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1600" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1604" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1204" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1230" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1670" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1674" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1256" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1282" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1740" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1744" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1308" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1334" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1810" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1814" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1360" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1386" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1880" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1884" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1412" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1438" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1950" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="1954" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1464" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1490" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="2020" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="2024" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1516" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1542" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="2090" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<text x="2094" y="205" font-size="9" fill="#223">戦略デッキ sl…</text>
+<rect x="1568" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="1594" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#b63" stroke-width="1"/>
+<rect x="660" y="60" width="180" height="30" rx="3" fill="#a3a" stroke="#a3a" stroke-width="0"/>
+<text x="664" y="79" font-size="11" fill="#fff">年次報告</text>
+<rect x="2220" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2224" y="505" font-size="9" fill="#223">売上</text>
+<rect x="2340" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2344" y="505" font-size="9" fill="#223">営業利益</text>
+<rect x="2460" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2464" y="505" font-size="9" fill="#223">製造コスト</text>
+<rect x="2580" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2584" y="505" font-size="9" fill="#223">市場シェア</text>
+<rect x="2160" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<text x="2164" y="205" font-size="9" fill="#223">年次報告 sec…</text>
+<rect x="1620" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="1646" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="1672" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="2230" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<text x="2234" y="205" font-size="9" fill="#223">年次報告 sec…</text>
+<rect x="1698" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="1724" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="1750" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="2300" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<text x="2304" y="205" font-size="9" fill="#223">年次報告 sec…</text>
+<rect x="1776" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="1802" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="1828" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a3a" stroke-width="1"/>
+<rect x="860" y="60" width="180" height="30" rx="3" fill="#0aa" stroke="#0aa" stroke-width="0"/>
+<text x="864" y="79" font-size="11" fill="#fff">リスクメモ</text>
+<rect x="2700" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2704" y="505" font-size="9" fill="#223">為替</text>
+<rect x="2820" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2824" y="505" font-size="9" fill="#223">原材料費</text>
+<rect x="2940" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="2944" y="505" font-size="9" fill="#223">競合値下げ</text>
+<rect x="3060" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3064" y="505" font-size="9" fill="#223">在庫</text>
+<rect x="2370" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<text x="2374" y="205" font-size="9" fill="#223">リスクメモ se…</text>
+<rect x="1854" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="1880" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="1906" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="2440" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<text x="2444" y="205" font-size="9" fill="#223">リスクメモ se…</text>
+<rect x="1932" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="1958" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="1984" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="2510" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<text x="2514" y="205" font-size="9" fill="#223">リスクメモ se…</text>
+<rect x="2010" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="2036" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="2062" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#0aa" stroke-width="1"/>
+<rect x="1060" y="60" width="180" height="30" rx="3" fill="#c63" stroke="#c63" stroke-width="0"/>
+<text x="1064" y="79" font-size="11" fill="#fff">オペレビュー</text>
+<rect x="3180" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3184" y="505" font-size="9" fill="#223">在庫</text>
+<rect x="3300" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3304" y="505" font-size="9" fill="#223">製造コスト</text>
+<rect x="3420" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3424" y="505" font-size="9" fill="#223">販売数量</text>
+<rect x="3540" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3544" y="505" font-size="9" fill="#223">販売価格</text>
+<rect x="2580" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<text x="2584" y="205" font-size="9" fill="#223">オペレビュー s…</text>
+<rect x="2088" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2114" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2140" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2650" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<text x="2654" y="205" font-size="9" fill="#223">オペレビュー s…</text>
+<rect x="2166" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2192" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2218" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2720" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<text x="2724" y="205" font-size="9" fill="#223">オペレビュー s…</text>
+<rect x="2244" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2270" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="2296" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#c63" stroke-width="1"/>
+<rect x="1260" y="60" width="180" height="30" rx="3" fill="#693" stroke="#693" stroke-width="0"/>
+<text x="1264" y="79" font-size="11" fill="#fff">PL モデル</text>
+<rect x="3660" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3664" y="505" font-size="9" fill="#223">売上</text>
+<rect x="3780" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3784" y="505" font-size="9" fill="#223">製造コスト</text>
+<rect x="3900" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="3904" y="505" font-size="9" fill="#223">営業利益</text>
+<rect x="2790" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<text x="2794" y="205" font-size="9" fill="#223">PL モデル s…</text>
+<rect x="2322" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2348" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2374" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2860" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<text x="2864" y="205" font-size="9" fill="#223">PL モデル s…</text>
+<rect x="2400" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2426" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2452" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2930" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<text x="2934" y="205" font-size="9" fill="#223">PL モデル s…</text>
+<rect x="2478" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2504" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="2530" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#693" stroke-width="1"/>
+<rect x="1460" y="60" width="180" height="30" rx="3" fill="#36a" stroke="#36a" stroke-width="0"/>
+<text x="1464" y="79" font-size="11" fill="#fff">KPI トラッカー</text>
+<rect x="4020" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="4024" y="505" font-size="9" fill="#223">販売数量</text>
+<rect x="4140" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="4144" y="505" font-size="9" fill="#223">市場シェア</text>
+<rect x="4260" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="4264" y="505" font-size="9" fill="#223">売上</text>
+<rect x="3000" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<text x="3004" y="205" font-size="9" fill="#223">KPI トラッカ…</text>
+<rect x="2556" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="2582" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="2608" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="3070" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<text x="3074" y="205" font-size="9" fill="#223">KPI トラッカ…</text>
+<rect x="2634" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="2660" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="2686" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="3140" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<text x="3144" y="205" font-size="9" fill="#223">KPI トラッカ…</text>
+<rect x="2712" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="2738" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="2764" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#36a" stroke-width="1"/>
+<rect x="1660" y="60" width="180" height="30" rx="3" fill="#a55" stroke="#a55" stroke-width="0"/>
+<text x="1664" y="79" font-size="11" fill="#fff">需要予測</text>
+<rect x="4380" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="4384" y="505" font-size="9" fill="#223">販売価格</text>
+<rect x="4500" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="4504" y="505" font-size="9" fill="#223">販売数量</text>
+<rect x="4620" y="490" width="108" height="22" rx="3" fill="#fff7f0" stroke="#789" stroke-width="1"/>
+<text x="4624" y="505" font-size="9" fill="#223">売上</text>
+<rect x="3210" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<text x="3214" y="205" font-size="9" fill="#223">需要予測 she…</text>
+<rect x="2790" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="2816" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="2842" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="3280" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<text x="3284" y="205" font-size="9" fill="#223">需要予測 she…</text>
+<rect x="2868" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="2894" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="2920" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="3350" y="190" width="58" height="22" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<text x="3354" y="205" font-size="9" fill="#223">需要予測 she…</text>
+<rect x="2946" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="2972" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<rect x="2998" y="330" width="20" height="14" rx="3" fill="#f4f7ff" stroke="#a55" stroke-width="1"/>
+<g font-size="11" fill="#444"><text x="10" y="554">nodes 210 (doc 9 / page 48 / object 114 / causal 39) · bonds 339 · maxRank 10 · χ-params 602 · causalComponents 1 · cross-doc causes 5</text></g>
+<g font-size="11">
+    <text x="10" y="580" fill="#ccc">━ contains</text>
+    <text x="90" y="580" fill="#39f">╌ references</text>
+    <text x="185" y="580" fill="#b9c">━ mentions</text>
+    <text x="270" y="580" fill="#2a8a2a">━ causes(+)</text>
+    <text x="365" y="580" fill="#d22">━ causes(-)</text>
+    <text x="455" y="580" fill="#555">╍ cross-doc causes(太破線)</text>
+  </g>
+</svg>

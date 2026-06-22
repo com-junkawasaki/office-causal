@@ -1,0 +1,5918 @@
+{
+  "nodes": [
+    {
+      "id": "doc:q1-deck",
+      "layer": "document",
+      "kind": "document",
+      "label": "Q1 決算デッキ",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:0",
+        "contains:doc:q1-deck->pg:q1-deck:1",
+        "contains:doc:q1-deck->pg:q1-deck:2",
+        "contains:doc:q1-deck->pg:q1-deck:3",
+        "contains:doc:q1-deck->pg:q1-deck:4",
+        "contains:doc:q1-deck->pg:q1-deck:5",
+        "contains:doc:q1-deck->pg:q1-deck:6",
+        "contains:doc:q1-deck->pg:q1-deck:7",
+        "contains:doc:q1-deck->pg:q1-deck:8",
+        "contains:doc:q1-deck->pg:q1-deck:9"
+      ],
+      "rank": 10
+    },
+    {
+      "id": "ent:q1-deck:raw",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "原材料費",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q1-deck:0:0->ent:q1-deck:raw",
+        "mentions:ob:q1-deck:3:0->ent:q1-deck:raw",
+        "mentions:ob:q1-deck:6:0->ent:q1-deck:raw",
+        "mentions:ob:q1-deck:9:0->ent:q1-deck:raw",
+        "causes:ent:q1-deck:raw->ent:q1-deck:cost",
+        "causes:ent:risk-memo:fx->ent:q1-deck:raw",
+        "references:ent:q1-deck:raw->ent:strategy-deck:raw"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "ent:q1-deck:cost",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "製造コスト",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q1-deck:0:1->ent:q1-deck:cost",
+        "mentions:ob:q1-deck:3:1->ent:q1-deck:cost",
+        "mentions:ob:q1-deck:6:1->ent:q1-deck:cost",
+        "mentions:ob:q1-deck:9:1->ent:q1-deck:cost",
+        "causes:ent:q1-deck:raw->ent:q1-deck:cost",
+        "causes:ent:q1-deck:cost->ent:q1-deck:price",
+        "causes:ent:q1-deck:cost->ent:q1-deck:profit",
+        "references:ent:q1-deck:cost->ent:q2-deck:cost"
+      ],
+      "rank": 8
+    },
+    {
+      "id": "ent:q1-deck:price",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売価格",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q1-deck:1:0->ent:q1-deck:price",
+        "mentions:ob:q1-deck:4:0->ent:q1-deck:price",
+        "mentions:ob:q1-deck:7:0->ent:q1-deck:price",
+        "causes:ent:q1-deck:cost->ent:q1-deck:price",
+        "causes:ent:q1-deck:price->ent:q1-deck:qty",
+        "references:ent:q1-deck:price->ent:strategy-deck:price"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:q1-deck:qty",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売数量",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q1-deck:1:1->ent:q1-deck:qty",
+        "mentions:ob:q1-deck:4:1->ent:q1-deck:qty",
+        "mentions:ob:q1-deck:7:1->ent:q1-deck:qty",
+        "causes:ent:q1-deck:price->ent:q1-deck:qty",
+        "causes:ent:q1-deck:qty->ent:q1-deck:sales",
+        "references:ent:q1-deck:qty->ent:ops-review:qty"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:q1-deck:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q1-deck:2:0->ent:q1-deck:sales",
+        "mentions:ob:q1-deck:5:0->ent:q1-deck:sales",
+        "mentions:ob:q1-deck:8:0->ent:q1-deck:sales",
+        "causes:ent:q1-deck:qty->ent:q1-deck:sales",
+        "causes:ent:q1-deck:sales->ent:q1-deck:profit",
+        "causes:ent:q1-deck:sales->ent:pl-model:profit",
+        "references:ent:q1-deck:sales->ent:q2-deck:sales"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "ent:q1-deck:profit",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "営業利益",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q1-deck:2:1->ent:q1-deck:profit",
+        "mentions:ob:q1-deck:5:1->ent:q1-deck:profit",
+        "mentions:ob:q1-deck:8:1->ent:q1-deck:profit",
+        "causes:ent:q1-deck:sales->ent:q1-deck:profit",
+        "causes:ent:q1-deck:cost->ent:q1-deck:profit",
+        "references:ent:q1-deck:profit->ent:q2-deck:profit"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "pg:q1-deck:0",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:0",
+        "contains:pg:q1-deck:0->ob:q1-deck:0:0",
+        "contains:pg:q1-deck:0->ob:q1-deck:0:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:0:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:0->ob:q1-deck:0:0",
+        "mentions:ob:q1-deck:0:0->ent:q1-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:0"
+    },
+    {
+      "id": "ob:q1-deck:0:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:0->ob:q1-deck:0:1",
+        "mentions:ob:q1-deck:0:1->ent:q1-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:0"
+    },
+    {
+      "id": "pg:q1-deck:1",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:1",
+        "contains:pg:q1-deck:1->ob:q1-deck:1:0",
+        "contains:pg:q1-deck:1->ob:q1-deck:1:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:1:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売価格を改定した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:1->ob:q1-deck:1:0",
+        "mentions:ob:q1-deck:1:0->ent:q1-deck:price"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:1"
+    },
+    {
+      "id": "ob:q1-deck:1:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売数量が変動した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:1->ob:q1-deck:1:1",
+        "mentions:ob:q1-deck:1:1->ent:q1-deck:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:1"
+    },
+    {
+      "id": "pg:q1-deck:2",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:2",
+        "contains:pg:q1-deck:2->ob:q1-deck:2:0",
+        "contains:pg:q1-deck:2->ob:q1-deck:2:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:2:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:2->ob:q1-deck:2:0",
+        "mentions:ob:q1-deck:2:0->ent:q1-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:2"
+    },
+    {
+      "id": "ob:q1-deck:2:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:2->ob:q1-deck:2:1",
+        "mentions:ob:q1-deck:2:1->ent:q1-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:2"
+    },
+    {
+      "id": "pg:q1-deck:3",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide4",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:3",
+        "contains:pg:q1-deck:3->ob:q1-deck:3:0",
+        "contains:pg:q1-deck:3->ob:q1-deck:3:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:3:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p4）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:3->ob:q1-deck:3:0",
+        "mentions:ob:q1-deck:3:0->ent:q1-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:3"
+    },
+    {
+      "id": "ob:q1-deck:3:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p4）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:3->ob:q1-deck:3:1",
+        "mentions:ob:q1-deck:3:1->ent:q1-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:3"
+    },
+    {
+      "id": "pg:q1-deck:4",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide5",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:4",
+        "contains:pg:q1-deck:4->ob:q1-deck:4:0",
+        "contains:pg:q1-deck:4->ob:q1-deck:4:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:4:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売価格を改定した（p5）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:4->ob:q1-deck:4:0",
+        "mentions:ob:q1-deck:4:0->ent:q1-deck:price"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:4"
+    },
+    {
+      "id": "ob:q1-deck:4:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売数量が変動した（p5）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:4->ob:q1-deck:4:1",
+        "mentions:ob:q1-deck:4:1->ent:q1-deck:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:4"
+    },
+    {
+      "id": "pg:q1-deck:5",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide6",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:5",
+        "contains:pg:q1-deck:5->ob:q1-deck:5:0",
+        "contains:pg:q1-deck:5->ob:q1-deck:5:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:5:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p6）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:5->ob:q1-deck:5:0",
+        "mentions:ob:q1-deck:5:0->ent:q1-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:5"
+    },
+    {
+      "id": "ob:q1-deck:5:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p6）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:5->ob:q1-deck:5:1",
+        "mentions:ob:q1-deck:5:1->ent:q1-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:5"
+    },
+    {
+      "id": "pg:q1-deck:6",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide7",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:6",
+        "contains:pg:q1-deck:6->ob:q1-deck:6:0",
+        "contains:pg:q1-deck:6->ob:q1-deck:6:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:6:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p7）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:6->ob:q1-deck:6:0",
+        "mentions:ob:q1-deck:6:0->ent:q1-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:6"
+    },
+    {
+      "id": "ob:q1-deck:6:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p7）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:6->ob:q1-deck:6:1",
+        "mentions:ob:q1-deck:6:1->ent:q1-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:6"
+    },
+    {
+      "id": "pg:q1-deck:7",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide8",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:7",
+        "contains:pg:q1-deck:7->ob:q1-deck:7:0",
+        "contains:pg:q1-deck:7->ob:q1-deck:7:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:7:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売価格を改定した（p8）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:7->ob:q1-deck:7:0",
+        "mentions:ob:q1-deck:7:0->ent:q1-deck:price"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:7"
+    },
+    {
+      "id": "ob:q1-deck:7:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売数量が変動した（p8）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:7->ob:q1-deck:7:1",
+        "mentions:ob:q1-deck:7:1->ent:q1-deck:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:7"
+    },
+    {
+      "id": "pg:q1-deck:8",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide9",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:8",
+        "contains:pg:q1-deck:8->ob:q1-deck:8:0",
+        "contains:pg:q1-deck:8->ob:q1-deck:8:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:8:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p9）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:8->ob:q1-deck:8:0",
+        "mentions:ob:q1-deck:8:0->ent:q1-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:8"
+    },
+    {
+      "id": "ob:q1-deck:8:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p9）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:8->ob:q1-deck:8:1",
+        "mentions:ob:q1-deck:8:1->ent:q1-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:8"
+    },
+    {
+      "id": "pg:q1-deck:9",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q1 決算デッキ slide10",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q1-deck->pg:q1-deck:9",
+        "contains:pg:q1-deck:9->ob:q1-deck:9:0",
+        "contains:pg:q1-deck:9->ob:q1-deck:9:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q1-deck"
+    },
+    {
+      "id": "ob:q1-deck:9:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p10）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:9->ob:q1-deck:9:0",
+        "mentions:ob:q1-deck:9:0->ent:q1-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:9"
+    },
+    {
+      "id": "ob:q1-deck:9:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p10）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q1-deck:9->ob:q1-deck:9:1",
+        "mentions:ob:q1-deck:9:1->ent:q1-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q1-deck:9"
+    },
+    {
+      "id": "doc:q2-deck",
+      "layer": "document",
+      "kind": "document",
+      "label": "Q2 決算デッキ",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:0",
+        "contains:doc:q2-deck->pg:q2-deck:1",
+        "contains:doc:q2-deck->pg:q2-deck:2",
+        "contains:doc:q2-deck->pg:q2-deck:3",
+        "contains:doc:q2-deck->pg:q2-deck:4",
+        "contains:doc:q2-deck->pg:q2-deck:5",
+        "contains:doc:q2-deck->pg:q2-deck:6",
+        "contains:doc:q2-deck->pg:q2-deck:7",
+        "contains:doc:q2-deck->pg:q2-deck:8",
+        "contains:doc:q2-deck->pg:q2-deck:9"
+      ],
+      "rank": 10
+    },
+    {
+      "id": "ent:q2-deck:comp",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "競合値下げ",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q2-deck:0:0->ent:q2-deck:comp",
+        "mentions:ob:q2-deck:3:0->ent:q2-deck:comp",
+        "mentions:ob:q2-deck:6:0->ent:q2-deck:comp",
+        "mentions:ob:q2-deck:9:0->ent:q2-deck:comp",
+        "causes:ent:q2-deck:comp->ent:q2-deck:share",
+        "references:ent:q2-deck:comp->ent:risk-memo:comp"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:q2-deck:share",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "市場シェア",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q2-deck:0:1->ent:q2-deck:share",
+        "mentions:ob:q2-deck:3:1->ent:q2-deck:share",
+        "mentions:ob:q2-deck:6:1->ent:q2-deck:share",
+        "mentions:ob:q2-deck:9:1->ent:q2-deck:share",
+        "causes:ent:q2-deck:comp->ent:q2-deck:share",
+        "causes:ent:q2-deck:share->ent:q2-deck:sales",
+        "references:ent:q2-deck:share->ent:annual-report:share"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "ent:q2-deck:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q2-deck:1:0->ent:q2-deck:sales",
+        "mentions:ob:q2-deck:4:0->ent:q2-deck:sales",
+        "mentions:ob:q2-deck:7:0->ent:q2-deck:sales",
+        "causes:ent:q2-deck:share->ent:q2-deck:sales",
+        "causes:ent:q2-deck:sales->ent:q2-deck:profit",
+        "causes:ent:kpi-tracker:share->ent:q2-deck:sales",
+        "references:ent:q1-deck:sales->ent:q2-deck:sales",
+        "references:ent:q2-deck:sales->ent:strategy-deck:sales"
+      ],
+      "rank": 8
+    },
+    {
+      "id": "ent:q2-deck:profit",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "営業利益",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q2-deck:1:1->ent:q2-deck:profit",
+        "mentions:ob:q2-deck:4:1->ent:q2-deck:profit",
+        "mentions:ob:q2-deck:7:1->ent:q2-deck:profit",
+        "causes:ent:q2-deck:sales->ent:q2-deck:profit",
+        "causes:ent:q2-deck:cost->ent:q2-deck:profit",
+        "references:ent:q1-deck:profit->ent:q2-deck:profit",
+        "references:ent:q2-deck:profit->ent:strategy-deck:profit"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "ent:q2-deck:inv",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "在庫",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q2-deck:2:0->ent:q2-deck:inv",
+        "mentions:ob:q2-deck:5:0->ent:q2-deck:inv",
+        "mentions:ob:q2-deck:8:0->ent:q2-deck:inv",
+        "causes:ent:q2-deck:inv->ent:q2-deck:cost",
+        "references:ent:q2-deck:inv->ent:risk-memo:inv"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "ent:q2-deck:cost",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "製造コスト",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:q2-deck:2:1->ent:q2-deck:cost",
+        "mentions:ob:q2-deck:5:1->ent:q2-deck:cost",
+        "mentions:ob:q2-deck:8:1->ent:q2-deck:cost",
+        "causes:ent:q2-deck:inv->ent:q2-deck:cost",
+        "causes:ent:q2-deck:cost->ent:q2-deck:profit",
+        "references:ent:q1-deck:cost->ent:q2-deck:cost",
+        "references:ent:q2-deck:cost->ent:strategy-deck:cost"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "pg:q2-deck:0",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:0",
+        "contains:pg:q2-deck:0->ob:q2-deck:0:0",
+        "contains:pg:q2-deck:0->ob:q2-deck:0:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:0:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "競合が値下げを実施した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:0->ob:q2-deck:0:0",
+        "mentions:ob:q2-deck:0:0->ent:q2-deck:comp"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:0"
+    },
+    {
+      "id": "ob:q2-deck:0:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "市場シェアが動いた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:0->ob:q2-deck:0:1",
+        "mentions:ob:q2-deck:0:1->ent:q2-deck:share"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:0"
+    },
+    {
+      "id": "pg:q2-deck:1",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:1",
+        "contains:pg:q2-deck:1->ob:q2-deck:1:0",
+        "contains:pg:q2-deck:1->ob:q2-deck:1:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:1:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:1->ob:q2-deck:1:0",
+        "mentions:ob:q2-deck:1:0->ent:q2-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:1"
+    },
+    {
+      "id": "ob:q2-deck:1:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:1->ob:q2-deck:1:1",
+        "mentions:ob:q2-deck:1:1->ent:q2-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:1"
+    },
+    {
+      "id": "pg:q2-deck:2",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:2",
+        "contains:pg:q2-deck:2->ob:q2-deck:2:0",
+        "contains:pg:q2-deck:2->ob:q2-deck:2:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:2:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "在庫水準が変わった（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:2->ob:q2-deck:2:0",
+        "mentions:ob:q2-deck:2:0->ent:q2-deck:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:2"
+    },
+    {
+      "id": "ob:q2-deck:2:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:2->ob:q2-deck:2:1",
+        "mentions:ob:q2-deck:2:1->ent:q2-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:2"
+    },
+    {
+      "id": "pg:q2-deck:3",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide4",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:3",
+        "contains:pg:q2-deck:3->ob:q2-deck:3:0",
+        "contains:pg:q2-deck:3->ob:q2-deck:3:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:3:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "競合が値下げを実施した（p4）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:3->ob:q2-deck:3:0",
+        "mentions:ob:q2-deck:3:0->ent:q2-deck:comp"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:3"
+    },
+    {
+      "id": "ob:q2-deck:3:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "市場シェアが動いた（p4）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:3->ob:q2-deck:3:1",
+        "mentions:ob:q2-deck:3:1->ent:q2-deck:share"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:3"
+    },
+    {
+      "id": "pg:q2-deck:4",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide5",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:4",
+        "contains:pg:q2-deck:4->ob:q2-deck:4:0",
+        "contains:pg:q2-deck:4->ob:q2-deck:4:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:4:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p5）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:4->ob:q2-deck:4:0",
+        "mentions:ob:q2-deck:4:0->ent:q2-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:4"
+    },
+    {
+      "id": "ob:q2-deck:4:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p5）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:4->ob:q2-deck:4:1",
+        "mentions:ob:q2-deck:4:1->ent:q2-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:4"
+    },
+    {
+      "id": "pg:q2-deck:5",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide6",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:5",
+        "contains:pg:q2-deck:5->ob:q2-deck:5:0",
+        "contains:pg:q2-deck:5->ob:q2-deck:5:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:5:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "在庫水準が変わった（p6）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:5->ob:q2-deck:5:0",
+        "mentions:ob:q2-deck:5:0->ent:q2-deck:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:5"
+    },
+    {
+      "id": "ob:q2-deck:5:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p6）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:5->ob:q2-deck:5:1",
+        "mentions:ob:q2-deck:5:1->ent:q2-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:5"
+    },
+    {
+      "id": "pg:q2-deck:6",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide7",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:6",
+        "contains:pg:q2-deck:6->ob:q2-deck:6:0",
+        "contains:pg:q2-deck:6->ob:q2-deck:6:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:6:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "競合が値下げを実施した（p7）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:6->ob:q2-deck:6:0",
+        "mentions:ob:q2-deck:6:0->ent:q2-deck:comp"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:6"
+    },
+    {
+      "id": "ob:q2-deck:6:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "市場シェアが動いた（p7）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:6->ob:q2-deck:6:1",
+        "mentions:ob:q2-deck:6:1->ent:q2-deck:share"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:6"
+    },
+    {
+      "id": "pg:q2-deck:7",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide8",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:7",
+        "contains:pg:q2-deck:7->ob:q2-deck:7:0",
+        "contains:pg:q2-deck:7->ob:q2-deck:7:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:7:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p8）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:7->ob:q2-deck:7:0",
+        "mentions:ob:q2-deck:7:0->ent:q2-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:7"
+    },
+    {
+      "id": "ob:q2-deck:7:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p8）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:7->ob:q2-deck:7:1",
+        "mentions:ob:q2-deck:7:1->ent:q2-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:7"
+    },
+    {
+      "id": "pg:q2-deck:8",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide9",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:8",
+        "contains:pg:q2-deck:8->ob:q2-deck:8:0",
+        "contains:pg:q2-deck:8->ob:q2-deck:8:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:8:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "在庫水準が変わった（p9）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:8->ob:q2-deck:8:0",
+        "mentions:ob:q2-deck:8:0->ent:q2-deck:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:8"
+    },
+    {
+      "id": "ob:q2-deck:8:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p9）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:8->ob:q2-deck:8:1",
+        "mentions:ob:q2-deck:8:1->ent:q2-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:8"
+    },
+    {
+      "id": "pg:q2-deck:9",
+      "layer": "page",
+      "kind": "slide",
+      "label": "Q2 決算デッキ slide10",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:q2-deck->pg:q2-deck:9",
+        "contains:pg:q2-deck:9->ob:q2-deck:9:0",
+        "contains:pg:q2-deck:9->ob:q2-deck:9:1"
+      ],
+      "rank": 3,
+      "parent": "doc:q2-deck"
+    },
+    {
+      "id": "ob:q2-deck:9:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "競合が値下げを実施した（p10）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:9->ob:q2-deck:9:0",
+        "mentions:ob:q2-deck:9:0->ent:q2-deck:comp"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:9"
+    },
+    {
+      "id": "ob:q2-deck:9:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "市場シェアが動いた（p10）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:q2-deck:9->ob:q2-deck:9:1",
+        "mentions:ob:q2-deck:9:1->ent:q2-deck:share"
+      ],
+      "rank": 2,
+      "parent": "pg:q2-deck:9"
+    },
+    {
+      "id": "doc:strategy-deck",
+      "layer": "document",
+      "kind": "document",
+      "label": "戦略デッキ",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:0",
+        "contains:doc:strategy-deck->pg:strategy-deck:1",
+        "contains:doc:strategy-deck->pg:strategy-deck:2",
+        "contains:doc:strategy-deck->pg:strategy-deck:3",
+        "contains:doc:strategy-deck->pg:strategy-deck:4",
+        "contains:doc:strategy-deck->pg:strategy-deck:5",
+        "contains:doc:strategy-deck->pg:strategy-deck:6",
+        "contains:doc:strategy-deck->pg:strategy-deck:7",
+        "contains:doc:strategy-deck->pg:strategy-deck:8",
+        "contains:doc:strategy-deck->pg:strategy-deck:9"
+      ],
+      "rank": 10
+    },
+    {
+      "id": "ent:strategy-deck:fx",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "為替",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:strategy-deck:0:0->ent:strategy-deck:fx",
+        "mentions:ob:strategy-deck:3:0->ent:strategy-deck:fx",
+        "mentions:ob:strategy-deck:6:0->ent:strategy-deck:fx",
+        "mentions:ob:strategy-deck:9:0->ent:strategy-deck:fx",
+        "causes:ent:strategy-deck:fx->ent:strategy-deck:raw",
+        "references:ent:strategy-deck:fx->ent:risk-memo:fx"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:strategy-deck:raw",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "原材料費",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:strategy-deck:0:1->ent:strategy-deck:raw",
+        "mentions:ob:strategy-deck:3:1->ent:strategy-deck:raw",
+        "mentions:ob:strategy-deck:6:1->ent:strategy-deck:raw",
+        "mentions:ob:strategy-deck:9:1->ent:strategy-deck:raw",
+        "causes:ent:strategy-deck:fx->ent:strategy-deck:raw",
+        "causes:ent:strategy-deck:raw->ent:strategy-deck:cost",
+        "references:ent:q1-deck:raw->ent:strategy-deck:raw",
+        "references:ent:strategy-deck:raw->ent:risk-memo:raw"
+      ],
+      "rank": 8
+    },
+    {
+      "id": "ent:strategy-deck:cost",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "製造コスト",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:strategy-deck:1:0->ent:strategy-deck:cost",
+        "mentions:ob:strategy-deck:4:0->ent:strategy-deck:cost",
+        "mentions:ob:strategy-deck:7:0->ent:strategy-deck:cost",
+        "causes:ent:strategy-deck:raw->ent:strategy-deck:cost",
+        "causes:ent:strategy-deck:cost->ent:strategy-deck:price",
+        "causes:ent:strategy-deck:cost->ent:strategy-deck:profit",
+        "causes:ent:ops-review:inv->ent:strategy-deck:cost",
+        "references:ent:q2-deck:cost->ent:strategy-deck:cost",
+        "references:ent:strategy-deck:cost->ent:annual-report:cost"
+      ],
+      "rank": 9
+    },
+    {
+      "id": "ent:strategy-deck:price",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売価格",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:strategy-deck:1:1->ent:strategy-deck:price",
+        "mentions:ob:strategy-deck:4:1->ent:strategy-deck:price",
+        "mentions:ob:strategy-deck:7:1->ent:strategy-deck:price",
+        "causes:ent:strategy-deck:cost->ent:strategy-deck:price",
+        "references:ent:q1-deck:price->ent:strategy-deck:price",
+        "references:ent:strategy-deck:price->ent:ops-review:price"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:strategy-deck:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:strategy-deck:2:0->ent:strategy-deck:sales",
+        "mentions:ob:strategy-deck:5:0->ent:strategy-deck:sales",
+        "mentions:ob:strategy-deck:8:0->ent:strategy-deck:sales",
+        "causes:ent:strategy-deck:sales->ent:strategy-deck:profit",
+        "references:ent:q2-deck:sales->ent:strategy-deck:sales",
+        "references:ent:strategy-deck:sales->ent:annual-report:sales"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:strategy-deck:profit",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "営業利益",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:strategy-deck:2:1->ent:strategy-deck:profit",
+        "mentions:ob:strategy-deck:5:1->ent:strategy-deck:profit",
+        "mentions:ob:strategy-deck:8:1->ent:strategy-deck:profit",
+        "causes:ent:strategy-deck:sales->ent:strategy-deck:profit",
+        "causes:ent:strategy-deck:cost->ent:strategy-deck:profit",
+        "references:ent:q2-deck:profit->ent:strategy-deck:profit",
+        "references:ent:strategy-deck:profit->ent:annual-report:profit"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "pg:strategy-deck:0",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:0",
+        "contains:pg:strategy-deck:0->ob:strategy-deck:0:0",
+        "contains:pg:strategy-deck:0->ob:strategy-deck:0:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:0:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "為替が円安に振れた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:0->ob:strategy-deck:0:0",
+        "mentions:ob:strategy-deck:0:0->ent:strategy-deck:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:0"
+    },
+    {
+      "id": "ob:strategy-deck:0:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:0->ob:strategy-deck:0:1",
+        "mentions:ob:strategy-deck:0:1->ent:strategy-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:0"
+    },
+    {
+      "id": "pg:strategy-deck:1",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:1",
+        "contains:pg:strategy-deck:1->ob:strategy-deck:1:0",
+        "contains:pg:strategy-deck:1->ob:strategy-deck:1:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:1:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:1->ob:strategy-deck:1:0",
+        "mentions:ob:strategy-deck:1:0->ent:strategy-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:1"
+    },
+    {
+      "id": "ob:strategy-deck:1:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売価格を改定した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:1->ob:strategy-deck:1:1",
+        "mentions:ob:strategy-deck:1:1->ent:strategy-deck:price"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:1"
+    },
+    {
+      "id": "pg:strategy-deck:2",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:2",
+        "contains:pg:strategy-deck:2->ob:strategy-deck:2:0",
+        "contains:pg:strategy-deck:2->ob:strategy-deck:2:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:2:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:2->ob:strategy-deck:2:0",
+        "mentions:ob:strategy-deck:2:0->ent:strategy-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:2"
+    },
+    {
+      "id": "ob:strategy-deck:2:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:2->ob:strategy-deck:2:1",
+        "mentions:ob:strategy-deck:2:1->ent:strategy-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:2"
+    },
+    {
+      "id": "pg:strategy-deck:3",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide4",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:3",
+        "contains:pg:strategy-deck:3->ob:strategy-deck:3:0",
+        "contains:pg:strategy-deck:3->ob:strategy-deck:3:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:3:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "為替が円安に振れた（p4）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:3->ob:strategy-deck:3:0",
+        "mentions:ob:strategy-deck:3:0->ent:strategy-deck:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:3"
+    },
+    {
+      "id": "ob:strategy-deck:3:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p4）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:3->ob:strategy-deck:3:1",
+        "mentions:ob:strategy-deck:3:1->ent:strategy-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:3"
+    },
+    {
+      "id": "pg:strategy-deck:4",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide5",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:4",
+        "contains:pg:strategy-deck:4->ob:strategy-deck:4:0",
+        "contains:pg:strategy-deck:4->ob:strategy-deck:4:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:4:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p5）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:4->ob:strategy-deck:4:0",
+        "mentions:ob:strategy-deck:4:0->ent:strategy-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:4"
+    },
+    {
+      "id": "ob:strategy-deck:4:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売価格を改定した（p5）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:4->ob:strategy-deck:4:1",
+        "mentions:ob:strategy-deck:4:1->ent:strategy-deck:price"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:4"
+    },
+    {
+      "id": "pg:strategy-deck:5",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide6",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:5",
+        "contains:pg:strategy-deck:5->ob:strategy-deck:5:0",
+        "contains:pg:strategy-deck:5->ob:strategy-deck:5:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:5:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p6）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:5->ob:strategy-deck:5:0",
+        "mentions:ob:strategy-deck:5:0->ent:strategy-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:5"
+    },
+    {
+      "id": "ob:strategy-deck:5:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p6）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:5->ob:strategy-deck:5:1",
+        "mentions:ob:strategy-deck:5:1->ent:strategy-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:5"
+    },
+    {
+      "id": "pg:strategy-deck:6",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide7",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:6",
+        "contains:pg:strategy-deck:6->ob:strategy-deck:6:0",
+        "contains:pg:strategy-deck:6->ob:strategy-deck:6:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:6:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "為替が円安に振れた（p7）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:6->ob:strategy-deck:6:0",
+        "mentions:ob:strategy-deck:6:0->ent:strategy-deck:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:6"
+    },
+    {
+      "id": "ob:strategy-deck:6:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p7）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:6->ob:strategy-deck:6:1",
+        "mentions:ob:strategy-deck:6:1->ent:strategy-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:6"
+    },
+    {
+      "id": "pg:strategy-deck:7",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide8",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:7",
+        "contains:pg:strategy-deck:7->ob:strategy-deck:7:0",
+        "contains:pg:strategy-deck:7->ob:strategy-deck:7:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:7:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "製造コストが押し上げられた（p8）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:7->ob:strategy-deck:7:0",
+        "mentions:ob:strategy-deck:7:0->ent:strategy-deck:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:7"
+    },
+    {
+      "id": "ob:strategy-deck:7:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "販売価格を改定した（p8）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:7->ob:strategy-deck:7:1",
+        "mentions:ob:strategy-deck:7:1->ent:strategy-deck:price"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:7"
+    },
+    {
+      "id": "pg:strategy-deck:8",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide9",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:8",
+        "contains:pg:strategy-deck:8->ob:strategy-deck:8:0",
+        "contains:pg:strategy-deck:8->ob:strategy-deck:8:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:8:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "売上高が増減した（p9）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:8->ob:strategy-deck:8:0",
+        "mentions:ob:strategy-deck:8:0->ent:strategy-deck:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:8"
+    },
+    {
+      "id": "ob:strategy-deck:8:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "営業利益が変化した（p9）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:8->ob:strategy-deck:8:1",
+        "mentions:ob:strategy-deck:8:1->ent:strategy-deck:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:8"
+    },
+    {
+      "id": "pg:strategy-deck:9",
+      "layer": "page",
+      "kind": "slide",
+      "label": "戦略デッキ slide10",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:strategy-deck->pg:strategy-deck:9",
+        "contains:pg:strategy-deck:9->ob:strategy-deck:9:0",
+        "contains:pg:strategy-deck:9->ob:strategy-deck:9:1"
+      ],
+      "rank": 3,
+      "parent": "doc:strategy-deck"
+    },
+    {
+      "id": "ob:strategy-deck:9:0",
+      "layer": "object",
+      "kind": "shape",
+      "label": "為替が円安に振れた（p10）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:9->ob:strategy-deck:9:0",
+        "mentions:ob:strategy-deck:9:0->ent:strategy-deck:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:9"
+    },
+    {
+      "id": "ob:strategy-deck:9:1",
+      "layer": "object",
+      "kind": "shape",
+      "label": "原材料費が前年から上昇した（p10）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:strategy-deck:9->ob:strategy-deck:9:1",
+        "mentions:ob:strategy-deck:9:1->ent:strategy-deck:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:strategy-deck:9"
+    },
+    {
+      "id": "doc:annual-report",
+      "layer": "document",
+      "kind": "document",
+      "label": "年次報告",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:annual-report->pg:annual-report:0",
+        "contains:doc:annual-report->pg:annual-report:1",
+        "contains:doc:annual-report->pg:annual-report:2"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:annual-report:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:annual-report:0:0->ent:annual-report:sales",
+        "mentions:ob:annual-report:1:1->ent:annual-report:sales",
+        "mentions:ob:annual-report:2:2->ent:annual-report:sales",
+        "causes:ent:annual-report:share->ent:annual-report:sales",
+        "causes:ent:annual-report:sales->ent:annual-report:profit",
+        "causes:ent:forecast:qty->ent:annual-report:sales",
+        "references:ent:strategy-deck:sales->ent:annual-report:sales",
+        "references:ent:annual-report:sales->ent:pl-model:sales"
+      ],
+      "rank": 8
+    },
+    {
+      "id": "ent:annual-report:profit",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "営業利益",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:annual-report:0:1->ent:annual-report:profit",
+        "mentions:ob:annual-report:1:2->ent:annual-report:profit",
+        "causes:ent:annual-report:sales->ent:annual-report:profit",
+        "causes:ent:annual-report:cost->ent:annual-report:profit",
+        "references:ent:strategy-deck:profit->ent:annual-report:profit",
+        "references:ent:annual-report:profit->ent:pl-model:profit"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:annual-report:cost",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "製造コスト",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:annual-report:0:2->ent:annual-report:cost",
+        "mentions:ob:annual-report:2:0->ent:annual-report:cost",
+        "causes:ent:annual-report:cost->ent:annual-report:profit",
+        "references:ent:strategy-deck:cost->ent:annual-report:cost",
+        "references:ent:annual-report:cost->ent:ops-review:cost"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "ent:annual-report:share",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "市場シェア",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:annual-report:1:0->ent:annual-report:share",
+        "mentions:ob:annual-report:2:1->ent:annual-report:share",
+        "causes:ent:annual-report:share->ent:annual-report:sales",
+        "references:ent:q2-deck:share->ent:annual-report:share",
+        "references:ent:annual-report:share->ent:kpi-tracker:share"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "pg:annual-report:0",
+      "layer": "page",
+      "kind": "section",
+      "label": "年次報告 section1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:annual-report->pg:annual-report:0",
+        "contains:pg:annual-report:0->ob:annual-report:0:0",
+        "contains:pg:annual-report:0->ob:annual-report:0:1",
+        "contains:pg:annual-report:0->ob:annual-report:0:2"
+      ],
+      "rank": 4,
+      "parent": "doc:annual-report"
+    },
+    {
+      "id": "ob:annual-report:0:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "売上高が増減した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:0->ob:annual-report:0:0",
+        "mentions:ob:annual-report:0:0->ent:annual-report:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:0"
+    },
+    {
+      "id": "ob:annual-report:0:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "営業利益が変化した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:0->ob:annual-report:0:1",
+        "mentions:ob:annual-report:0:1->ent:annual-report:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:0"
+    },
+    {
+      "id": "ob:annual-report:0:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "製造コストが押し上げられた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:0->ob:annual-report:0:2",
+        "mentions:ob:annual-report:0:2->ent:annual-report:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:0"
+    },
+    {
+      "id": "pg:annual-report:1",
+      "layer": "page",
+      "kind": "section",
+      "label": "年次報告 section2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:annual-report->pg:annual-report:1",
+        "contains:pg:annual-report:1->ob:annual-report:1:0",
+        "contains:pg:annual-report:1->ob:annual-report:1:1",
+        "contains:pg:annual-report:1->ob:annual-report:1:2"
+      ],
+      "rank": 4,
+      "parent": "doc:annual-report"
+    },
+    {
+      "id": "ob:annual-report:1:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "市場シェアが動いた（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:1->ob:annual-report:1:0",
+        "mentions:ob:annual-report:1:0->ent:annual-report:share"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:1"
+    },
+    {
+      "id": "ob:annual-report:1:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "売上高が増減した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:1->ob:annual-report:1:1",
+        "mentions:ob:annual-report:1:1->ent:annual-report:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:1"
+    },
+    {
+      "id": "ob:annual-report:1:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "営業利益が変化した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:1->ob:annual-report:1:2",
+        "mentions:ob:annual-report:1:2->ent:annual-report:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:1"
+    },
+    {
+      "id": "pg:annual-report:2",
+      "layer": "page",
+      "kind": "section",
+      "label": "年次報告 section3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:annual-report->pg:annual-report:2",
+        "contains:pg:annual-report:2->ob:annual-report:2:0",
+        "contains:pg:annual-report:2->ob:annual-report:2:1",
+        "contains:pg:annual-report:2->ob:annual-report:2:2"
+      ],
+      "rank": 4,
+      "parent": "doc:annual-report"
+    },
+    {
+      "id": "ob:annual-report:2:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "製造コストが押し上げられた（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:2->ob:annual-report:2:0",
+        "mentions:ob:annual-report:2:0->ent:annual-report:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:2"
+    },
+    {
+      "id": "ob:annual-report:2:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "市場シェアが動いた（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:2->ob:annual-report:2:1",
+        "mentions:ob:annual-report:2:1->ent:annual-report:share"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:2"
+    },
+    {
+      "id": "ob:annual-report:2:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "売上高が増減した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:annual-report:2->ob:annual-report:2:2",
+        "mentions:ob:annual-report:2:2->ent:annual-report:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:annual-report:2"
+    },
+    {
+      "id": "doc:risk-memo",
+      "layer": "document",
+      "kind": "document",
+      "label": "リスクメモ",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:risk-memo->pg:risk-memo:0",
+        "contains:doc:risk-memo->pg:risk-memo:1",
+        "contains:doc:risk-memo->pg:risk-memo:2"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:risk-memo:fx",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "為替",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:risk-memo:0:0->ent:risk-memo:fx",
+        "mentions:ob:risk-memo:1:1->ent:risk-memo:fx",
+        "mentions:ob:risk-memo:2:2->ent:risk-memo:fx",
+        "causes:ent:risk-memo:fx->ent:risk-memo:raw",
+        "causes:ent:risk-memo:fx->ent:q1-deck:raw",
+        "references:ent:strategy-deck:fx->ent:risk-memo:fx"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:risk-memo:raw",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "原材料費",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:risk-memo:0:1->ent:risk-memo:raw",
+        "mentions:ob:risk-memo:1:2->ent:risk-memo:raw",
+        "causes:ent:risk-memo:fx->ent:risk-memo:raw",
+        "references:ent:strategy-deck:raw->ent:risk-memo:raw"
+      ],
+      "rank": 4
+    },
+    {
+      "id": "ent:risk-memo:comp",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "競合値下げ",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:risk-memo:0:2->ent:risk-memo:comp",
+        "mentions:ob:risk-memo:2:0->ent:risk-memo:comp",
+        "references:ent:q2-deck:comp->ent:risk-memo:comp"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:risk-memo:inv",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "在庫",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:risk-memo:1:0->ent:risk-memo:inv",
+        "mentions:ob:risk-memo:2:1->ent:risk-memo:inv",
+        "references:ent:q2-deck:inv->ent:risk-memo:inv",
+        "references:ent:risk-memo:inv->ent:ops-review:inv"
+      ],
+      "rank": 4
+    },
+    {
+      "id": "pg:risk-memo:0",
+      "layer": "page",
+      "kind": "section",
+      "label": "リスクメモ section1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:risk-memo->pg:risk-memo:0",
+        "contains:pg:risk-memo:0->ob:risk-memo:0:0",
+        "contains:pg:risk-memo:0->ob:risk-memo:0:1",
+        "contains:pg:risk-memo:0->ob:risk-memo:0:2"
+      ],
+      "rank": 4,
+      "parent": "doc:risk-memo"
+    },
+    {
+      "id": "ob:risk-memo:0:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "為替が円安に振れた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:0->ob:risk-memo:0:0",
+        "mentions:ob:risk-memo:0:0->ent:risk-memo:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:0"
+    },
+    {
+      "id": "ob:risk-memo:0:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "原材料費が前年から上昇した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:0->ob:risk-memo:0:1",
+        "mentions:ob:risk-memo:0:1->ent:risk-memo:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:0"
+    },
+    {
+      "id": "ob:risk-memo:0:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "競合が値下げを実施した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:0->ob:risk-memo:0:2",
+        "mentions:ob:risk-memo:0:2->ent:risk-memo:comp"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:0"
+    },
+    {
+      "id": "pg:risk-memo:1",
+      "layer": "page",
+      "kind": "section",
+      "label": "リスクメモ section2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:risk-memo->pg:risk-memo:1",
+        "contains:pg:risk-memo:1->ob:risk-memo:1:0",
+        "contains:pg:risk-memo:1->ob:risk-memo:1:1",
+        "contains:pg:risk-memo:1->ob:risk-memo:1:2"
+      ],
+      "rank": 4,
+      "parent": "doc:risk-memo"
+    },
+    {
+      "id": "ob:risk-memo:1:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "在庫水準が変わった（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:1->ob:risk-memo:1:0",
+        "mentions:ob:risk-memo:1:0->ent:risk-memo:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:1"
+    },
+    {
+      "id": "ob:risk-memo:1:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "為替が円安に振れた（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:1->ob:risk-memo:1:1",
+        "mentions:ob:risk-memo:1:1->ent:risk-memo:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:1"
+    },
+    {
+      "id": "ob:risk-memo:1:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "原材料費が前年から上昇した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:1->ob:risk-memo:1:2",
+        "mentions:ob:risk-memo:1:2->ent:risk-memo:raw"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:1"
+    },
+    {
+      "id": "pg:risk-memo:2",
+      "layer": "page",
+      "kind": "section",
+      "label": "リスクメモ section3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:risk-memo->pg:risk-memo:2",
+        "contains:pg:risk-memo:2->ob:risk-memo:2:0",
+        "contains:pg:risk-memo:2->ob:risk-memo:2:1",
+        "contains:pg:risk-memo:2->ob:risk-memo:2:2"
+      ],
+      "rank": 4,
+      "parent": "doc:risk-memo"
+    },
+    {
+      "id": "ob:risk-memo:2:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "競合が値下げを実施した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:2->ob:risk-memo:2:0",
+        "mentions:ob:risk-memo:2:0->ent:risk-memo:comp"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:2"
+    },
+    {
+      "id": "ob:risk-memo:2:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "在庫水準が変わった（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:2->ob:risk-memo:2:1",
+        "mentions:ob:risk-memo:2:1->ent:risk-memo:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:2"
+    },
+    {
+      "id": "ob:risk-memo:2:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "為替が円安に振れた（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:risk-memo:2->ob:risk-memo:2:2",
+        "mentions:ob:risk-memo:2:2->ent:risk-memo:fx"
+      ],
+      "rank": 2,
+      "parent": "pg:risk-memo:2"
+    },
+    {
+      "id": "doc:ops-review",
+      "layer": "document",
+      "kind": "document",
+      "label": "オペレビュー",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:ops-review->pg:ops-review:0",
+        "contains:doc:ops-review->pg:ops-review:1",
+        "contains:doc:ops-review->pg:ops-review:2"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:ops-review:inv",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "在庫",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:ops-review:0:0->ent:ops-review:inv",
+        "mentions:ob:ops-review:1:1->ent:ops-review:inv",
+        "mentions:ob:ops-review:2:2->ent:ops-review:inv",
+        "causes:ent:ops-review:inv->ent:ops-review:cost",
+        "causes:ent:ops-review:inv->ent:strategy-deck:cost",
+        "references:ent:risk-memo:inv->ent:ops-review:inv"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:ops-review:cost",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "製造コスト",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:ops-review:0:1->ent:ops-review:cost",
+        "mentions:ob:ops-review:1:2->ent:ops-review:cost",
+        "causes:ent:ops-review:inv->ent:ops-review:cost",
+        "causes:ent:ops-review:cost->ent:ops-review:price",
+        "references:ent:annual-report:cost->ent:ops-review:cost",
+        "references:ent:ops-review:cost->ent:pl-model:cost"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:ops-review:qty",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売数量",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:ops-review:0:2->ent:ops-review:qty",
+        "mentions:ob:ops-review:2:0->ent:ops-review:qty",
+        "causes:ent:ops-review:price->ent:ops-review:qty",
+        "references:ent:q1-deck:qty->ent:ops-review:qty",
+        "references:ent:ops-review:qty->ent:kpi-tracker:qty"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "ent:ops-review:price",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売価格",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:ops-review:1:0->ent:ops-review:price",
+        "mentions:ob:ops-review:2:1->ent:ops-review:price",
+        "causes:ent:ops-review:cost->ent:ops-review:price",
+        "causes:ent:ops-review:price->ent:ops-review:qty",
+        "references:ent:strategy-deck:price->ent:ops-review:price",
+        "references:ent:ops-review:price->ent:forecast:price"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "pg:ops-review:0",
+      "layer": "page",
+      "kind": "section",
+      "label": "オペレビュー section1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:ops-review->pg:ops-review:0",
+        "contains:pg:ops-review:0->ob:ops-review:0:0",
+        "contains:pg:ops-review:0->ob:ops-review:0:1",
+        "contains:pg:ops-review:0->ob:ops-review:0:2"
+      ],
+      "rank": 4,
+      "parent": "doc:ops-review"
+    },
+    {
+      "id": "ob:ops-review:0:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "在庫水準が変わった（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:0->ob:ops-review:0:0",
+        "mentions:ob:ops-review:0:0->ent:ops-review:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:0"
+    },
+    {
+      "id": "ob:ops-review:0:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "製造コストが押し上げられた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:0->ob:ops-review:0:1",
+        "mentions:ob:ops-review:0:1->ent:ops-review:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:0"
+    },
+    {
+      "id": "ob:ops-review:0:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "販売数量が変動した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:0->ob:ops-review:0:2",
+        "mentions:ob:ops-review:0:2->ent:ops-review:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:0"
+    },
+    {
+      "id": "pg:ops-review:1",
+      "layer": "page",
+      "kind": "section",
+      "label": "オペレビュー section2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:ops-review->pg:ops-review:1",
+        "contains:pg:ops-review:1->ob:ops-review:1:0",
+        "contains:pg:ops-review:1->ob:ops-review:1:1",
+        "contains:pg:ops-review:1->ob:ops-review:1:2"
+      ],
+      "rank": 4,
+      "parent": "doc:ops-review"
+    },
+    {
+      "id": "ob:ops-review:1:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "販売価格を改定した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:1->ob:ops-review:1:0",
+        "mentions:ob:ops-review:1:0->ent:ops-review:price"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:1"
+    },
+    {
+      "id": "ob:ops-review:1:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "在庫水準が変わった（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:1->ob:ops-review:1:1",
+        "mentions:ob:ops-review:1:1->ent:ops-review:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:1"
+    },
+    {
+      "id": "ob:ops-review:1:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "製造コストが押し上げられた（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:1->ob:ops-review:1:2",
+        "mentions:ob:ops-review:1:2->ent:ops-review:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:1"
+    },
+    {
+      "id": "pg:ops-review:2",
+      "layer": "page",
+      "kind": "section",
+      "label": "オペレビュー section3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:ops-review->pg:ops-review:2",
+        "contains:pg:ops-review:2->ob:ops-review:2:0",
+        "contains:pg:ops-review:2->ob:ops-review:2:1",
+        "contains:pg:ops-review:2->ob:ops-review:2:2"
+      ],
+      "rank": 4,
+      "parent": "doc:ops-review"
+    },
+    {
+      "id": "ob:ops-review:2:0",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "販売数量が変動した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:2->ob:ops-review:2:0",
+        "mentions:ob:ops-review:2:0->ent:ops-review:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:2"
+    },
+    {
+      "id": "ob:ops-review:2:1",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "販売価格を改定した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:2->ob:ops-review:2:1",
+        "mentions:ob:ops-review:2:1->ent:ops-review:price"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:2"
+    },
+    {
+      "id": "ob:ops-review:2:2",
+      "layer": "object",
+      "kind": "paragraph",
+      "label": "在庫水準が変わった（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:ops-review:2->ob:ops-review:2:2",
+        "mentions:ob:ops-review:2:2->ent:ops-review:inv"
+      ],
+      "rank": 2,
+      "parent": "pg:ops-review:2"
+    },
+    {
+      "id": "doc:pl-model",
+      "layer": "document",
+      "kind": "document",
+      "label": "PL モデル",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:pl-model->pg:pl-model:0",
+        "contains:doc:pl-model->pg:pl-model:1",
+        "contains:doc:pl-model->pg:pl-model:2"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:pl-model:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:pl-model:0:0->ent:pl-model:sales",
+        "mentions:ob:pl-model:1:0->ent:pl-model:sales",
+        "mentions:ob:pl-model:2:0->ent:pl-model:sales",
+        "causes:ent:pl-model:sales->ent:pl-model:profit",
+        "references:ent:annual-report:sales->ent:pl-model:sales",
+        "references:ent:pl-model:sales->ent:kpi-tracker:sales"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:pl-model:cost",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "製造コスト",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:pl-model:0:1->ent:pl-model:cost",
+        "mentions:ob:pl-model:1:1->ent:pl-model:cost",
+        "mentions:ob:pl-model:2:1->ent:pl-model:cost",
+        "causes:ent:pl-model:cost->ent:pl-model:profit",
+        "references:ent:ops-review:cost->ent:pl-model:cost"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "ent:pl-model:profit",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "営業利益",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:pl-model:0:2->ent:pl-model:profit",
+        "mentions:ob:pl-model:1:2->ent:pl-model:profit",
+        "mentions:ob:pl-model:2:2->ent:pl-model:profit",
+        "causes:ent:pl-model:sales->ent:pl-model:profit",
+        "causes:ent:pl-model:cost->ent:pl-model:profit",
+        "causes:ent:q1-deck:sales->ent:pl-model:profit",
+        "references:ent:annual-report:profit->ent:pl-model:profit"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "pg:pl-model:0",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "PL モデル sheet1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:pl-model->pg:pl-model:0",
+        "contains:pg:pl-model:0->ob:pl-model:0:0",
+        "contains:pg:pl-model:0->ob:pl-model:0:1",
+        "contains:pg:pl-model:0->ob:pl-model:0:2"
+      ],
+      "rank": 4,
+      "parent": "doc:pl-model"
+    },
+    {
+      "id": "ob:pl-model:0:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:0->ob:pl-model:0:0",
+        "mentions:ob:pl-model:0:0->ent:pl-model:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:0"
+    },
+    {
+      "id": "ob:pl-model:0:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "製造コストが押し上げられた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:0->ob:pl-model:0:1",
+        "mentions:ob:pl-model:0:1->ent:pl-model:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:0"
+    },
+    {
+      "id": "ob:pl-model:0:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "営業利益が変化した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:0->ob:pl-model:0:2",
+        "mentions:ob:pl-model:0:2->ent:pl-model:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:0"
+    },
+    {
+      "id": "pg:pl-model:1",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "PL モデル sheet2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:pl-model->pg:pl-model:1",
+        "contains:pg:pl-model:1->ob:pl-model:1:0",
+        "contains:pg:pl-model:1->ob:pl-model:1:1",
+        "contains:pg:pl-model:1->ob:pl-model:1:2"
+      ],
+      "rank": 4,
+      "parent": "doc:pl-model"
+    },
+    {
+      "id": "ob:pl-model:1:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:1->ob:pl-model:1:0",
+        "mentions:ob:pl-model:1:0->ent:pl-model:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:1"
+    },
+    {
+      "id": "ob:pl-model:1:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "製造コストが押し上げられた（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:1->ob:pl-model:1:1",
+        "mentions:ob:pl-model:1:1->ent:pl-model:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:1"
+    },
+    {
+      "id": "ob:pl-model:1:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "営業利益が変化した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:1->ob:pl-model:1:2",
+        "mentions:ob:pl-model:1:2->ent:pl-model:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:1"
+    },
+    {
+      "id": "pg:pl-model:2",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "PL モデル sheet3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:pl-model->pg:pl-model:2",
+        "contains:pg:pl-model:2->ob:pl-model:2:0",
+        "contains:pg:pl-model:2->ob:pl-model:2:1",
+        "contains:pg:pl-model:2->ob:pl-model:2:2"
+      ],
+      "rank": 4,
+      "parent": "doc:pl-model"
+    },
+    {
+      "id": "ob:pl-model:2:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:2->ob:pl-model:2:0",
+        "mentions:ob:pl-model:2:0->ent:pl-model:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:2"
+    },
+    {
+      "id": "ob:pl-model:2:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "製造コストが押し上げられた（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:2->ob:pl-model:2:1",
+        "mentions:ob:pl-model:2:1->ent:pl-model:cost"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:2"
+    },
+    {
+      "id": "ob:pl-model:2:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "営業利益が変化した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:pl-model:2->ob:pl-model:2:2",
+        "mentions:ob:pl-model:2:2->ent:pl-model:profit"
+      ],
+      "rank": 2,
+      "parent": "pg:pl-model:2"
+    },
+    {
+      "id": "doc:kpi-tracker",
+      "layer": "document",
+      "kind": "document",
+      "label": "KPI トラッカー",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:kpi-tracker->pg:kpi-tracker:0",
+        "contains:doc:kpi-tracker->pg:kpi-tracker:1",
+        "contains:doc:kpi-tracker->pg:kpi-tracker:2"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:kpi-tracker:qty",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売数量",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:kpi-tracker:0:0->ent:kpi-tracker:qty",
+        "mentions:ob:kpi-tracker:1:0->ent:kpi-tracker:qty",
+        "mentions:ob:kpi-tracker:2:0->ent:kpi-tracker:qty",
+        "causes:ent:kpi-tracker:qty->ent:kpi-tracker:sales",
+        "references:ent:ops-review:qty->ent:kpi-tracker:qty",
+        "references:ent:kpi-tracker:qty->ent:forecast:qty"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:kpi-tracker:share",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "市場シェア",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:kpi-tracker:0:1->ent:kpi-tracker:share",
+        "mentions:ob:kpi-tracker:1:1->ent:kpi-tracker:share",
+        "mentions:ob:kpi-tracker:2:1->ent:kpi-tracker:share",
+        "causes:ent:kpi-tracker:share->ent:kpi-tracker:sales",
+        "causes:ent:kpi-tracker:share->ent:q2-deck:sales",
+        "references:ent:annual-report:share->ent:kpi-tracker:share"
+      ],
+      "rank": 6
+    },
+    {
+      "id": "ent:kpi-tracker:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:kpi-tracker:0:2->ent:kpi-tracker:sales",
+        "mentions:ob:kpi-tracker:1:2->ent:kpi-tracker:sales",
+        "mentions:ob:kpi-tracker:2:2->ent:kpi-tracker:sales",
+        "causes:ent:kpi-tracker:qty->ent:kpi-tracker:sales",
+        "causes:ent:kpi-tracker:share->ent:kpi-tracker:sales",
+        "references:ent:pl-model:sales->ent:kpi-tracker:sales",
+        "references:ent:kpi-tracker:sales->ent:forecast:sales"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "pg:kpi-tracker:0",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "KPI トラッカー sheet1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:kpi-tracker->pg:kpi-tracker:0",
+        "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:0",
+        "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:1",
+        "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:2"
+      ],
+      "rank": 4,
+      "parent": "doc:kpi-tracker"
+    },
+    {
+      "id": "ob:kpi-tracker:0:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売数量が変動した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:0",
+        "mentions:ob:kpi-tracker:0:0->ent:kpi-tracker:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:0"
+    },
+    {
+      "id": "ob:kpi-tracker:0:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "市場シェアが動いた（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:1",
+        "mentions:ob:kpi-tracker:0:1->ent:kpi-tracker:share"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:0"
+    },
+    {
+      "id": "ob:kpi-tracker:0:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:2",
+        "mentions:ob:kpi-tracker:0:2->ent:kpi-tracker:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:0"
+    },
+    {
+      "id": "pg:kpi-tracker:1",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "KPI トラッカー sheet2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:kpi-tracker->pg:kpi-tracker:1",
+        "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:0",
+        "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:1",
+        "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:2"
+      ],
+      "rank": 4,
+      "parent": "doc:kpi-tracker"
+    },
+    {
+      "id": "ob:kpi-tracker:1:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売数量が変動した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:0",
+        "mentions:ob:kpi-tracker:1:0->ent:kpi-tracker:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:1"
+    },
+    {
+      "id": "ob:kpi-tracker:1:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "市場シェアが動いた（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:1",
+        "mentions:ob:kpi-tracker:1:1->ent:kpi-tracker:share"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:1"
+    },
+    {
+      "id": "ob:kpi-tracker:1:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:2",
+        "mentions:ob:kpi-tracker:1:2->ent:kpi-tracker:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:1"
+    },
+    {
+      "id": "pg:kpi-tracker:2",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "KPI トラッカー sheet3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:kpi-tracker->pg:kpi-tracker:2",
+        "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:0",
+        "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:1",
+        "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:2"
+      ],
+      "rank": 4,
+      "parent": "doc:kpi-tracker"
+    },
+    {
+      "id": "ob:kpi-tracker:2:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売数量が変動した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:0",
+        "mentions:ob:kpi-tracker:2:0->ent:kpi-tracker:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:2"
+    },
+    {
+      "id": "ob:kpi-tracker:2:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "市場シェアが動いた（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:1",
+        "mentions:ob:kpi-tracker:2:1->ent:kpi-tracker:share"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:2"
+    },
+    {
+      "id": "ob:kpi-tracker:2:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:2",
+        "mentions:ob:kpi-tracker:2:2->ent:kpi-tracker:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:kpi-tracker:2"
+    },
+    {
+      "id": "doc:forecast",
+      "layer": "document",
+      "kind": "document",
+      "label": "需要予測",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:forecast->pg:forecast:0",
+        "contains:doc:forecast->pg:forecast:1",
+        "contains:doc:forecast->pg:forecast:2"
+      ],
+      "rank": 3
+    },
+    {
+      "id": "ent:forecast:price",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売価格",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:forecast:0:0->ent:forecast:price",
+        "mentions:ob:forecast:1:0->ent:forecast:price",
+        "mentions:ob:forecast:2:0->ent:forecast:price",
+        "causes:ent:forecast:price->ent:forecast:qty",
+        "references:ent:ops-review:price->ent:forecast:price"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "ent:forecast:qty",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "販売数量",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:forecast:0:1->ent:forecast:qty",
+        "mentions:ob:forecast:1:1->ent:forecast:qty",
+        "mentions:ob:forecast:2:1->ent:forecast:qty",
+        "causes:ent:forecast:price->ent:forecast:qty",
+        "causes:ent:forecast:qty->ent:forecast:sales",
+        "causes:ent:forecast:qty->ent:annual-report:sales",
+        "references:ent:kpi-tracker:qty->ent:forecast:qty"
+      ],
+      "rank": 7
+    },
+    {
+      "id": "ent:forecast:sales",
+      "layer": "causal",
+      "kind": "entity",
+      "label": "売上",
+      "physDim": 1,
+      "bonds": [
+        "mentions:ob:forecast:0:2->ent:forecast:sales",
+        "mentions:ob:forecast:1:2->ent:forecast:sales",
+        "mentions:ob:forecast:2:2->ent:forecast:sales",
+        "causes:ent:forecast:qty->ent:forecast:sales",
+        "references:ent:kpi-tracker:sales->ent:forecast:sales"
+      ],
+      "rank": 5
+    },
+    {
+      "id": "pg:forecast:0",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "需要予測 sheet1",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:forecast->pg:forecast:0",
+        "contains:pg:forecast:0->ob:forecast:0:0",
+        "contains:pg:forecast:0->ob:forecast:0:1",
+        "contains:pg:forecast:0->ob:forecast:0:2"
+      ],
+      "rank": 4,
+      "parent": "doc:forecast"
+    },
+    {
+      "id": "ob:forecast:0:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売価格を改定した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:0->ob:forecast:0:0",
+        "mentions:ob:forecast:0:0->ent:forecast:price"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:0"
+    },
+    {
+      "id": "ob:forecast:0:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売数量が変動した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:0->ob:forecast:0:1",
+        "mentions:ob:forecast:0:1->ent:forecast:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:0"
+    },
+    {
+      "id": "ob:forecast:0:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p1）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:0->ob:forecast:0:2",
+        "mentions:ob:forecast:0:2->ent:forecast:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:0"
+    },
+    {
+      "id": "pg:forecast:1",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "需要予測 sheet2",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:forecast->pg:forecast:1",
+        "contains:pg:forecast:1->ob:forecast:1:0",
+        "contains:pg:forecast:1->ob:forecast:1:1",
+        "contains:pg:forecast:1->ob:forecast:1:2"
+      ],
+      "rank": 4,
+      "parent": "doc:forecast"
+    },
+    {
+      "id": "ob:forecast:1:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売価格を改定した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:1->ob:forecast:1:0",
+        "mentions:ob:forecast:1:0->ent:forecast:price"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:1"
+    },
+    {
+      "id": "ob:forecast:1:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売数量が変動した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:1->ob:forecast:1:1",
+        "mentions:ob:forecast:1:1->ent:forecast:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:1"
+    },
+    {
+      "id": "ob:forecast:1:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p2）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:1->ob:forecast:1:2",
+        "mentions:ob:forecast:1:2->ent:forecast:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:1"
+    },
+    {
+      "id": "pg:forecast:2",
+      "layer": "page",
+      "kind": "sheet",
+      "label": "需要予測 sheet3",
+      "physDim": 1,
+      "bonds": [
+        "contains:doc:forecast->pg:forecast:2",
+        "contains:pg:forecast:2->ob:forecast:2:0",
+        "contains:pg:forecast:2->ob:forecast:2:1",
+        "contains:pg:forecast:2->ob:forecast:2:2"
+      ],
+      "rank": 4,
+      "parent": "doc:forecast"
+    },
+    {
+      "id": "ob:forecast:2:0",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売価格を改定した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:2->ob:forecast:2:0",
+        "mentions:ob:forecast:2:0->ent:forecast:price"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:2"
+    },
+    {
+      "id": "ob:forecast:2:1",
+      "layer": "object",
+      "kind": "cell",
+      "label": "販売数量が変動した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:2->ob:forecast:2:1",
+        "mentions:ob:forecast:2:1->ent:forecast:qty"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:2"
+    },
+    {
+      "id": "ob:forecast:2:2",
+      "layer": "object",
+      "kind": "cell",
+      "label": "売上高が増減した（p3）",
+      "physDim": 1,
+      "bonds": [
+        "contains:pg:forecast:2->ob:forecast:2:2",
+        "mentions:ob:forecast:2:2->ent:forecast:sales"
+      ],
+      "rank": 2,
+      "parent": "pg:forecast:2"
+    }
+  ],
+  "bonds": [
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:0",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:0->ob:q1-deck:0:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:0",
+      "to": "ob:q1-deck:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:0:0->ent:q1-deck:raw",
+      "kind": "mentions",
+      "from": "ob:q1-deck:0:0",
+      "to": "ent:q1-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:0->ob:q1-deck:0:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:0",
+      "to": "ob:q1-deck:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:0:1->ent:q1-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q1-deck:0:1",
+      "to": "ent:q1-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:1",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:1->ob:q1-deck:1:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:1",
+      "to": "ob:q1-deck:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:1:0->ent:q1-deck:price",
+      "kind": "mentions",
+      "from": "ob:q1-deck:1:0",
+      "to": "ent:q1-deck:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:1->ob:q1-deck:1:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:1",
+      "to": "ob:q1-deck:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:1:1->ent:q1-deck:qty",
+      "kind": "mentions",
+      "from": "ob:q1-deck:1:1",
+      "to": "ent:q1-deck:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:2",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:2->ob:q1-deck:2:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:2",
+      "to": "ob:q1-deck:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:2:0->ent:q1-deck:sales",
+      "kind": "mentions",
+      "from": "ob:q1-deck:2:0",
+      "to": "ent:q1-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:2->ob:q1-deck:2:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:2",
+      "to": "ob:q1-deck:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:2:1->ent:q1-deck:profit",
+      "kind": "mentions",
+      "from": "ob:q1-deck:2:1",
+      "to": "ent:q1-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:3",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:3",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:3->ob:q1-deck:3:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:3",
+      "to": "ob:q1-deck:3:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:3:0->ent:q1-deck:raw",
+      "kind": "mentions",
+      "from": "ob:q1-deck:3:0",
+      "to": "ent:q1-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:3->ob:q1-deck:3:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:3",
+      "to": "ob:q1-deck:3:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:3:1->ent:q1-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q1-deck:3:1",
+      "to": "ent:q1-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:4",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:4",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:4->ob:q1-deck:4:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:4",
+      "to": "ob:q1-deck:4:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:4:0->ent:q1-deck:price",
+      "kind": "mentions",
+      "from": "ob:q1-deck:4:0",
+      "to": "ent:q1-deck:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:4->ob:q1-deck:4:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:4",
+      "to": "ob:q1-deck:4:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:4:1->ent:q1-deck:qty",
+      "kind": "mentions",
+      "from": "ob:q1-deck:4:1",
+      "to": "ent:q1-deck:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:5",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:5",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:5->ob:q1-deck:5:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:5",
+      "to": "ob:q1-deck:5:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:5:0->ent:q1-deck:sales",
+      "kind": "mentions",
+      "from": "ob:q1-deck:5:0",
+      "to": "ent:q1-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:5->ob:q1-deck:5:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:5",
+      "to": "ob:q1-deck:5:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:5:1->ent:q1-deck:profit",
+      "kind": "mentions",
+      "from": "ob:q1-deck:5:1",
+      "to": "ent:q1-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:6",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:6",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:6->ob:q1-deck:6:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:6",
+      "to": "ob:q1-deck:6:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:6:0->ent:q1-deck:raw",
+      "kind": "mentions",
+      "from": "ob:q1-deck:6:0",
+      "to": "ent:q1-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:6->ob:q1-deck:6:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:6",
+      "to": "ob:q1-deck:6:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:6:1->ent:q1-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q1-deck:6:1",
+      "to": "ent:q1-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:7",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:7",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:7->ob:q1-deck:7:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:7",
+      "to": "ob:q1-deck:7:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:7:0->ent:q1-deck:price",
+      "kind": "mentions",
+      "from": "ob:q1-deck:7:0",
+      "to": "ent:q1-deck:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:7->ob:q1-deck:7:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:7",
+      "to": "ob:q1-deck:7:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:7:1->ent:q1-deck:qty",
+      "kind": "mentions",
+      "from": "ob:q1-deck:7:1",
+      "to": "ent:q1-deck:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:8",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:8",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:8->ob:q1-deck:8:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:8",
+      "to": "ob:q1-deck:8:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:8:0->ent:q1-deck:sales",
+      "kind": "mentions",
+      "from": "ob:q1-deck:8:0",
+      "to": "ent:q1-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:8->ob:q1-deck:8:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:8",
+      "to": "ob:q1-deck:8:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:8:1->ent:q1-deck:profit",
+      "kind": "mentions",
+      "from": "ob:q1-deck:8:1",
+      "to": "ent:q1-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q1-deck->pg:q1-deck:9",
+      "kind": "contains",
+      "from": "doc:q1-deck",
+      "to": "pg:q1-deck:9",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:9->ob:q1-deck:9:0",
+      "kind": "contains",
+      "from": "pg:q1-deck:9",
+      "to": "ob:q1-deck:9:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:9:0->ent:q1-deck:raw",
+      "kind": "mentions",
+      "from": "ob:q1-deck:9:0",
+      "to": "ent:q1-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q1-deck:9->ob:q1-deck:9:1",
+      "kind": "contains",
+      "from": "pg:q1-deck:9",
+      "to": "ob:q1-deck:9:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q1-deck:9:1->ent:q1-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q1-deck:9:1",
+      "to": "ent:q1-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:raw->ent:q1-deck:cost",
+      "kind": "causes",
+      "from": "ent:q1-deck:raw",
+      "to": "ent:q1-deck:cost",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:cost->ent:q1-deck:price",
+      "kind": "causes",
+      "from": "ent:q1-deck:cost",
+      "to": "ent:q1-deck:price",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:price->ent:q1-deck:qty",
+      "kind": "causes",
+      "from": "ent:q1-deck:price",
+      "to": "ent:q1-deck:qty",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:qty->ent:q1-deck:sales",
+      "kind": "causes",
+      "from": "ent:q1-deck:qty",
+      "to": "ent:q1-deck:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:sales->ent:q1-deck:profit",
+      "kind": "causes",
+      "from": "ent:q1-deck:sales",
+      "to": "ent:q1-deck:profit",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:cost->ent:q1-deck:profit",
+      "kind": "causes",
+      "from": "ent:q1-deck:cost",
+      "to": "ent:q1-deck:profit",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:0",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:0->ob:q2-deck:0:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:0",
+      "to": "ob:q2-deck:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:0:0->ent:q2-deck:comp",
+      "kind": "mentions",
+      "from": "ob:q2-deck:0:0",
+      "to": "ent:q2-deck:comp",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:0->ob:q2-deck:0:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:0",
+      "to": "ob:q2-deck:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:0:1->ent:q2-deck:share",
+      "kind": "mentions",
+      "from": "ob:q2-deck:0:1",
+      "to": "ent:q2-deck:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:1",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:1->ob:q2-deck:1:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:1",
+      "to": "ob:q2-deck:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:1:0->ent:q2-deck:sales",
+      "kind": "mentions",
+      "from": "ob:q2-deck:1:0",
+      "to": "ent:q2-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:1->ob:q2-deck:1:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:1",
+      "to": "ob:q2-deck:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:1:1->ent:q2-deck:profit",
+      "kind": "mentions",
+      "from": "ob:q2-deck:1:1",
+      "to": "ent:q2-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:2",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:2->ob:q2-deck:2:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:2",
+      "to": "ob:q2-deck:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:2:0->ent:q2-deck:inv",
+      "kind": "mentions",
+      "from": "ob:q2-deck:2:0",
+      "to": "ent:q2-deck:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:2->ob:q2-deck:2:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:2",
+      "to": "ob:q2-deck:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:2:1->ent:q2-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q2-deck:2:1",
+      "to": "ent:q2-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:3",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:3",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:3->ob:q2-deck:3:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:3",
+      "to": "ob:q2-deck:3:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:3:0->ent:q2-deck:comp",
+      "kind": "mentions",
+      "from": "ob:q2-deck:3:0",
+      "to": "ent:q2-deck:comp",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:3->ob:q2-deck:3:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:3",
+      "to": "ob:q2-deck:3:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:3:1->ent:q2-deck:share",
+      "kind": "mentions",
+      "from": "ob:q2-deck:3:1",
+      "to": "ent:q2-deck:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:4",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:4",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:4->ob:q2-deck:4:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:4",
+      "to": "ob:q2-deck:4:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:4:0->ent:q2-deck:sales",
+      "kind": "mentions",
+      "from": "ob:q2-deck:4:0",
+      "to": "ent:q2-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:4->ob:q2-deck:4:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:4",
+      "to": "ob:q2-deck:4:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:4:1->ent:q2-deck:profit",
+      "kind": "mentions",
+      "from": "ob:q2-deck:4:1",
+      "to": "ent:q2-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:5",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:5",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:5->ob:q2-deck:5:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:5",
+      "to": "ob:q2-deck:5:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:5:0->ent:q2-deck:inv",
+      "kind": "mentions",
+      "from": "ob:q2-deck:5:0",
+      "to": "ent:q2-deck:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:5->ob:q2-deck:5:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:5",
+      "to": "ob:q2-deck:5:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:5:1->ent:q2-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q2-deck:5:1",
+      "to": "ent:q2-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:6",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:6",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:6->ob:q2-deck:6:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:6",
+      "to": "ob:q2-deck:6:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:6:0->ent:q2-deck:comp",
+      "kind": "mentions",
+      "from": "ob:q2-deck:6:0",
+      "to": "ent:q2-deck:comp",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:6->ob:q2-deck:6:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:6",
+      "to": "ob:q2-deck:6:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:6:1->ent:q2-deck:share",
+      "kind": "mentions",
+      "from": "ob:q2-deck:6:1",
+      "to": "ent:q2-deck:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:7",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:7",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:7->ob:q2-deck:7:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:7",
+      "to": "ob:q2-deck:7:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:7:0->ent:q2-deck:sales",
+      "kind": "mentions",
+      "from": "ob:q2-deck:7:0",
+      "to": "ent:q2-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:7->ob:q2-deck:7:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:7",
+      "to": "ob:q2-deck:7:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:7:1->ent:q2-deck:profit",
+      "kind": "mentions",
+      "from": "ob:q2-deck:7:1",
+      "to": "ent:q2-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:8",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:8",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:8->ob:q2-deck:8:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:8",
+      "to": "ob:q2-deck:8:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:8:0->ent:q2-deck:inv",
+      "kind": "mentions",
+      "from": "ob:q2-deck:8:0",
+      "to": "ent:q2-deck:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:8->ob:q2-deck:8:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:8",
+      "to": "ob:q2-deck:8:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:8:1->ent:q2-deck:cost",
+      "kind": "mentions",
+      "from": "ob:q2-deck:8:1",
+      "to": "ent:q2-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:q2-deck->pg:q2-deck:9",
+      "kind": "contains",
+      "from": "doc:q2-deck",
+      "to": "pg:q2-deck:9",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:9->ob:q2-deck:9:0",
+      "kind": "contains",
+      "from": "pg:q2-deck:9",
+      "to": "ob:q2-deck:9:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:9:0->ent:q2-deck:comp",
+      "kind": "mentions",
+      "from": "ob:q2-deck:9:0",
+      "to": "ent:q2-deck:comp",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:q2-deck:9->ob:q2-deck:9:1",
+      "kind": "contains",
+      "from": "pg:q2-deck:9",
+      "to": "ob:q2-deck:9:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:q2-deck:9:1->ent:q2-deck:share",
+      "kind": "mentions",
+      "from": "ob:q2-deck:9:1",
+      "to": "ent:q2-deck:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q2-deck:inv->ent:q2-deck:cost",
+      "kind": "causes",
+      "from": "ent:q2-deck:inv",
+      "to": "ent:q2-deck:cost",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q2-deck:comp->ent:q2-deck:share",
+      "kind": "causes",
+      "from": "ent:q2-deck:comp",
+      "to": "ent:q2-deck:share",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q2-deck:share->ent:q2-deck:sales",
+      "kind": "causes",
+      "from": "ent:q2-deck:share",
+      "to": "ent:q2-deck:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q2-deck:sales->ent:q2-deck:profit",
+      "kind": "causes",
+      "from": "ent:q2-deck:sales",
+      "to": "ent:q2-deck:profit",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q2-deck:cost->ent:q2-deck:profit",
+      "kind": "causes",
+      "from": "ent:q2-deck:cost",
+      "to": "ent:q2-deck:profit",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:0",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:0->ob:strategy-deck:0:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:0",
+      "to": "ob:strategy-deck:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:0:0->ent:strategy-deck:fx",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:0:0",
+      "to": "ent:strategy-deck:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:0->ob:strategy-deck:0:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:0",
+      "to": "ob:strategy-deck:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:0:1->ent:strategy-deck:raw",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:0:1",
+      "to": "ent:strategy-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:1",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:1->ob:strategy-deck:1:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:1",
+      "to": "ob:strategy-deck:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:1:0->ent:strategy-deck:cost",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:1:0",
+      "to": "ent:strategy-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:1->ob:strategy-deck:1:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:1",
+      "to": "ob:strategy-deck:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:1:1->ent:strategy-deck:price",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:1:1",
+      "to": "ent:strategy-deck:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:2",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:2->ob:strategy-deck:2:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:2",
+      "to": "ob:strategy-deck:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:2:0->ent:strategy-deck:sales",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:2:0",
+      "to": "ent:strategy-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:2->ob:strategy-deck:2:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:2",
+      "to": "ob:strategy-deck:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:2:1->ent:strategy-deck:profit",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:2:1",
+      "to": "ent:strategy-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:3",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:3",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:3->ob:strategy-deck:3:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:3",
+      "to": "ob:strategy-deck:3:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:3:0->ent:strategy-deck:fx",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:3:0",
+      "to": "ent:strategy-deck:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:3->ob:strategy-deck:3:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:3",
+      "to": "ob:strategy-deck:3:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:3:1->ent:strategy-deck:raw",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:3:1",
+      "to": "ent:strategy-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:4",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:4",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:4->ob:strategy-deck:4:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:4",
+      "to": "ob:strategy-deck:4:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:4:0->ent:strategy-deck:cost",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:4:0",
+      "to": "ent:strategy-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:4->ob:strategy-deck:4:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:4",
+      "to": "ob:strategy-deck:4:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:4:1->ent:strategy-deck:price",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:4:1",
+      "to": "ent:strategy-deck:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:5",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:5",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:5->ob:strategy-deck:5:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:5",
+      "to": "ob:strategy-deck:5:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:5:0->ent:strategy-deck:sales",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:5:0",
+      "to": "ent:strategy-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:5->ob:strategy-deck:5:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:5",
+      "to": "ob:strategy-deck:5:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:5:1->ent:strategy-deck:profit",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:5:1",
+      "to": "ent:strategy-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:6",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:6",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:6->ob:strategy-deck:6:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:6",
+      "to": "ob:strategy-deck:6:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:6:0->ent:strategy-deck:fx",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:6:0",
+      "to": "ent:strategy-deck:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:6->ob:strategy-deck:6:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:6",
+      "to": "ob:strategy-deck:6:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:6:1->ent:strategy-deck:raw",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:6:1",
+      "to": "ent:strategy-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:7",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:7",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:7->ob:strategy-deck:7:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:7",
+      "to": "ob:strategy-deck:7:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:7:0->ent:strategy-deck:cost",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:7:0",
+      "to": "ent:strategy-deck:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:7->ob:strategy-deck:7:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:7",
+      "to": "ob:strategy-deck:7:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:7:1->ent:strategy-deck:price",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:7:1",
+      "to": "ent:strategy-deck:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:8",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:8",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:8->ob:strategy-deck:8:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:8",
+      "to": "ob:strategy-deck:8:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:8:0->ent:strategy-deck:sales",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:8:0",
+      "to": "ent:strategy-deck:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:8->ob:strategy-deck:8:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:8",
+      "to": "ob:strategy-deck:8:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:8:1->ent:strategy-deck:profit",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:8:1",
+      "to": "ent:strategy-deck:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:strategy-deck->pg:strategy-deck:9",
+      "kind": "contains",
+      "from": "doc:strategy-deck",
+      "to": "pg:strategy-deck:9",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:9->ob:strategy-deck:9:0",
+      "kind": "contains",
+      "from": "pg:strategy-deck:9",
+      "to": "ob:strategy-deck:9:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:9:0->ent:strategy-deck:fx",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:9:0",
+      "to": "ent:strategy-deck:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:strategy-deck:9->ob:strategy-deck:9:1",
+      "kind": "contains",
+      "from": "pg:strategy-deck:9",
+      "to": "ob:strategy-deck:9:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:strategy-deck:9:1->ent:strategy-deck:raw",
+      "kind": "mentions",
+      "from": "ob:strategy-deck:9:1",
+      "to": "ent:strategy-deck:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:strategy-deck:fx->ent:strategy-deck:raw",
+      "kind": "causes",
+      "from": "ent:strategy-deck:fx",
+      "to": "ent:strategy-deck:raw",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:strategy-deck:raw->ent:strategy-deck:cost",
+      "kind": "causes",
+      "from": "ent:strategy-deck:raw",
+      "to": "ent:strategy-deck:cost",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:strategy-deck:cost->ent:strategy-deck:price",
+      "kind": "causes",
+      "from": "ent:strategy-deck:cost",
+      "to": "ent:strategy-deck:price",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:strategy-deck:sales->ent:strategy-deck:profit",
+      "kind": "causes",
+      "from": "ent:strategy-deck:sales",
+      "to": "ent:strategy-deck:profit",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:strategy-deck:cost->ent:strategy-deck:profit",
+      "kind": "causes",
+      "from": "ent:strategy-deck:cost",
+      "to": "ent:strategy-deck:profit",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:annual-report->pg:annual-report:0",
+      "kind": "contains",
+      "from": "doc:annual-report",
+      "to": "pg:annual-report:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:0->ob:annual-report:0:0",
+      "kind": "contains",
+      "from": "pg:annual-report:0",
+      "to": "ob:annual-report:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:0:0->ent:annual-report:sales",
+      "kind": "mentions",
+      "from": "ob:annual-report:0:0",
+      "to": "ent:annual-report:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:0->ob:annual-report:0:1",
+      "kind": "contains",
+      "from": "pg:annual-report:0",
+      "to": "ob:annual-report:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:0:1->ent:annual-report:profit",
+      "kind": "mentions",
+      "from": "ob:annual-report:0:1",
+      "to": "ent:annual-report:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:0->ob:annual-report:0:2",
+      "kind": "contains",
+      "from": "pg:annual-report:0",
+      "to": "ob:annual-report:0:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:0:2->ent:annual-report:cost",
+      "kind": "mentions",
+      "from": "ob:annual-report:0:2",
+      "to": "ent:annual-report:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:annual-report->pg:annual-report:1",
+      "kind": "contains",
+      "from": "doc:annual-report",
+      "to": "pg:annual-report:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:1->ob:annual-report:1:0",
+      "kind": "contains",
+      "from": "pg:annual-report:1",
+      "to": "ob:annual-report:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:1:0->ent:annual-report:share",
+      "kind": "mentions",
+      "from": "ob:annual-report:1:0",
+      "to": "ent:annual-report:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:1->ob:annual-report:1:1",
+      "kind": "contains",
+      "from": "pg:annual-report:1",
+      "to": "ob:annual-report:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:1:1->ent:annual-report:sales",
+      "kind": "mentions",
+      "from": "ob:annual-report:1:1",
+      "to": "ent:annual-report:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:1->ob:annual-report:1:2",
+      "kind": "contains",
+      "from": "pg:annual-report:1",
+      "to": "ob:annual-report:1:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:1:2->ent:annual-report:profit",
+      "kind": "mentions",
+      "from": "ob:annual-report:1:2",
+      "to": "ent:annual-report:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:annual-report->pg:annual-report:2",
+      "kind": "contains",
+      "from": "doc:annual-report",
+      "to": "pg:annual-report:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:2->ob:annual-report:2:0",
+      "kind": "contains",
+      "from": "pg:annual-report:2",
+      "to": "ob:annual-report:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:2:0->ent:annual-report:cost",
+      "kind": "mentions",
+      "from": "ob:annual-report:2:0",
+      "to": "ent:annual-report:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:2->ob:annual-report:2:1",
+      "kind": "contains",
+      "from": "pg:annual-report:2",
+      "to": "ob:annual-report:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:2:1->ent:annual-report:share",
+      "kind": "mentions",
+      "from": "ob:annual-report:2:1",
+      "to": "ent:annual-report:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:annual-report:2->ob:annual-report:2:2",
+      "kind": "contains",
+      "from": "pg:annual-report:2",
+      "to": "ob:annual-report:2:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:annual-report:2:2->ent:annual-report:sales",
+      "kind": "mentions",
+      "from": "ob:annual-report:2:2",
+      "to": "ent:annual-report:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:annual-report:share->ent:annual-report:sales",
+      "kind": "causes",
+      "from": "ent:annual-report:share",
+      "to": "ent:annual-report:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:annual-report:sales->ent:annual-report:profit",
+      "kind": "causes",
+      "from": "ent:annual-report:sales",
+      "to": "ent:annual-report:profit",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:annual-report:cost->ent:annual-report:profit",
+      "kind": "causes",
+      "from": "ent:annual-report:cost",
+      "to": "ent:annual-report:profit",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:risk-memo->pg:risk-memo:0",
+      "kind": "contains",
+      "from": "doc:risk-memo",
+      "to": "pg:risk-memo:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:0->ob:risk-memo:0:0",
+      "kind": "contains",
+      "from": "pg:risk-memo:0",
+      "to": "ob:risk-memo:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:0:0->ent:risk-memo:fx",
+      "kind": "mentions",
+      "from": "ob:risk-memo:0:0",
+      "to": "ent:risk-memo:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:0->ob:risk-memo:0:1",
+      "kind": "contains",
+      "from": "pg:risk-memo:0",
+      "to": "ob:risk-memo:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:0:1->ent:risk-memo:raw",
+      "kind": "mentions",
+      "from": "ob:risk-memo:0:1",
+      "to": "ent:risk-memo:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:0->ob:risk-memo:0:2",
+      "kind": "contains",
+      "from": "pg:risk-memo:0",
+      "to": "ob:risk-memo:0:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:0:2->ent:risk-memo:comp",
+      "kind": "mentions",
+      "from": "ob:risk-memo:0:2",
+      "to": "ent:risk-memo:comp",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:risk-memo->pg:risk-memo:1",
+      "kind": "contains",
+      "from": "doc:risk-memo",
+      "to": "pg:risk-memo:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:1->ob:risk-memo:1:0",
+      "kind": "contains",
+      "from": "pg:risk-memo:1",
+      "to": "ob:risk-memo:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:1:0->ent:risk-memo:inv",
+      "kind": "mentions",
+      "from": "ob:risk-memo:1:0",
+      "to": "ent:risk-memo:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:1->ob:risk-memo:1:1",
+      "kind": "contains",
+      "from": "pg:risk-memo:1",
+      "to": "ob:risk-memo:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:1:1->ent:risk-memo:fx",
+      "kind": "mentions",
+      "from": "ob:risk-memo:1:1",
+      "to": "ent:risk-memo:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:1->ob:risk-memo:1:2",
+      "kind": "contains",
+      "from": "pg:risk-memo:1",
+      "to": "ob:risk-memo:1:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:1:2->ent:risk-memo:raw",
+      "kind": "mentions",
+      "from": "ob:risk-memo:1:2",
+      "to": "ent:risk-memo:raw",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:risk-memo->pg:risk-memo:2",
+      "kind": "contains",
+      "from": "doc:risk-memo",
+      "to": "pg:risk-memo:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:2->ob:risk-memo:2:0",
+      "kind": "contains",
+      "from": "pg:risk-memo:2",
+      "to": "ob:risk-memo:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:2:0->ent:risk-memo:comp",
+      "kind": "mentions",
+      "from": "ob:risk-memo:2:0",
+      "to": "ent:risk-memo:comp",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:2->ob:risk-memo:2:1",
+      "kind": "contains",
+      "from": "pg:risk-memo:2",
+      "to": "ob:risk-memo:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:2:1->ent:risk-memo:inv",
+      "kind": "mentions",
+      "from": "ob:risk-memo:2:1",
+      "to": "ent:risk-memo:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:risk-memo:2->ob:risk-memo:2:2",
+      "kind": "contains",
+      "from": "pg:risk-memo:2",
+      "to": "ob:risk-memo:2:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:risk-memo:2:2->ent:risk-memo:fx",
+      "kind": "mentions",
+      "from": "ob:risk-memo:2:2",
+      "to": "ent:risk-memo:fx",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:risk-memo:fx->ent:risk-memo:raw",
+      "kind": "causes",
+      "from": "ent:risk-memo:fx",
+      "to": "ent:risk-memo:raw",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:ops-review->pg:ops-review:0",
+      "kind": "contains",
+      "from": "doc:ops-review",
+      "to": "pg:ops-review:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:0->ob:ops-review:0:0",
+      "kind": "contains",
+      "from": "pg:ops-review:0",
+      "to": "ob:ops-review:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:0:0->ent:ops-review:inv",
+      "kind": "mentions",
+      "from": "ob:ops-review:0:0",
+      "to": "ent:ops-review:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:0->ob:ops-review:0:1",
+      "kind": "contains",
+      "from": "pg:ops-review:0",
+      "to": "ob:ops-review:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:0:1->ent:ops-review:cost",
+      "kind": "mentions",
+      "from": "ob:ops-review:0:1",
+      "to": "ent:ops-review:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:0->ob:ops-review:0:2",
+      "kind": "contains",
+      "from": "pg:ops-review:0",
+      "to": "ob:ops-review:0:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:0:2->ent:ops-review:qty",
+      "kind": "mentions",
+      "from": "ob:ops-review:0:2",
+      "to": "ent:ops-review:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:ops-review->pg:ops-review:1",
+      "kind": "contains",
+      "from": "doc:ops-review",
+      "to": "pg:ops-review:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:1->ob:ops-review:1:0",
+      "kind": "contains",
+      "from": "pg:ops-review:1",
+      "to": "ob:ops-review:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:1:0->ent:ops-review:price",
+      "kind": "mentions",
+      "from": "ob:ops-review:1:0",
+      "to": "ent:ops-review:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:1->ob:ops-review:1:1",
+      "kind": "contains",
+      "from": "pg:ops-review:1",
+      "to": "ob:ops-review:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:1:1->ent:ops-review:inv",
+      "kind": "mentions",
+      "from": "ob:ops-review:1:1",
+      "to": "ent:ops-review:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:1->ob:ops-review:1:2",
+      "kind": "contains",
+      "from": "pg:ops-review:1",
+      "to": "ob:ops-review:1:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:1:2->ent:ops-review:cost",
+      "kind": "mentions",
+      "from": "ob:ops-review:1:2",
+      "to": "ent:ops-review:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:ops-review->pg:ops-review:2",
+      "kind": "contains",
+      "from": "doc:ops-review",
+      "to": "pg:ops-review:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:2->ob:ops-review:2:0",
+      "kind": "contains",
+      "from": "pg:ops-review:2",
+      "to": "ob:ops-review:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:2:0->ent:ops-review:qty",
+      "kind": "mentions",
+      "from": "ob:ops-review:2:0",
+      "to": "ent:ops-review:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:2->ob:ops-review:2:1",
+      "kind": "contains",
+      "from": "pg:ops-review:2",
+      "to": "ob:ops-review:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:2:1->ent:ops-review:price",
+      "kind": "mentions",
+      "from": "ob:ops-review:2:1",
+      "to": "ent:ops-review:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:ops-review:2->ob:ops-review:2:2",
+      "kind": "contains",
+      "from": "pg:ops-review:2",
+      "to": "ob:ops-review:2:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:ops-review:2:2->ent:ops-review:inv",
+      "kind": "mentions",
+      "from": "ob:ops-review:2:2",
+      "to": "ent:ops-review:inv",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:ops-review:inv->ent:ops-review:cost",
+      "kind": "causes",
+      "from": "ent:ops-review:inv",
+      "to": "ent:ops-review:cost",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:ops-review:cost->ent:ops-review:price",
+      "kind": "causes",
+      "from": "ent:ops-review:cost",
+      "to": "ent:ops-review:price",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:ops-review:price->ent:ops-review:qty",
+      "kind": "causes",
+      "from": "ent:ops-review:price",
+      "to": "ent:ops-review:qty",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:pl-model->pg:pl-model:0",
+      "kind": "contains",
+      "from": "doc:pl-model",
+      "to": "pg:pl-model:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:0->ob:pl-model:0:0",
+      "kind": "contains",
+      "from": "pg:pl-model:0",
+      "to": "ob:pl-model:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:0:0->ent:pl-model:sales",
+      "kind": "mentions",
+      "from": "ob:pl-model:0:0",
+      "to": "ent:pl-model:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:0->ob:pl-model:0:1",
+      "kind": "contains",
+      "from": "pg:pl-model:0",
+      "to": "ob:pl-model:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:0:1->ent:pl-model:cost",
+      "kind": "mentions",
+      "from": "ob:pl-model:0:1",
+      "to": "ent:pl-model:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:0->ob:pl-model:0:2",
+      "kind": "contains",
+      "from": "pg:pl-model:0",
+      "to": "ob:pl-model:0:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:0:2->ent:pl-model:profit",
+      "kind": "mentions",
+      "from": "ob:pl-model:0:2",
+      "to": "ent:pl-model:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:pl-model->pg:pl-model:1",
+      "kind": "contains",
+      "from": "doc:pl-model",
+      "to": "pg:pl-model:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:1->ob:pl-model:1:0",
+      "kind": "contains",
+      "from": "pg:pl-model:1",
+      "to": "ob:pl-model:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:1:0->ent:pl-model:sales",
+      "kind": "mentions",
+      "from": "ob:pl-model:1:0",
+      "to": "ent:pl-model:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:1->ob:pl-model:1:1",
+      "kind": "contains",
+      "from": "pg:pl-model:1",
+      "to": "ob:pl-model:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:1:1->ent:pl-model:cost",
+      "kind": "mentions",
+      "from": "ob:pl-model:1:1",
+      "to": "ent:pl-model:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:1->ob:pl-model:1:2",
+      "kind": "contains",
+      "from": "pg:pl-model:1",
+      "to": "ob:pl-model:1:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:1:2->ent:pl-model:profit",
+      "kind": "mentions",
+      "from": "ob:pl-model:1:2",
+      "to": "ent:pl-model:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:pl-model->pg:pl-model:2",
+      "kind": "contains",
+      "from": "doc:pl-model",
+      "to": "pg:pl-model:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:2->ob:pl-model:2:0",
+      "kind": "contains",
+      "from": "pg:pl-model:2",
+      "to": "ob:pl-model:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:2:0->ent:pl-model:sales",
+      "kind": "mentions",
+      "from": "ob:pl-model:2:0",
+      "to": "ent:pl-model:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:2->ob:pl-model:2:1",
+      "kind": "contains",
+      "from": "pg:pl-model:2",
+      "to": "ob:pl-model:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:2:1->ent:pl-model:cost",
+      "kind": "mentions",
+      "from": "ob:pl-model:2:1",
+      "to": "ent:pl-model:cost",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:pl-model:2->ob:pl-model:2:2",
+      "kind": "contains",
+      "from": "pg:pl-model:2",
+      "to": "ob:pl-model:2:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:pl-model:2:2->ent:pl-model:profit",
+      "kind": "mentions",
+      "from": "ob:pl-model:2:2",
+      "to": "ent:pl-model:profit",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:pl-model:sales->ent:pl-model:profit",
+      "kind": "causes",
+      "from": "ent:pl-model:sales",
+      "to": "ent:pl-model:profit",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:pl-model:cost->ent:pl-model:profit",
+      "kind": "causes",
+      "from": "ent:pl-model:cost",
+      "to": "ent:pl-model:profit",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:kpi-tracker->pg:kpi-tracker:0",
+      "kind": "contains",
+      "from": "doc:kpi-tracker",
+      "to": "pg:kpi-tracker:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:0",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:0",
+      "to": "ob:kpi-tracker:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:0:0->ent:kpi-tracker:qty",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:0:0",
+      "to": "ent:kpi-tracker:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:1",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:0",
+      "to": "ob:kpi-tracker:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:0:1->ent:kpi-tracker:share",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:0:1",
+      "to": "ent:kpi-tracker:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:0->ob:kpi-tracker:0:2",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:0",
+      "to": "ob:kpi-tracker:0:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:0:2->ent:kpi-tracker:sales",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:0:2",
+      "to": "ent:kpi-tracker:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:kpi-tracker->pg:kpi-tracker:1",
+      "kind": "contains",
+      "from": "doc:kpi-tracker",
+      "to": "pg:kpi-tracker:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:0",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:1",
+      "to": "ob:kpi-tracker:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:1:0->ent:kpi-tracker:qty",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:1:0",
+      "to": "ent:kpi-tracker:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:1",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:1",
+      "to": "ob:kpi-tracker:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:1:1->ent:kpi-tracker:share",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:1:1",
+      "to": "ent:kpi-tracker:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:1->ob:kpi-tracker:1:2",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:1",
+      "to": "ob:kpi-tracker:1:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:1:2->ent:kpi-tracker:sales",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:1:2",
+      "to": "ent:kpi-tracker:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:kpi-tracker->pg:kpi-tracker:2",
+      "kind": "contains",
+      "from": "doc:kpi-tracker",
+      "to": "pg:kpi-tracker:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:0",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:2",
+      "to": "ob:kpi-tracker:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:2:0->ent:kpi-tracker:qty",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:2:0",
+      "to": "ent:kpi-tracker:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:1",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:2",
+      "to": "ob:kpi-tracker:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:2:1->ent:kpi-tracker:share",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:2:1",
+      "to": "ent:kpi-tracker:share",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:kpi-tracker:2->ob:kpi-tracker:2:2",
+      "kind": "contains",
+      "from": "pg:kpi-tracker:2",
+      "to": "ob:kpi-tracker:2:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:kpi-tracker:2:2->ent:kpi-tracker:sales",
+      "kind": "mentions",
+      "from": "ob:kpi-tracker:2:2",
+      "to": "ent:kpi-tracker:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:kpi-tracker:qty->ent:kpi-tracker:sales",
+      "kind": "causes",
+      "from": "ent:kpi-tracker:qty",
+      "to": "ent:kpi-tracker:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:kpi-tracker:share->ent:kpi-tracker:sales",
+      "kind": "causes",
+      "from": "ent:kpi-tracker:share",
+      "to": "ent:kpi-tracker:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:forecast->pg:forecast:0",
+      "kind": "contains",
+      "from": "doc:forecast",
+      "to": "pg:forecast:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:0->ob:forecast:0:0",
+      "kind": "contains",
+      "from": "pg:forecast:0",
+      "to": "ob:forecast:0:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:0:0->ent:forecast:price",
+      "kind": "mentions",
+      "from": "ob:forecast:0:0",
+      "to": "ent:forecast:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:0->ob:forecast:0:1",
+      "kind": "contains",
+      "from": "pg:forecast:0",
+      "to": "ob:forecast:0:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:0:1->ent:forecast:qty",
+      "kind": "mentions",
+      "from": "ob:forecast:0:1",
+      "to": "ent:forecast:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:0->ob:forecast:0:2",
+      "kind": "contains",
+      "from": "pg:forecast:0",
+      "to": "ob:forecast:0:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:0:2->ent:forecast:sales",
+      "kind": "mentions",
+      "from": "ob:forecast:0:2",
+      "to": "ent:forecast:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:forecast->pg:forecast:1",
+      "kind": "contains",
+      "from": "doc:forecast",
+      "to": "pg:forecast:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:1->ob:forecast:1:0",
+      "kind": "contains",
+      "from": "pg:forecast:1",
+      "to": "ob:forecast:1:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:1:0->ent:forecast:price",
+      "kind": "mentions",
+      "from": "ob:forecast:1:0",
+      "to": "ent:forecast:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:1->ob:forecast:1:1",
+      "kind": "contains",
+      "from": "pg:forecast:1",
+      "to": "ob:forecast:1:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:1:1->ent:forecast:qty",
+      "kind": "mentions",
+      "from": "ob:forecast:1:1",
+      "to": "ent:forecast:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:1->ob:forecast:1:2",
+      "kind": "contains",
+      "from": "pg:forecast:1",
+      "to": "ob:forecast:1:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:1:2->ent:forecast:sales",
+      "kind": "mentions",
+      "from": "ob:forecast:1:2",
+      "to": "ent:forecast:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:doc:forecast->pg:forecast:2",
+      "kind": "contains",
+      "from": "doc:forecast",
+      "to": "pg:forecast:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:2->ob:forecast:2:0",
+      "kind": "contains",
+      "from": "pg:forecast:2",
+      "to": "ob:forecast:2:0",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:2:0->ent:forecast:price",
+      "kind": "mentions",
+      "from": "ob:forecast:2:0",
+      "to": "ent:forecast:price",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:2->ob:forecast:2:1",
+      "kind": "contains",
+      "from": "pg:forecast:2",
+      "to": "ob:forecast:2:1",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:2:1->ent:forecast:qty",
+      "kind": "mentions",
+      "from": "ob:forecast:2:1",
+      "to": "ent:forecast:qty",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "contains:pg:forecast:2->ob:forecast:2:2",
+      "kind": "contains",
+      "from": "pg:forecast:2",
+      "to": "ob:forecast:2:2",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "mentions:ob:forecast:2:2->ent:forecast:sales",
+      "kind": "mentions",
+      "from": "ob:forecast:2:2",
+      "to": "ent:forecast:sales",
+      "dim": 1,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:forecast:price->ent:forecast:qty",
+      "kind": "causes",
+      "from": "ent:forecast:price",
+      "to": "ent:forecast:qty",
+      "dim": 3,
+      "weight": -0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:forecast:qty->ent:forecast:sales",
+      "kind": "causes",
+      "from": "ent:forecast:qty",
+      "to": "ent:forecast:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": false
+    },
+    {
+      "id": "causes:ent:q1-deck:sales->ent:pl-model:profit",
+      "kind": "causes",
+      "from": "ent:q1-deck:sales",
+      "to": "ent:pl-model:profit",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": true
+    },
+    {
+      "id": "causes:ent:risk-memo:fx->ent:q1-deck:raw",
+      "kind": "causes",
+      "from": "ent:risk-memo:fx",
+      "to": "ent:q1-deck:raw",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": true
+    },
+    {
+      "id": "causes:ent:kpi-tracker:share->ent:q2-deck:sales",
+      "kind": "causes",
+      "from": "ent:kpi-tracker:share",
+      "to": "ent:q2-deck:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": true
+    },
+    {
+      "id": "causes:ent:forecast:qty->ent:annual-report:sales",
+      "kind": "causes",
+      "from": "ent:forecast:qty",
+      "to": "ent:annual-report:sales",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": true
+    },
+    {
+      "id": "causes:ent:ops-review:inv->ent:strategy-deck:cost",
+      "kind": "causes",
+      "from": "ent:ops-review:inv",
+      "to": "ent:strategy-deck:cost",
+      "dim": 3,
+      "weight": 0.7,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q1-deck:raw->ent:strategy-deck:raw",
+      "kind": "references",
+      "from": "ent:q1-deck:raw",
+      "to": "ent:strategy-deck:raw",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:strategy-deck:raw->ent:risk-memo:raw",
+      "kind": "references",
+      "from": "ent:strategy-deck:raw",
+      "to": "ent:risk-memo:raw",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q1-deck:cost->ent:q2-deck:cost",
+      "kind": "references",
+      "from": "ent:q1-deck:cost",
+      "to": "ent:q2-deck:cost",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q2-deck:cost->ent:strategy-deck:cost",
+      "kind": "references",
+      "from": "ent:q2-deck:cost",
+      "to": "ent:strategy-deck:cost",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:strategy-deck:cost->ent:annual-report:cost",
+      "kind": "references",
+      "from": "ent:strategy-deck:cost",
+      "to": "ent:annual-report:cost",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:annual-report:cost->ent:ops-review:cost",
+      "kind": "references",
+      "from": "ent:annual-report:cost",
+      "to": "ent:ops-review:cost",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:ops-review:cost->ent:pl-model:cost",
+      "kind": "references",
+      "from": "ent:ops-review:cost",
+      "to": "ent:pl-model:cost",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q1-deck:price->ent:strategy-deck:price",
+      "kind": "references",
+      "from": "ent:q1-deck:price",
+      "to": "ent:strategy-deck:price",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:strategy-deck:price->ent:ops-review:price",
+      "kind": "references",
+      "from": "ent:strategy-deck:price",
+      "to": "ent:ops-review:price",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:ops-review:price->ent:forecast:price",
+      "kind": "references",
+      "from": "ent:ops-review:price",
+      "to": "ent:forecast:price",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q1-deck:qty->ent:ops-review:qty",
+      "kind": "references",
+      "from": "ent:q1-deck:qty",
+      "to": "ent:ops-review:qty",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:ops-review:qty->ent:kpi-tracker:qty",
+      "kind": "references",
+      "from": "ent:ops-review:qty",
+      "to": "ent:kpi-tracker:qty",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:kpi-tracker:qty->ent:forecast:qty",
+      "kind": "references",
+      "from": "ent:kpi-tracker:qty",
+      "to": "ent:forecast:qty",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q1-deck:sales->ent:q2-deck:sales",
+      "kind": "references",
+      "from": "ent:q1-deck:sales",
+      "to": "ent:q2-deck:sales",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q2-deck:sales->ent:strategy-deck:sales",
+      "kind": "references",
+      "from": "ent:q2-deck:sales",
+      "to": "ent:strategy-deck:sales",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:strategy-deck:sales->ent:annual-report:sales",
+      "kind": "references",
+      "from": "ent:strategy-deck:sales",
+      "to": "ent:annual-report:sales",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:annual-report:sales->ent:pl-model:sales",
+      "kind": "references",
+      "from": "ent:annual-report:sales",
+      "to": "ent:pl-model:sales",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:pl-model:sales->ent:kpi-tracker:sales",
+      "kind": "references",
+      "from": "ent:pl-model:sales",
+      "to": "ent:kpi-tracker:sales",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:kpi-tracker:sales->ent:forecast:sales",
+      "kind": "references",
+      "from": "ent:kpi-tracker:sales",
+      "to": "ent:forecast:sales",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q1-deck:profit->ent:q2-deck:profit",
+      "kind": "references",
+      "from": "ent:q1-deck:profit",
+      "to": "ent:q2-deck:profit",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q2-deck:profit->ent:strategy-deck:profit",
+      "kind": "references",
+      "from": "ent:q2-deck:profit",
+      "to": "ent:strategy-deck:profit",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:strategy-deck:profit->ent:annual-report:profit",
+      "kind": "references",
+      "from": "ent:strategy-deck:profit",
+      "to": "ent:annual-report:profit",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:annual-report:profit->ent:pl-model:profit",
+      "kind": "references",
+      "from": "ent:annual-report:profit",
+      "to": "ent:pl-model:profit",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q2-deck:comp->ent:risk-memo:comp",
+      "kind": "references",
+      "from": "ent:q2-deck:comp",
+      "to": "ent:risk-memo:comp",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q2-deck:share->ent:annual-report:share",
+      "kind": "references",
+      "from": "ent:q2-deck:share",
+      "to": "ent:annual-report:share",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:annual-report:share->ent:kpi-tracker:share",
+      "kind": "references",
+      "from": "ent:annual-report:share",
+      "to": "ent:kpi-tracker:share",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:q2-deck:inv->ent:risk-memo:inv",
+      "kind": "references",
+      "from": "ent:q2-deck:inv",
+      "to": "ent:risk-memo:inv",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:risk-memo:inv->ent:ops-review:inv",
+      "kind": "references",
+      "from": "ent:risk-memo:inv",
+      "to": "ent:ops-review:inv",
+      "dim": 1,
+      "crossDoc": true
+    },
+    {
+      "id": "references:ent:strategy-deck:fx->ent:risk-memo:fx",
+      "kind": "references",
+      "from": "ent:strategy-deck:fx",
+      "to": "ent:risk-memo:fx",
+      "dim": 1,
+      "crossDoc": true
+    }
+  ],
+  "stats": {
+    "nodeCount": 210,
+    "bondCount": 339,
+    "perLayer": {
+      "document": 9,
+      "page": 48,
+      "object": 114,
+      "causal": 39
+    },
+    "maxRank": 10,
+    "totalParams": 602,
+    "causalComponents": 1,
+    "crossDocCauses": 5
+  },
+  "contractionOrder": [
+    "ob:q1-deck:0:0",
+    "ob:q1-deck:0:1",
+    "ob:q1-deck:1:0",
+    "ob:q1-deck:1:1",
+    "ob:q1-deck:2:0",
+    "ob:q1-deck:2:1",
+    "ob:q1-deck:3:0",
+    "ob:q1-deck:3:1",
+    "ob:q1-deck:4:0",
+    "ob:q1-deck:4:1",
+    "ob:q1-deck:5:0",
+    "ob:q1-deck:5:1",
+    "ob:q1-deck:6:0",
+    "ob:q1-deck:6:1",
+    "ob:q1-deck:7:0",
+    "ob:q1-deck:7:1",
+    "ob:q1-deck:8:0",
+    "ob:q1-deck:8:1",
+    "ob:q1-deck:9:0",
+    "ob:q1-deck:9:1",
+    "ob:q2-deck:0:0",
+    "ob:q2-deck:0:1",
+    "ob:q2-deck:1:0",
+    "ob:q2-deck:1:1",
+    "ob:q2-deck:2:0",
+    "ob:q2-deck:2:1",
+    "ob:q2-deck:3:0",
+    "ob:q2-deck:3:1",
+    "ob:q2-deck:4:0",
+    "ob:q2-deck:4:1",
+    "ob:q2-deck:5:0",
+    "ob:q2-deck:5:1",
+    "ob:q2-deck:6:0",
+    "ob:q2-deck:6:1",
+    "ob:q2-deck:7:0",
+    "ob:q2-deck:7:1",
+    "ob:q2-deck:8:0",
+    "ob:q2-deck:8:1",
+    "ob:q2-deck:9:0",
+    "ob:q2-deck:9:1",
+    "ob:strategy-deck:0:0",
+    "ob:strategy-deck:0:1",
+    "ob:strategy-deck:1:0",
+    "ob:strategy-deck:1:1",
+    "ob:strategy-deck:2:0",
+    "ob:strategy-deck:2:1",
+    "ob:strategy-deck:3:0",
+    "ob:strategy-deck:3:1",
+    "ob:strategy-deck:4:0",
+    "ob:strategy-deck:4:1",
+    "ob:strategy-deck:5:0",
+    "ob:strategy-deck:5:1",
+    "ob:strategy-deck:6:0",
+    "ob:strategy-deck:6:1",
+    "ob:strategy-deck:7:0",
+    "ob:strategy-deck:7:1",
+    "ob:strategy-deck:8:0",
+    "ob:strategy-deck:8:1",
+    "ob:strategy-deck:9:0",
+    "ob:strategy-deck:9:1",
+    "ob:annual-report:0:0",
+    "ob:annual-report:0:1",
+    "ob:annual-report:0:2",
+    "ob:annual-report:1:0",
+    "ob:annual-report:1:1",
+    "ob:annual-report:1:2",
+    "ob:annual-report:2:0",
+    "ob:annual-report:2:1",
+    "ob:annual-report:2:2",
+    "ob:risk-memo:0:0",
+    "ob:risk-memo:0:1",
+    "ob:risk-memo:0:2",
+    "ob:risk-memo:1:0",
+    "ob:risk-memo:1:1",
+    "ob:risk-memo:1:2",
+    "ob:risk-memo:2:0",
+    "ob:risk-memo:2:1",
+    "ob:risk-memo:2:2",
+    "ob:ops-review:0:0",
+    "ob:ops-review:0:1",
+    "ob:ops-review:0:2",
+    "ob:ops-review:1:0",
+    "ob:ops-review:1:1",
+    "ob:ops-review:1:2",
+    "ob:ops-review:2:0",
+    "ob:ops-review:2:1",
+    "ob:ops-review:2:2",
+    "ob:pl-model:0:0",
+    "ob:pl-model:0:1",
+    "ob:pl-model:0:2",
+    "ob:pl-model:1:0",
+    "ob:pl-model:1:1",
+    "ob:pl-model:1:2",
+    "ob:pl-model:2:0",
+    "ob:pl-model:2:1",
+    "ob:pl-model:2:2",
+    "ob:kpi-tracker:0:0",
+    "ob:kpi-tracker:0:1",
+    "ob:kpi-tracker:0:2",
+    "ob:kpi-tracker:1:0",
+    "ob:kpi-tracker:1:1",
+    "ob:kpi-tracker:1:2",
+    "ob:kpi-tracker:2:0",
+    "ob:kpi-tracker:2:1",
+    "ob:kpi-tracker:2:2",
+    "ob:forecast:0:0",
+    "ob:forecast:0:1",
+    "ob:forecast:0:2",
+    "ob:forecast:1:0",
+    "ob:forecast:1:1",
+    "ob:forecast:1:2",
+    "ob:forecast:2:0",
+    "ob:forecast:2:1",
+    "ob:forecast:2:2",
+    "pg:q1-deck:0",
+    "pg:q1-deck:1",
+    "pg:q1-deck:2",
+    "pg:q1-deck:3",
+    "pg:q1-deck:4",
+    "pg:q1-deck:5",
+    "pg:q1-deck:6",
+    "pg:q1-deck:7",
+    "pg:q1-deck:8",
+    "pg:q1-deck:9",
+    "pg:q2-deck:0",
+    "pg:q2-deck:1",
+    "pg:q2-deck:2",
+    "pg:q2-deck:3",
+    "pg:q2-deck:4",
+    "pg:q2-deck:5",
+    "pg:q2-deck:6",
+    "pg:q2-deck:7",
+    "pg:q2-deck:8",
+    "pg:q2-deck:9",
+    "pg:strategy-deck:0",
+    "pg:strategy-deck:1",
+    "pg:strategy-deck:2",
+    "pg:strategy-deck:3",
+    "pg:strategy-deck:4",
+    "pg:strategy-deck:5",
+    "pg:strategy-deck:6",
+    "pg:strategy-deck:7",
+    "pg:strategy-deck:8",
+    "pg:strategy-deck:9",
+    "doc:annual-report",
+    "doc:risk-memo",
+    "ent:risk-memo:comp",
+    "doc:ops-review",
+    "doc:pl-model",
+    "doc:kpi-tracker",
+    "doc:forecast",
+    "pg:annual-report:0",
+    "pg:annual-report:1",
+    "pg:annual-report:2",
+    "ent:risk-memo:raw",
+    "ent:risk-memo:inv",
+    "pg:risk-memo:0",
+    "pg:risk-memo:1",
+    "pg:risk-memo:2",
+    "pg:ops-review:0",
+    "pg:ops-review:1",
+    "pg:ops-review:2",
+    "pg:pl-model:0",
+    "pg:pl-model:1",
+    "pg:pl-model:2",
+    "pg:kpi-tracker:0",
+    "pg:kpi-tracker:1",
+    "pg:kpi-tracker:2",
+    "pg:forecast:0",
+    "pg:forecast:1",
+    "pg:forecast:2",
+    "ent:q2-deck:inv",
+    "ent:annual-report:cost",
+    "ent:annual-report:share",
+    "ent:ops-review:qty",
+    "ent:pl-model:cost",
+    "ent:forecast:price",
+    "ent:forecast:sales",
+    "ent:q1-deck:price",
+    "ent:q1-deck:qty",
+    "ent:q1-deck:profit",
+    "ent:q2-deck:comp",
+    "ent:strategy-deck:fx",
+    "ent:strategy-deck:price",
+    "ent:strategy-deck:sales",
+    "ent:annual-report:profit",
+    "ent:risk-memo:fx",
+    "ent:ops-review:inv",
+    "ent:ops-review:cost",
+    "ent:ops-review:price",
+    "ent:pl-model:sales",
+    "ent:kpi-tracker:qty",
+    "ent:kpi-tracker:share",
+    "ent:q1-deck:raw",
+    "ent:q1-deck:sales",
+    "ent:q2-deck:share",
+    "ent:q2-deck:profit",
+    "ent:q2-deck:cost",
+    "ent:strategy-deck:profit",
+    "ent:pl-model:profit",
+    "ent:kpi-tracker:sales",
+    "ent:forecast:qty",
+    "ent:q1-deck:cost",
+    "ent:q2-deck:sales",
+    "ent:strategy-deck:raw",
+    "ent:annual-report:sales",
+    "ent:strategy-deck:cost",
+    "doc:q1-deck",
+    "doc:q2-deck",
+    "doc:strategy-deck"
+  ]
+}

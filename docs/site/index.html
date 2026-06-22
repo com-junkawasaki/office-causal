@@ -38,6 +38,9 @@
       .examples img { display: block; width: 100%; height: 220px; object-fit: contain; background: #fff; padding: 6px; }
       .examples figcaption { font-size: 0.82rem; color: var(--muted); padding: 0.5rem 0.7rem 0.7rem; border-top: 1px solid var(--line); }
       @media (max-width: 720px) { .examples { grid-template-columns: 1fr; } }
+      figure.tn { margin: 0.6rem 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; overflow: hidden; }
+      figure.tn img { display: block; width: 100%; background: #fff; }
+      figure.tn figcaption { font-size: 0.82rem; color: var(--muted); padding: 0.5rem 0.7rem 0.7rem; border-top: 1px solid var(--line); }
       footer { margin: 3rem 0 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.88rem; }
       a { color: var(--accent); }
       @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 1.7rem; } }
@@ -107,6 +110,12 @@ office-causal locate   report.ocz.pptx &lt;data-id&gt;   # deep-link an element<
         <figure><a href="./examples/diagnosis-xlsx.svg"><img src="./examples/diagnosis-xlsx.svg" alt="xlsx diagnosis SVG — cell grid" loading="lazy" /></a><figcaption><b>xlsx</b> — <code>Sheet!A1</code> cell grid</figcaption></figure>
         <figure><a href="./examples/diagnosis-pptx.svg"><img src="./examples/diagnosis-pptx.svg" alt="pptx diagnosis SVG — slide bbox" loading="lazy" /></a><figcaption><b>pptx</b> — shape <code>bbox</code> (slide layout)</figcaption></figure>
       </div>
+
+      <h2>Tensor network — multi-document causal corpus</h2>
+      <p class="lead">A whole corpus lifts into one 4-layer <b>tensor network</b>: <b>Document → Page</b> (slide/sheet/section) <b>→ Object</b> (shape/cell/paragraph) <b>→ Causal</b> (entity/claim). Each node is a tensor, each edge a bond (<code>contains</code>/<code>references</code>/<code>mentions</code>/<code>causes</code>; <code>causes</code> bonds carry χ=3 for polarity). <code>causes</code> and same-concept <code>references</code> link entities <i>across documents</i>, so a single causal cluster spans the whole corpus.</p>
+      <p class="lead">Sample corpus: <b>3 pptx × 10 slides + 3 docx × 3 pages + 3 xlsx × 3 sheets</b> (real OOXML, round-trip-verified by the parser) → 210 tensor nodes (doc 9 / page 48 / object 114 / causal 39), 339 bonds, 1 causal component, 5 cross-document causes.</p>
+      <figure class="tn"><a href="./examples/tensor-network.svg"><img src="./examples/tensor-network.svg" alt="4-layer tensor network of the sample corpus" loading="lazy" /></a><figcaption>4-layer tensor network (wide — click to open full SVG). Bands top→bottom: Document / Page / Object / Causal. Bottom band shows cross-document <code>causes</code> arcs.</figcaption></figure>
+      <p class="lead">Generate it yourself: <code>npm run build &amp;&amp; npm run gen:sample-data</code> → writes the OOXML files, <code>corpus.graph.json</code>, <code>tensor-network.json</code> and this SVG. Source: <a href="https://github.com/com-junkawasaki/office-causal/tree/main/examples/sample-data">examples/sample-data</a> · API: <code>toTensorNetwork(graph)</code> / <code>renderTensorNetworkSvg(tn)</code>.</p>
 
       <h2>Edge-LLM tiering (cloud-free)</h2>
       <table>
