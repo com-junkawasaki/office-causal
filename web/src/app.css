@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #0071e3;
+  --color-accent-dark: #2997ff;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+:root { color-scheme: light dark; }
+html { scroll-behavior: smooth; }
+body { @apply bg-[#fbfbfd] font-sans text-[#1d1d1f] antialiased dark:bg-black dark:text-[#f5f5f7]; }
+
+/* engine が innerHTML で書き込むサイドパネル用スタイル */
+.panel .id { @apply text-[11px] text-zinc-400 break-all; }
+.panel .muted { @apply text-zinc-400; }
+.panel h4 { @apply mt-3 mb-1 text-[13px] font-semibold; }
+.panel p { @apply my-1 text-[13px] leading-relaxed; }
+.panel .mech { @apply my-1.5 rounded-lg border-l-2 border-rose-400 bg-black/[0.03] px-2.5 py-1.5 text-[13px] leading-relaxed dark:bg-white/[0.05]; }
+.panel .ev { @apply my-0.5 text-[13px] text-zinc-600 dark:text-zinc-300; }
+.panel .tag { @apply mr-1 mt-1 inline-block rounded-full bg-blue-500/10 px-2 py-0.5 text-[11px] text-blue-700 dark:text-blue-300; }
+.panel [data-node], .panel [data-part] { @apply cursor-pointer; }
+.panel button { @apply mt-1.5 rounded-md border border-black/10 px-2 py-0.5 text-[12px] transition hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10; }
+.roles .tag { @apply mr-1 inline-block rounded-full bg-amber-500/15 px-2 py-0.5 text-[11px] text-amber-700 dark:text-amber-300; }
+.roles .id { @apply text-[10px] text-zinc-400 break-all; }
+.roles .muted { @apply text-zinc-400; }

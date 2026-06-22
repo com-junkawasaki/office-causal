@@ -9,17 +9,44 @@
   },
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "files": ["dist", "README.md", "LICENSE"],
-  "keywords": ["ooxml", "pptx", "xlsx", "docx", "office", "causal-graph", "langgraph", "transformers.js", "webgpu", "data-id"],
-  "repository": { "type": "git", "url": "git+https://github.com/com-junkawasaki/office-causal.git" },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "ooxml",
+    "pptx",
+    "xlsx",
+    "docx",
+    "office",
+    "causal-graph",
+    "langgraph",
+    "transformers.js",
+    "webgpu",
+    "data-id"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/com-junkawasaki/office-causal.git"
+  },
   "homepage": "https://github.com/com-junkawasaki/office-causal#readme",
-  "bugs": { "url": "https://github.com/com-junkawasaki/office-causal/issues" },
-  "publishConfig": { "access": "public", "registry": "https://npm.pkg.github.com" },
-  "engines": { "node": ">=18" },
+  "bugs": {
+    "url": "https://github.com/com-junkawasaki/office-causal/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prepublishOnly": "tsc -p tsconfig.json",
-    "build:web": "tsc -p tsconfig.web.json",
+    "build:web": "vite build",
+    "dev:web": "vite",
+    "preview:web": "vite preview",
     "serve:web": "python3 -m http.server 8000",
     "gen:svg-samples": "node scripts/gen-svg-samples.mjs",
     "gen:sample-data": "node scripts/gen-sample-data.mjs",
@@ -40,8 +67,14 @@
     "@huggingface/transformers": "^4.2.0"
   },
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@tailwindcss/vite": "^4.3.1",
     "@types/node": "^22.19.21",
+    "cytoscape": "^3.34.0",
+    "svelte": "^5.56.3",
+    "tailwindcss": "^4.3.1",
     "tsx": "^4.19.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^8.0.16"
   }
 }

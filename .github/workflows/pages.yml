@@ -30,16 +30,17 @@ jobs:
           cache: npm
       # optional の @huggingface/transformers は web デモが CDN(importmap) から読むため不要
       - run: npm ci --omit=optional
-      # web/app.ts は dist/src/* (ライブラリビルド成果) を import するため先に build が必要
+      # Svelte/Vite デモは dist/src/* (ライブラリビルド成果) を import するため先に build が必要
       - name: Build library (→ dist/)
         run: npm run build
-      - name: Build web demo (web/app.ts → web/app.js)
+      - name: Build web demo (Vite/Svelte → web/dist/)
         run: npm run build:web
       - name: Assemble site
         run: |
-          mkdir -p _site/demo
-          cp -r web/. _site/demo/
+          mkdir -p _site
           cp -r docs/site/. _site/     # ランディング(index.html) + examples/*.svg
+          mkdir -p _site/demo
+          cp -r web/dist/. _site/demo/ # Vite ビルド成果 (Svelte デモ)
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
