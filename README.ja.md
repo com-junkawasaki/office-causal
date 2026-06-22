@@ -6,6 +6,36 @@
 [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-%40com--junkawasaki%2Foffice--causal-2188ff?logo=github)](https://github.com/com-junkawasaki/office-causal/pkgs/npm/office-causal)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+> **MS Office (OOXML) の全 XML を TypeScript で「因果グラフ (causal graph)」として扱えるようにする**ライブラリ + LangGraph.js アプリ。各 XML 要素に安定した `data-id` / `meta` を付与し、構造 → 参照・依存 → **因果**グラフへ段階的に持ち上げる。
+
+**▶ [ライブ WebGPU デモ & ドキュメントサイト](https://com-junkawasaki.github.io/office-causal/)** — `.xlsx/.pptx/.docx` をドロップするだけ。ブラウザ内で完結（API キー不要・データ外部送信なし）。
+
+## クイックスタート
+
+```bash
+# 0) インストール不要で試す: Chrome/Edge でデモを開き、ファイルをドロップ → Run → 診断 → so-what
+#    https://com-junkawasaki.github.io/office-causal/
+
+# 1) CLI — 解析してグラフ + 解析結果をファイルに埋め込む
+npx @com-junkawasaki/office-causal analyze  report.pptx            # → CausalGraph (JSON, 標準出力)
+npx @com-junkawasaki/office-causal embed    report.pptx --analysis  # → report.ocz.pptx
+npx @com-junkawasaki/office-causal diagnose report.ocz.pptx --gemma # 独立 / 成立しない / 表記揺れ / 概念のとび
+npx @com-junkawasaki/office-causal consult  report.ocz.pptx --mece  # so-what + MECE
+```
+```ts
+// 2) ライブラリ — verify:false で完全ローカル（クラウド非依存）
+import { analyze, embedFile, readDataPart, diagnose } from "@com-junkawasaki/office-causal";
+
+const graph = await analyze("report.pptx", { llm: { provider: "webgpu-gemma", verify: false } });
+const dx    = await diagnose(graph, { gemma: true });
+await embedFile("report.xlsx", { mode: "part" });                 // → report.ocz.xlsx（正常な OOXML）
+const data  = readDataPart(new Uint8Array(fs.readFileSync("report.ocz.xlsx")));
+```
+
+CLI サブコマンド: `analyze | graph | embed | locate | diagnose | consult`。
+
+---
+
 ## インストール（GitHub Packages）
 
 ```bash

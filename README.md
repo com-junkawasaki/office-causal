@@ -8,8 +8,34 @@
 
 > Turn **all the XML inside MS Office (OOXML: pptx/xlsx/docx)** into a single **typed causal graph** in TypeScript — attach a stable **`data-id`** and **`meta`** to every element, lift it from structure → reference/dependency → **causal** graph, and run an LLM agent (LangGraph.js) to extract, verify and analyze causal hypotheses.
 
+**▶ [Live WebGPU demo &amp; docs site](https://com-junkawasaki.github.io/office-causal/)** — drop a `.xlsx/.pptx/.docx`, runs entirely in the browser (no API key, no upload).
+
 - org: `com-junkawasaki`
 - sibling project: **`svgraph`** (formerly `drawingml-svg`) — DrawingML/PresentationML → SVG (`EMU_PER_PX=9525`); used for the screenshot rendering in §8.
+
+## Quick start
+
+```bash
+# 0) try it with no install: open the live demo in Chrome/Edge, drop a file, Run → diagnose → so-what
+#    https://com-junkawasaki.github.io/office-causal/
+
+# 1) CLI — analyze a document and embed the graph + analysis back into the file
+npx @com-junkawasaki/office-causal analyze  report.pptx           # → CausalGraph (JSON, stdout)
+npx @com-junkawasaki/office-causal embed    report.pptx --analysis  # → report.ocz.pptx
+npx @com-junkawasaki/office-causal diagnose report.ocz.pptx --gemma # isolated / not-holding / notation / concept-jumps
+npx @com-junkawasaki/office-causal consult  report.ocz.pptx --mece  # so-what + MECE
+```
+```ts
+// 2) library — fully local (no cloud) with verify:false
+import { analyze, embedFile, readDataPart, diagnose } from "@com-junkawasaki/office-causal";
+
+const graph = await analyze("report.pptx", { llm: { provider: "webgpu-gemma", verify: false } });
+const dx    = await diagnose(graph, { gemma: true });
+await embedFile("report.xlsx", { mode: "part" });                 // → report.ocz.xlsx (valid OOXML)
+const data  = readDataPart(new Uint8Array(fs.readFileSync("report.ocz.xlsx")));
+```
+
+CLI verbs: `analyze | graph | embed | locate | diagnose | consult`. See [§6](#6-diagnostics-consulting--scale) / [§8](#8-visualization--svg-causal-graph-svgraph-integration) for flags.
 
 ## Install (GitHub Packages)
 

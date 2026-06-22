@@ -1,0 +1,52 @@
+name: Pages
+
+# GitHub Pages: ランディング(docs/site) + ブラウザ WebGPU デモ(web/) を公開する。
+# Settings → Pages → Source を "GitHub Actions" にしておくこと
+# (gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow で有効化済み)。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時デプロイは1つに絞る (進行中はキャンセルせずキューイング)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      # optional の @huggingface/transformers は web デモが CDN(importmap) から読むため不要
+      - run: npm ci --omit=optional
+      - name: Build web demo (web/app.ts → web/app.js)
+        run: npm run build:web
+      - name: Assemble site
+        run: |
+          mkdir -p _site/demo
+          cp -r web/. _site/demo/
+          cp docs/site/index.html _site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
