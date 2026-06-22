@@ -68,7 +68,7 @@
       <div class="grid">
         <div class="card"><h3>Typed causal graph</h3><p>One directed graph: edges = <code>contains</code> / <code>references</code> / <code>derives-from</code> / <code>mentions</code> / <code>causes</code>. Every <code>causes</code> edge carries evidence + a mechanism and passes hypothesis → supported/refuted.</p></div>
         <div class="card"><h3>Stable data-id</h3><p>Content-addressed ids survive Office re-saves. Embed the whole graph back into the file non-destructively as <code>.ocz.pptx</code> — it stays valid OOXML and opens normally.</p></div>
-        <div class="card"><h3>Local / private</h3><p>3-tier edge-LLM: encoder embeddings → local Gemma 4 (WebGPU) → optional Claude verify. <code>verify:false</code> is fully local — no API key, no data leaves the browser.</p></div>
+        <div class="card"><h3>Local / private</h3><p>Cloud-free edge-LLM: encoder embeddings → local <b>Gemma 4</b> (WebGPU) adjudicates direction/polarity and runs the adversarial verify. No API key, no data leaves the browser.</p></div>
         <div class="card"><h3>Diagnose &amp; consult</h3><p>Mechanically find isolated nodes, refuted edges, notation variants and concept jumps; walk causal chains for so-what implications + MECE checks.</p></div>
       </div>
 
@@ -84,7 +84,7 @@ echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc   # PAT with r
 npm install @com-junkawasaki/office-causal</code></pre>
       <pre><code>import { analyze, embedFile, readDataPart, diagnose, consult } from "@com-junkawasaki/office-causal";
 
-const graph = await analyze("report.pptx", { llm: { provider: "webgpu-gemma", verify: false } });
+const graph = await analyze("report.pptx", { llm: { device: "cpu", verify: false } });
 await embedFile("report.xlsx", { mode: "part" });          // → report.ocz.xlsx
 const data = readDataPart(new Uint8Array(fs.readFileSync("report.ocz.xlsx")));</code></pre>
 
@@ -95,19 +95,18 @@ office-causal diagnose report.ocz.pptx --gemma     # isolated / not-holding / no
 office-causal consult  report.ocz.pptx --mece --svg sowhat.svg
 office-causal locate   report.ocz.pptx &lt;data-id&gt;   # deep-link an element</code></pre>
 
-      <h2>Edge-LLM tiering</h2>
+      <h2>Edge-LLM tiering (cloud-free)</h2>
       <table>
         <tr><th>Role</th><th>Model class</th><th>Job</th></tr>
         <tr><td>① embedding</td><td>encoder (transformers.js)</td><td>edge weight · data-id tags · causal candidate shortlisting</td></tr>
-        <tr><td>② generation</td><td>Gemma 4 E2B/E4B (WebGPU)</td><td>adjudicate causal direction / polarity / mechanism</td></tr>
-        <tr><td>③ cloud</td><td>Claude</td><td>final adversarial verify (optional)</td></tr>
+        <tr><td>② generation</td><td>Gemma 4 E2B/E4B (local, WebGPU/WASM/CPU)</td><td>adjudicate causal direction / polarity / mechanism · adversarial verify</td></tr>
       </table>
 
       <h2>Design decisions (ADR)</h2>
       <ul>
         <li><a href="https://github.com/com-junkawasaki/office-causal/blob/main/docs/adr/0001-causal-graph-ir.md">ADR-0001</a> — single CausalGraph IR / deterministic-vs-LLM split / content-addressed data-id / evidence-required causal edges</li>
         <li><a href="https://github.com/com-junkawasaki/office-causal/blob/main/docs/adr/0002-local-embeddings.md">ADR-0002</a> — transformers.js local embeddings for edge weights &amp; tagging</li>
-        <li><a href="https://github.com/com-junkawasaki/office-causal/blob/main/docs/adr/0003-edge-llm-tiering.md">ADR-0003</a> — 3-tier edge-LLM (embedding → local Gemma 4/WebGPU → Claude verify)</li>
+        <li><a href="https://github.com/com-junkawasaki/office-causal/blob/main/docs/adr/0003-edge-llm-tiering.md">ADR-0003</a> — edge-LLM tiering (embedding → local Gemma 4/WebGPU adjudication + verify), cloud-free</li>
         <li><a href="https://github.com/com-junkawasaki/office-causal/blob/main/docs/adr/0004-ooxml-embedding.md">ADR-0004</a> — non-destructive OOXML embedding (OPC part / attrs / bookmarks / JSONL / diff / deep-link)</li>
       </ul>
     </main>

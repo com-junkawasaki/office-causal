@@ -1,25 +1,26 @@
 /**
- * LangGraph ノード実装。
+ * LangGraph ノード実装。クラウド非依存 — 生成・裁定・検証はすべてローカル Gemma 4。
  * - ingest / identify / structural / analyze: 純関数 (LLM 不使用)
- * - semantic / causal / verify: ChatAnthropic
+ * - causal / verify: ローカル Gemma 4 (transformers.js / WebGPU・WASM・CPU)
  */
-import { ChatAnthropic } from "@langchain/anthropic";
-import { z } from "zod";
 import type { AgentStateType, CausalCandidate } from "./state.js";
 import { openPackage } from "../ooxml/opc.js";
 import { buildStructuralGraph } from "../graph/builder.js";
 import { addEdge, emptyGraph, stats, upsertNode } from "../graph/model.js";
-import { makeDataId } from "../id/hash.js";
 import { getEmbedder } from "../embed/model.js";
 import { embedNodes, weightEdges, proposeEdges, applyProposals, dedupUndirected } from "../embed/weight.js";
 import { tagNodes, DEFAULT_TAXONOMY } from "../embed/tag.js";
 import type { CausalGraph, DataId } from "../types.js";
+import type { GemmaOptions } from "../llm/gemma-webgpu.js";
 
-const DEFAULT_MODEL = "claude-sonnet-4-6";
-const DEEP_MODEL = "claude-opus-4-8";
-
-function llm(model: string) {
-  return new ChatAnthropic({ model, temperature: 0 });
+/** llm オプションから Gemma 4 アダプタ生成用の設定を組む。 */
+function gemmaOpts(s: AgentStateType): GemmaOptions {
+  const llm = s.options.llm;
+  const o: GemmaOptions = {};
+  if (llm?.localModel) o.model = llm.localModel;
+  // GemmaOptions.device は webgpu|wasm|cpu。"coreml" は対象外なので渡さない。
+  if (llm?.device && llm.device !== "coreml") o.device = llm.device;
+  return o;
 }
 
 /** 1) ingest: zip 展開して OpcPackage に。 */
@@ -87,189 +88,65 @@ export async function embed(s: AgentStateType): Promise<Partial<AgentStateType>>
   };
 }
 
-/** 4) semantic: テキストノードから entity を抽出し mentions エッジを張る (LLM)。 */
-export async function semantic(s: AgentStateType): Promise<Partial<AgentStateType>> {
-  const g = s.graph!;
-  if (s.options.depth === "structural") return { log: ["semantic: skipped"] };
-  // ローカル裁定は text ノード間で因果を見るため entity 抽出 (Claude) は不要。
-  if (s.options.llm?.provider === "webgpu-gemma") return { log: ["semantic: skipped (local)"] };
-
-  const textNodes = [...g.nodes.values()].filter((n) => n.meta.text);
-  const schema = z.object({
-    entities: z.array(
-      z.object({
-        name: z.string().describe("正規化した指標/主体名 (例: 売上, 競合, 原材料費)"),
-        sourceId: z.string().describe("根拠ノードの data-id"),
-      }),
-    ),
-  });
-  const model = llm(s.options.llm?.model ?? DEFAULT_MODEL).withStructuredOutput(schema);
-
-  const corpus = textNodes
-    .map((n) => `[${n.id}] (${n.meta.kind}) ${n.meta.text}`)
-    .join("\n")
-    .slice(0, 24000); // map-reduce 化は v0.2 で
-
-  const out = await model.invoke(
-    `次の Office 文書の断片群から、因果分析に使える指標・主体エンティティを抽出せよ。\n${corpus}`,
-  );
-
-  for (const ent of out.entities) {
-    const entId = makeDataId("derived", "entity", ent.name);
-    upsertNode(g, entId, {
-      kind: "entity",
-      part: "derived",
-      path: "entity",
-      label: ent.name,
-      provenance: ["semantic"],
-    });
-    if (g.nodes.has(ent.sourceId as DataId)) {
-      addEdge(g, { kind: "mentions", from: ent.sourceId as DataId, to: entId });
-    }
-  }
-  return { graph: g, log: [`semantic: +${out.entities.length} entities`] };
+/**
+ * 4) semantic: ローカル Gemma 4 構成では entity 抽出を行わない。
+ * causal 段が text ノード間で直接因果を裁定するため、別途の entity ノードは不要。
+ */
+export function semantic(s: AgentStateType): Partial<AgentStateType> {
+  return { log: ["semantic: skipped (local Gemma; text ノード間で直接裁定)"] };
 }
 
 /**
- * 5) causal: 因果候補を確定して verify へ渡す (LLM)。
+ * 5) causal: ローカル Gemma 4 で因果候補を裁定して verify へ渡す。
  *
- * 2 モード:
- *  (A) 裁定モード — embed 段が無向候補ペアを出していれば、Claude には
- *      「向き・極性・採否」だけを判定させる (生成させない)。O(n^2) を埋め込みで
- *      高親和ペアに絞り済みなので、トークン/呼び出しを大幅削減 (ADR-0002 D3)。
- *  (B) 生成モード — 埋め込み無効時のフォールバック。Claude が自由仮説。
+ * embed 段が埋め込み類似で「無向の」高親和ペアに絞り込み済み (O(n^2) 回避, ADR-0002 D3)。
+ * Gemma 4 にはその各ペアの「向き・極性・採否」だけを判定させる (自由生成はしない)。
+ * クラウド非依存 — API キー不要。
  */
 export async function causal(s: AgentStateType): Promise<Partial<AgentStateType>> {
   const g = s.graph!;
   if (s.options.depth !== "causal") return { log: ["causal: skipped"], candidates: [] };
-
-  const evidence = [...g.nodes.values()]
-    .filter((n) => n.meta.text)
-    .map((n) => `[${n.id}] ${n.meta.text}`)
-    .join("\n")
-    .slice(0, 24000);
+  if (s.embedCandidates.length === 0) return { candidates: [], log: ["causal[gemma]: no candidates"] };
 
   const lbl = (id: string) => g.nodes.get(id as DataId)?.meta.label ?? id;
   const txt = (id: string) => g.nodes.get(id as DataId)?.meta.text ?? lbl(id);
 
-  // (A0) ローカル裁定モード: WebGPU/ローカル Gemma 4 が向き・極性を判定 (Claude 不使用)。
-  if (s.options.llm?.provider === "webgpu-gemma") {
-    if (s.embedCandidates.length === 0) return { candidates: [], log: ["causal[gemma]: no candidates"] };
-    const { WebGpuGemmaAdjudicator } = await import("../llm/gemma-webgpu.js");
-    const adj = new WebGpuGemmaAdjudicator({
-      ...(s.options.llm.localModel ? { model: s.options.llm.localModel } : {}),
-      ...(s.options.llm.device ? { device: s.options.llm.device as any } : {}),
-    });
-    const pairs = s.embedCandidates.map((p) => ({
-      from: p.from,
-      to: p.to,
-      weight: p.weight,
-      fromText: txt(p.from),
-      toText: txt(p.to),
-    }));
-    const verdicts = await adj.judge(pairs);
-    const candidates: CausalCandidate[] = verdicts
-      .filter((v) => g.nodes.has(v.from as DataId) && g.nodes.has(v.to as DataId))
-      .map((v) => ({
-        from: v.from,
-        to: v.to,
-        polarity: v.polarity,
-        mechanism: v.mechanism,
-        evidence: [
-          { nodeId: v.from, quote: txt(v.from) },
-          { nodeId: v.to, quote: txt(v.to) },
-        ],
-      }));
-    return {
-      candidates,
-      rounds: s.rounds + 1,
-      log: [`causal[gemma:${adj.modelId.split("/").pop()}]: ${s.embedCandidates.length} pairs → ${candidates.length} directed`],
-    };
-  }
-
-  // (A) 裁定モード (Claude)
-  if (s.embedCandidates.length > 0) {
-    const schema = z.object({
-      verdicts: z.array(
-        z.object({
-          a: z.string().describe("候補ペアの a (data-id)"),
-          b: z.string().describe("候補ペアの b (data-id)"),
-          direction: z.enum(["a->b", "b->a", "none"]).describe("因果の向き。無ければ none"),
-          polarity: z.enum(["+", "-", "?"]),
-          mechanism: z.string(),
-          evidence: z.array(z.object({ nodeId: z.string(), quote: z.string() })),
-        }),
-      ),
-    });
-    const model = llm(s.options.llm?.model ?? DEFAULT_MODEL).withStructuredOutput(schema);
-
-    const pairList = s.embedCandidates
-      .map((p) => `a=[${p.from}] "${lbl(p.from)}"  ~  b=[${p.to}] "${lbl(p.to)}"  (親和度 ${p.weight.toFixed(2)})`)
-      .join("\n");
-
-    const out = await model.invoke(
-      `次の候補ペア群は埋め込み類似で一次選別済み。各ペアについて、文書の根拠に基づき\n` +
-        `因果の「向き」(a->b / b->a / none) と極性・メカニズムを判定せよ。生成・追加はするな。\n` +
-        `根拠が無ければ direction=none とせよ。各因果に evidence(nodeId+quote) を必ず付けよ。\n\n` +
-        `## 候補ペア\n${pairList}\n\n## 根拠テキスト\n${evidence}`,
-    );
-
-    const candidates: CausalCandidate[] = out.verdicts
-      .filter((v) => v.direction !== "none")
-      .map((v) => {
-        const [from, to] = v.direction === "a->b" ? [v.a, v.b] : [v.b, v.a];
-        return { from, to, polarity: v.polarity, mechanism: v.mechanism, evidence: v.evidence };
-      })
-      .filter((c) => g.nodes.has(c.from as DataId) && g.nodes.has(c.to as DataId));
-
-    return {
-      candidates,
-      rounds: s.rounds + 1,
-      log: [
-        `causal[adjudicate]: ${s.embedCandidates.length} pairs → ${candidates.length} directed (round ${s.rounds + 1})`,
+  const { WebGpuGemmaAdjudicator } = await import("../llm/gemma-webgpu.js");
+  const adj = new WebGpuGemmaAdjudicator(gemmaOpts(s));
+  const pairs = s.embedCandidates.map((p) => ({
+    from: p.from,
+    to: p.to,
+    weight: p.weight,
+    fromText: txt(p.from),
+    toText: txt(p.to),
+  }));
+  const verdicts = await adj.judge(pairs);
+  const candidates: CausalCandidate[] = verdicts
+    .filter((v) => g.nodes.has(v.from as DataId) && g.nodes.has(v.to as DataId))
+    .map((v) => ({
+      from: v.from,
+      to: v.to,
+      polarity: v.polarity,
+      mechanism: v.mechanism,
+      evidence: [
+        { nodeId: v.from, quote: txt(v.from) },
+        { nodeId: v.to, quote: txt(v.to) },
       ],
-    };
-  }
-
-  // (B) 生成モード (フォールバック)
-  const entities = [...g.nodes.values()].filter((n) => n.meta.kind === "entity");
-  const schema = z.object({
-    candidates: z.array(
-      z.object({
-        from: z.string().describe("原因 entity の data-id"),
-        to: z.string().describe("結果 entity の data-id"),
-        polarity: z.enum(["+", "-", "?"]),
-        mechanism: z.string().describe("因果メカニズムの説明"),
-        evidence: z.array(z.object({ nodeId: z.string(), quote: z.string() })),
-      }),
-    ),
-  });
-  const model = llm(s.options.llm?.model ?? DEFAULT_MODEL).withStructuredOutput(schema);
-
-  const entList = entities.map((e) => `[${e.id}] ${e.meta.label}`).join("\n");
-  const out = await model.invoke(
-    `以下のエンティティ間の因果関係 (原因→結果) を、文書の根拠に基づいてのみ仮説せよ。\n` +
-      `根拠なき推測は出すな。各候補に evidence(nodeId+quote) を必ず付けよ。\n\n` +
-      `## エンティティ\n${entList}\n\n## 根拠テキスト\n${evidence}`,
-  );
-
-  const candidates: CausalCandidate[] = out.candidates.filter(
-    (c) => g.nodes.has(c.from as DataId) && g.nodes.has(c.to as DataId),
-  );
+    }));
   return {
     candidates,
     rounds: s.rounds + 1,
-    log: [`causal[generate]: ${candidates.length} hypotheses (round ${s.rounds + 1})`],
+    log: [`causal[gemma:${adj.modelId.split("/").pop()}]: ${s.embedCandidates.length} pairs → ${candidates.length} directed`],
   };
 }
 
-/** 6) verify: 各候補を独立 N 票で敵対的に反証し confidence を付与 (LLM)。 */
+/** 6) verify: 各候補を独立 N 票で敵対的に反証し confidence を付与 (ローカル Gemma 4)。 */
 export async function verify(s: AgentStateType): Promise<Partial<AgentStateType>> {
   const g = s.graph!;
-  // 候補が無い (structural 深度等) なら LLM を構築せず即返す → API キー不要を保証。
+  // 候補が無い (structural 深度等) ならモデルを構築せず即返す。
   if (s.candidates.length === 0) return { graph: g, log: ["verify: skipped"] };
 
-  // verify:false → Claude を使わず候補をそのまま commit (完全ローカル運用)。
+  // verify:false → 反証を省き、Gemma 4 の裁定をそのまま commit (高速・完全ローカル)。
   if (s.options.llm?.verify === false) {
     for (const c of s.candidates) {
       addEdge(g, {
@@ -279,31 +156,26 @@ export async function verify(s: AgentStateType): Promise<Partial<AgentStateType>
         causal: {
           polarity: c.polarity,
           mechanism: c.mechanism,
-          confidence: 0.5, // 未検証 (ローカル裁定のみ)
+          confidence: 0.5, // 未検証 (裁定のみ)
           evidence: c.evidence.map((e) => ({ nodeId: e.nodeId as DataId, quote: e.quote })),
           status: "hypothesis",
         },
       });
     }
-    return { graph: g, candidates: [], log: [`verify: committed ${s.candidates.length} (no-Claude)`] };
+    return { graph: g, candidates: [], log: [`verify: committed ${s.candidates.length} (no-verify)`] };
   }
 
   const votes = s.options.llm?.verifyVotes ?? 3;
-  const model = llm(s.options.llm?.deepModel ?? DEEP_MODEL).withStructuredOutput(
-    z.object({
-      refuted: z.boolean().describe("根拠が不十分/論理が飛躍していれば true"),
-      reason: z.string(),
-    }),
-  );
+  const { WebGpuGemmaAdjudicator } = await import("../llm/gemma-webgpu.js");
+  const adj = new WebGpuGemmaAdjudicator(gemmaOpts(s));
 
   for (const c of s.candidates) {
+    const claim =
+      `原因=${label(g, c.from)} → 結果=${label(g, c.to)} (${c.polarity})。` +
+      `メカニズム: ${c.mechanism}。根拠: ${c.evidence.map((e) => e.quote).join(" / ")}`;
     let refutes = 0;
     for (let i = 0; i < votes; i++) {
-      const v = await model.invoke(
-        `次の因果主張を反証せよ。根拠が弱ければ refuted=true を既定とする (vote ${i + 1}).\n` +
-          `原因=${label(g, c.from)} → 結果=${label(g, c.to)} (${c.polarity})\n` +
-          `メカニズム: ${c.mechanism}\n根拠: ${c.evidence.map((e) => e.quote).join(" / ")}`,
-      );
+      const v = await adj.refute(claim);
       if (v.refuted) refutes++;
     }
     const confidence = 1 - refutes / votes;

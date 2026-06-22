@@ -1,10 +1,10 @@
 /**
  * デモ: 単一 Office ファイル → CausalGraph。
  *
- *   # 構造グラフのみ (LLM 不要・API キー不要)
+ *   # 構造グラフのみ (LLM 不要)
  *   node --import tsx examples/analyze.ts ./sample.xlsx
  *
- *   # 因果グラフまで (ANTHROPIC_API_KEY 必要)
+ *   # 因果グラフまで (ローカル Gemma 4。API キー不要。Node は device:"cpu")
  *   node --import tsx examples/analyze.ts ./Q1.pptx causal
  */
 import { analyze } from "../src/index.js";

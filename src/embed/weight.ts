@@ -45,7 +45,7 @@ export function weightEdges(g: CausalGraph, vecs: Map<DataId, Float32Array>): vo
 }
 
 /**
- * 埋め込み類似でローカルに候補エッジを提案 (Claude を呼ぶ前の安価な一次選別)。
+ * 埋め込み類似でローカルに候補エッジを提案 (Gemma 4 裁定の前の安価な一次選別)。
  * entity ノード優先、無ければテキストノード同士の総当たり。
  */
 export function proposeEdges(
@@ -73,7 +73,7 @@ export function proposeEdges(
 
 /**
  * proposeEdges は対称ペア (A→B と B→A) を出すので、無向に畳む。
- * 向きは埋め込みでは決まらない → Claude (causal 段) に委ねる前提 (ADR-0002 D3)。
+ * 向きは埋め込みでは決まらない → Gemma 4 (causal 段) に委ねる前提 (ADR-0002 D3)。
  */
 export function dedupUndirected(
   pairs: { from: DataId; to: DataId; weight: number }[],

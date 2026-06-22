@@ -185,6 +185,19 @@ export class WebGpuGemmaAdjudicator {
     return { jump: o.jump === true, ...(o.missing ? { missing: String(o.missing) } : {}), ...(o.reason ? { reason: String(o.reason) } : {}) };
   }
 
+  /**
+   * 因果主張を敵対的に反証する (verify 段)。根拠が弱ければ refuted=true を既定とする。
+   * クラウド非依存: 生成と同じ Gemma 4 をローカルで使う。
+   */
+  async refute(claim: string): Promise<{ refuted: boolean; reason: string }> {
+    const text =
+      `次の因果主張を敵対的に検証し、反証せよ。根拠が弱い/論理が飛躍しているなら refuted=true を既定とする。\n` +
+      `主張: ${claim}\n` +
+      `出力は JSON のみ: {"refuted": true|false, "reason": "理由を一文"}`;
+    const o = parseJson(await this.complete(text));
+    return { refuted: o.refuted === true, reason: String(o.reason ?? "") };
+  }
+
   /** 候補ペア群を裁定し、向きを確定した DirectedVerdict を返す (none は除外)。 */
   async judge(pairs: PairInput[]): Promise<DirectedVerdict[]> {
     const out: DirectedVerdict[] = [];

@@ -57,5 +57,5 @@ data-id は決定論的（D3）なので再 embed しても安定。詳細・ト
 ## 参考
 
 - ECMA-376 (OOXML) / OPC
-- 兄弟: `com-junkawasaki/drawingml-svg`（DrawingML→SVG、bbox/描画 meta を相互利用）
-- LangGraph.js `StateGraph` / Anthropic Claude
+- 兄弟: `com-junkawasaki/svgraph`（DrawingML→SVG、bbox/描画 meta を相互利用）
+- LangGraph.js `StateGraph` / ローカル Gemma 4（transformers.js, WebGPU）

@@ -28,7 +28,6 @@
     "eval:ollama": "node --import tsx eval/ollama-bench.ts gemma4:e2b,gemma4:e4b"
   },
   "dependencies": {
-    "@langchain/anthropic": "^0.3.0",
     "@langchain/core": "^0.3.0",
     "@langchain/langgraph": "^0.2.0",
     "fast-xml-parser": "^4.5.0",

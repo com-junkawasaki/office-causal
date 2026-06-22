@@ -90,7 +90,7 @@ export interface Edge {
   to: DataId;
   /**
    * ローカル小型モデル (transformers.js 埋め込み) による意味的強度 0..1。
-   * 「edge の小さい LLM weight」: Claude を呼ぶ前の安価な一次評価。
+   * 「edge の小さい LLM weight」: Gemma 4 裁定の前の安価な一次評価。
    */
   weight?: number;
   /** kind === "causes" のときのみ。 */
@@ -120,21 +120,18 @@ export interface EmbeddingOptions {
   proposeKind?: "mentions" | "causes";
 }
 
+/**
+ * causal/verify 段の裁定エンジン設定。クラウド非依存 — ローカル Gemma 4
+ * (transformers.js) のみを使う。ブラウザは device:"webgpu"、Node は device:"cpu"。
+ */
 export interface LlmOptions {
-  /**
-   * causal 段の裁定エンジン。
-   *  - "claude" (既定): ChatAnthropic が裁定 (API キー必要)
-   *  - "webgpu-gemma": ローカル Gemma 4 (transformers.js) が裁定。
-   *    ブラウザは device:"webgpu"、Node は device:"cpu" 等。
-   */
-  provider?: "claude" | "webgpu-gemma";
-  model?: string; // Claude モデル
-  deepModel?: string; // verify 用 Claude モデル
-  verifyVotes?: number;
-  /** verify 段 (Claude 敵対的反証) を実行するか。既定 true。false で完全ローカル。 */
+  /** verify 段 (Gemma 4 による敵対的反証) を実行するか。既定 true。false で裁定のみ commit (高速)。 */
   verify?: boolean;
-  /** webgpu-gemma 用: モデル / デバイス。 */
-  localModel?: string; // 既定 onnx-community/gemma-4-E2B-it-ONNX
+  /** verify の独立投票数。既定 3。 */
+  verifyVotes?: number;
+  /** Gemma 4 モデル。既定 onnx-community/gemma-4-E2B-it-ONNX (E4B も可)。 */
+  localModel?: string;
+  /** 実行デバイス。ブラウザ:"webgpu"(無ければ"wasm")、Node:"cpu"。 */
   device?: "webgpu" | "wasm" | "cpu" | "coreml";
 }
 

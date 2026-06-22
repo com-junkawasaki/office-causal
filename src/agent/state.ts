@@ -31,7 +31,7 @@ export const AgentState = Annotation.Root({
   }),
   /**
    * embed 段が出す「無向の」候補ペア (埋め込み類似で一次選別済み)。
-   * causal 段はこれを Claude に渡し、向き・極性・採否を裁定させる (生成しない)。
+   * causal 段はこれをローカル Gemma 4 に渡し、向き・極性・採否を裁定させる (生成しない)。
    */
   embedCandidates: Annotation<{ from: string; to: string; weight: number }[]>({
     reducer: (_a, b) => b,

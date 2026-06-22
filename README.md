@@ -26,10 +26,10 @@ npx @com-junkawasaki/office-causal diagnose report.ocz.pptx --gemma # isolated /
 npx @com-junkawasaki/office-causal consult  report.ocz.pptx --mece  # so-what + MECE
 ```
 ```ts
-// 2) library — fully local (no cloud) with verify:false
+// 2) library — fully local, Gemma 4 only (no cloud). Node: device "cpu"; browser: "webgpu".
 import { analyze, embedFile, readDataPart, diagnose } from "@com-junkawasaki/office-causal";
 
-const graph = await analyze("report.pptx", { llm: { provider: "webgpu-gemma", verify: false } });
+const graph = await analyze("report.pptx", { llm: { device: "cpu", verify: false } });
 const dx    = await diagnose(graph, { gemma: true });
 await embedFile("report.xlsx", { mode: "part" });                 // → report.ocz.xlsx (valid OOXML)
 const data  = readDataPart(new Uint8Array(fs.readFileSync("report.ocz.xlsx")));
@@ -144,17 +144,17 @@ Export: `exportGraph(g, "json"|"graphml"|"cypher"|"dot")`.
 
 ---
 
-## 5. Edge-LLM tiering (3 layers)
+## 5. Edge-LLM tiering (2 layers, cloud-free)
 
 | role | model class | does it generate? | job |
 |---|---|---|---|
 | ① embedding | encoder (transformers.js) | ✗ | edge weight / data-id tags / **causal candidate shortlisting** |
-| ② generation | decoder (**Gemma 4 E2B/E4B**, WebGPU) | ✓ | adjudicate causal **direction / polarity / mechanism** |
-| ③ cloud | Claude | ✓ | final adversarial **verify** (ADR-0001) |
+| ② generation | decoder (**Gemma 4 E2B/E4B**, local) | ✓ | adjudicate causal **direction / polarity / mechanism** + adversarial **verify** |
 
-- Embedding similarity is **undirected affinity**, not direction — direction is decided by generation.
-- `llm.provider:"webgpu-gemma"` runs ② locally; `llm.verify:false` makes it **fully local** (no cloud).
-- Gemma 4 runs via **transformers.js v4 + WebGPU** (`dtype:"q4f16"`); auto-falls back to wasm/cpu (slow). See `eval/RESULTS.md` for the measured comparison (e5-base best embedder; sub-1B decoders insufficient; Gemma 4 E2B/E4B is the practical on-device tier).
+- **No cloud / no API key.** All generation, adjudication and verification run on the local **Gemma 4** (transformers.js); only meaning needs a model, and that model is on-device.
+- Embedding similarity is **undirected affinity**, not direction — direction is decided by Gemma 4 (`causal` stage).
+- `llm.verify:false` skips the Gemma-4 adversarial refutation and commits the adjudication directly (faster); the default runs `verifyVotes` (3) independent refutation votes.
+- Gemma 4 runs via **transformers.js v4 + WebGPU** (`dtype:"q4f16"`); auto-falls back to wasm/cpu (slow). In Node pass `llm.device:"cpu"`. See `eval/RESULTS.md` for the measured comparison (e5-base best embedder; sub-1B decoders insufficient; Gemma 4 E2B/E4B is the practical on-device tier).
 
 ---
 
@@ -215,7 +215,7 @@ npm run build && npm run build:web && npm run serve:web   # Chrome/Edge → web/
 
 - [ADR-0001](docs/adr/0001-causal-graph-ir.md) — single CausalGraph IR / deterministic-vs-LLM split / content-addressed data-id / evidence-required causal edges
 - [ADR-0002](docs/adr/0002-local-embeddings.md) — transformers.js local model for edge weights & tagging
-- [ADR-0003](docs/adr/0003-edge-llm-tiering.md) — 3-tier edge-LLM (embedding → local Gemma 4/WebGPU → Claude verify) with measurements
+- [ADR-0003](docs/adr/0003-edge-llm-tiering.md) — edge-LLM tiering (embedding → local Gemma 4/WebGPU adjudication + verify), cloud-free, with measurements
 - [ADR-0004](docs/adr/0004-ooxml-embedding.md) — non-destructive OOXML embedding (OPC-compliant part / attrs / bookmarks / JSONL / diff / deep-link)
 
 ---
