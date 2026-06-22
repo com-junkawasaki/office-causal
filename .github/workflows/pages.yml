@@ -30,6 +30,9 @@ jobs:
           cache: npm
       # optional の @huggingface/transformers は web デモが CDN(importmap) から読むため不要
       - run: npm ci --omit=optional
+      # web/app.ts は dist/src/* (ライブラリビルド成果) を import するため先に build が必要
+      - name: Build library (→ dist/)
+        run: npm run build
       - name: Build web demo (web/app.ts → web/app.js)
         run: npm run build:web
       - name: Assemble site
