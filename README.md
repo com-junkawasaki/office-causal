@@ -50,6 +50,14 @@ npm install @com-junkawasaki/office-causal
 import { analyze, embedFile, readDataPart, diagnose, consult, WebGpuGemmaAdjudicator } from "@com-junkawasaki/office-causal";
 ```
 
+## Runtime / Dependencies
+
+- Implementation: TypeScript (`src/**/*.ts`, `web/**/*.ts`) compiled to JavaScript declarations for npm consumers.
+- Runtime: Node.js 18+ for the CLI/API; the web entry is built with Vite and browser WebGPU APIs.
+- Required dependencies: `fflate` for OOXML zip handling, `fast-xml-parser` for XML, `zod` for graph/schema validation, and LangChain/LangGraph.js (`@langchain/*`) for the agent pipeline.
+- Optional dependency: `@huggingface/transformers` for local embeddings and Gemma/WebGPU paths.
+- Python is not a runtime, build, CLI, or package dependency.
+
 ---
 
 ## 1. What it solves
