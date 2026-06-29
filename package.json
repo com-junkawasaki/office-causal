@@ -47,7 +47,6 @@
     "build:web": "vite build",
     "dev:web": "vite",
     "preview:web": "vite preview",
-    "serve:web": "python3 -m http.server 8000",
     "gen:svg-samples": "node scripts/gen-svg-samples.mjs",
     "gen:sample-data": "node scripts/gen-sample-data.mjs",
     "check": "tsc -p tsconfig.json --noEmit",
