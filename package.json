@@ -63,7 +63,7 @@
     "zod": "^3.23.0"
   },
   "optionalDependencies": {
-    "@huggingface/transformers": "^4.2.0"
+    "@huggingface/transformers": "^4.3.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
